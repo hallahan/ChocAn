@@ -13,5 +13,7 @@ public class StartApplication {
 			System.out.println(id);
 		else
 			System.out.println("id is null");
+		
+		JOptionPane.showMessageDialog(null, "24343", "Error retrieving member table:", JOptionPane.ERROR_MESSAGE);
 	}
 }
