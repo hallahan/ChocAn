@@ -13,6 +13,8 @@ public class TestAsWeGo {
 		all = db.retrieveMemberTable();
 		for (Member each : all)
 			each.print();
+		System.out.println("Samanth's middle name...");
+		System.out.println(all.get(7).getMiddle());
 		
 	}
 

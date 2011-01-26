@@ -40,6 +40,8 @@ public class SQLiteInterface {
 			JOptionPane.showMessageDialog(null, e.toString(), "Error creating connection:", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	//should be private
 	public void execute(String query) {
 		try {
 			stmt = con.createStatement();
@@ -53,31 +55,13 @@ public class SQLiteInterface {
 			}
 		}
 	}
-	private void testFetchResults() {
-	       try
-	        {
-	            String abbrev, name;
-	            while(rs.next())
-	            {
-	                abbrev = rs.getString("abbrev");
-	                name = rs.getString("name");
-	                System.out.println(abbrev + "  |  " + name);
-	            }
-	        }
-	        catch(Exception e)
-	        {
-	            System.out.println("Error processing results: " + e.toString());
-	            try
-	            {
-	                rs.close();
-	                stmt.close();
-	                con.close();
-	            }
-	            catch(Exception ex)
-	            {
-	            }
-	        }
+
+	private void update(String query) {
+		//similar to execute
+		//should a new connection be made?
+		//should execute also check to see if there is a connection?
 	}
+	
 	private Vector<Member> fetchMemberResults() {
 		Vector<Member> results = null;
 		Member row = null;
@@ -89,18 +73,15 @@ public class SQLiteInterface {
 				row = new Member();
 				
 				//fills in Member row with values from RowSet rs
-				row.member_id = rs.getInt(1);
-				if (rs.getInt(2) == 1)
-					row.active_status = true;
-				else
-					row.active_status = false;
-				row.first = rs.getString(3);
-				row.middle = rs.getString(4);
-				row.last = rs.getString(5);
-				row.address = rs.getString(6);
-				row.city = rs.getString(7);
-				row.state = rs.getString(8);
-				row.zip = rs.getString(9);
+				row.setMember_id(rs.getInt(1));
+				row.setActive_status(rs.getInt(2));
+				row.setFirst(rs.getString(3));
+				row.setMiddle(rs.getString(4));
+				row.setLast(rs.getString(5));
+				row.setAddress(rs.getString(6));
+				row.setCity(rs.getString(7));
+				row.setState(rs.getString(8));
+				row.setZip(rs.getString(9));
 				
 				results.add(row);
 			}
@@ -142,12 +123,47 @@ public class SQLiteInterface {
 	}
 	
 	
+	public void addMember(Member nm) {
+		String query =	"INSERT INTO member VALUES (null, " + nm.getActive_status() + ", " +
+						"'" + nm.getFirst() + "', " +
+						"'" + nm.getMiddle() + "', " +
+						"'" + nm.getLast() + "', " +
+						"'" + nm.getAddress() + "', " +
+						"'" + nm.getCity() + "', " +
+						"'" + nm.getState() + "', " +
+						"'" + nm.getZip() + "');";
+						
+		
+	}
 	
 	
 	
 	
-	
-	
+	private void testFetchResults() {
+	       try
+	        {
+	            String abbrev, name;
+	            while(rs.next())
+	            {
+	                abbrev = rs.getString("abbrev");
+	                name = rs.getString("name");
+	                System.out.println(abbrev + "  |  " + name);
+	            }
+	        }
+	        catch(Exception e)
+	        {
+	            System.out.println("Error processing results: " + e.toString());
+	            try
+	            {
+	                rs.close();
+	                stmt.close();
+	                con.close();
+	            }
+	            catch(Exception ex)
+	            {
+	            }
+	        }
+	}
 	public void testFetchStates() {
 		this.execute("SELECT * FROM state WHERE state.abbrev='AK';");
 		this.testFetchResults();
