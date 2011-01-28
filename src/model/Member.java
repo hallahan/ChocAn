@@ -1,21 +1,24 @@
 package model;
-import java.lang.Integer;
 
 public class Member {
-	public Integer	member_id;
-	public boolean	active_status;
-	public String	first;
-	public String	middle;
-	public String	last;
-	public String	address;
-	public String	city;
-	public String	state;
-	public String	zip;
+	private static String EMPTY = "";
+	
+	//Every Member retrieved from database should 
+	//have a member_id that is not 0;
+	public int	member_id		= 0;
+	public int	active_status	= 1; //0 == inactive, 1 == active
+	public String	first		= EMPTY;
+	public String	middle		= EMPTY;
+	public String	last		= EMPTY;
+	public String	address		= EMPTY;
+	public String	city		= EMPTY;
+	public String	state		= EMPTY;
+	public String	zip			= EMPTY;
 	
 	public void print() {
 		System.out.println("--------------------");
-		System.out.println(member_id.toString());
-		if (active_status == true) System.out.println("active");
+		System.out.println(member_id);
+		if (active_status == 1) System.out.println("active");
 		else System.out.println("inactive");
 		System.out.println(first);
 		System.out.println(middle);
