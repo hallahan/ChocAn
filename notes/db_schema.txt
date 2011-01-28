@@ -1,0 +1,47 @@
+CREATE TABLE member (
+	member_id INTEGER PRIMARY KEY, 
+	active_status INTEGER, 
+	first TEXT, 
+	middle TEXT, 
+	last TEXT, 
+	address TEXT, 
+	city TEXT, 
+	state TEXT, 
+	zip TEXT						);
+	
+	
+CREATE TABLE provider (
+	provider_id INTEGER PRIMARY KEY, 
+	name TEXT, 
+	providertype_id INTEGER, 
+	address TEXT, 
+	city TEXT, 
+	state TEXT, 
+	zip TEXT						);
+	
+	
+CREATE TABLE providertype (
+	providertype_id INTEGER PRIMARY KEY, 
+	name TEXT, 
+	desc TEXT						);
+	
+	
+CREATE TABLE service (
+	service_id INTEGER PRIMARY KEY, 
+	name TEXT, 
+	fee NUMERIC						);
+	
+	
+CREATE TABLE serviceinstance (
+	instance_id INTEGER PRIMARY KEY, 
+	member_id INTEGER UNIQUE, 
+	service_id INTEGER UNIQUE, 
+	provider_id INTEGER UNIQUE, 
+	date_provided DATE, 
+	time_stamp TIMESTAMP, 
+	comments TEXT					);
+	
+	
+CREATE TABLE state (
+	abbrev TEXT PRIMARY KEY, 
+	name TEXT						);
