@@ -1,0 +1,2 @@
+Jan. 28, 2011
+	For SQL searches, use LIKE instead of =

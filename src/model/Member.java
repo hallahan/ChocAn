@@ -16,7 +16,7 @@ public class Member {
 	public String	zip			= EMPTY;
 	
 	public void print() {
-		System.out.println("--------------------");
+		System.out.println("-------MEMBER ROW-------");
 		System.out.println(member_id);
 		if (active_status == 1) System.out.println("active");
 		else System.out.println("inactive");

@@ -125,14 +125,14 @@ public class SQLiteInterface {
 		return this.fetchMemberResults();
 	}
 	public Vector<Member> retrieveMemberTable(String searchKey) {
-		String query =	"SELECT * FROM member m WHERE m.last='" + searchKey + 
-						"' OR m.first='" + searchKey +
-						"' OR m.middle='" + searchKey +
-						"' OR m.address='" + searchKey +
-						"' OR m.city='" + searchKey +
-						"' OR m.state='" + searchKey +
-						"' OR m.zip='" + searchKey +
-						"';";
+		String query =	"SELECT * FROM member m WHERE m.last LIKE '%" + searchKey + 
+						"%' OR m.first LIKE '%" + searchKey +
+						"%' OR m.middle LIKE '%" + searchKey +
+						"%' OR m.address LIKE '%" + searchKey +
+						"%' OR m.city LIKE '%" + searchKey +
+						"%' OR m.state LIKE '%" + searchKey +
+						"%' OR m.zip LIKT '%" + searchKey +
+						"%';";
 		this.execute(query);
 		return this.fetchMemberResults();
 	}
@@ -173,24 +173,333 @@ public class SQLiteInterface {
 	}
 	
 	
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~OPERATIONS ON PROVIDER TABLE~~~~~~~~~~~~~~~~~~~~~~
+	private Vector<Provider> fetchProviderResults () {
+		Vector<Provider> results = null;
+		Provider row = null;
+		
+		try {
+			while (rs.next()) {
+				if (results == null)
+					results = new Vector<Provider>(VECTOR_ALLOC_SIZE);
+				row = new Provider();
+				
+				//fills in Member row with values from RowSet rs
+				row.provider_id = rs.getInt(1);
+				row.name = rs.getString(2);
+				row.providertype_id = rs.getInt(3);
+				row.address = rs.getString(4);
+				row.city = rs.getString(5);
+				row.state = rs.getString(6);
+				row.zip = rs.getString(7);
+				
+				results.add(row);
+			}
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Error Fetching Provider Results: " + e.toString(), "Error Fetching Provider Results: ", JOptionPane.ERROR_MESSAGE);
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+				con=null;
+			} catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "Error closing result set, statement and connection: " + e.toString(), "Error Fetching Provider Results: ", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return results;
+	}
+
+	public Provider retrieveProvider(int provider_id) {
+		String query = "SELECT * FROM provider p WHERE m.provider_id=" + provider_id + ";";
+		this.execute(query);
+		return this.fetchProviderResults().firstElement();
+	}
+	public Vector<Provider> retrieveProviderTable() {
+		String query = "SELECT * FROM provider;";
+		this.execute(query);
+		return this.fetchProviderResults();
+	}
+	public Vector<Provider> retrieveProviderTable(String searchKey) {
+		String query =	"SELECT * FROM provider p WHERE p.name LIKE '%" + searchKey +
+						"%'  OR p.address LIKE '%" + searchKey +
+						"%' OR p.city LIKE '%" + searchKey + 
+						"%' OR p.state LIKE '%" + searchKey +
+						"%' OR p.zip LIKE '%" + searchKey + "%';";
+		this.execute(query);
+		return this.fetchProviderResults();
+	}
+
+	
+	public void addProvider(Provider np) {
+		String query =	"INSERT INTO provider VALUES (null, '" +
+						np.name + "', " +
+						np.providertype_id + ", '" +
+						np.address + "', '" +
+						np.city + "', '" +
+						np.zip + "');";
+		this.update(query);			
+	}
+	public void updateProvider(Provider up) {
+		String query =	"UPDATE provider SET " + 
+						"name='" + up.name + "', " +
+						"providertype_id=" + up.providertype_id + ", " +
+						"address=" + up.address + ", " +
+						"city=" + up.city + ", " +
+						"zip=" + up.zip +
+						"' WHERE provider.provider_id =" +
+						up.provider_id + ";";
+		this.update(query);
+	}
+	public void deleteProvider(int provider_id) {
+		String query = "DELETE FROM provider WHERE provider.provider_id=" + provider_id + ";";
+		this.update(query);
+	}
+	
+	
+	//~~~~~~~~~~~~~~~~~~~~~OPERATIONS ON PROVIDERTYPE TABLE~~~~~~~~~~~~~~~~~~~~~~~~
+	private Vector<ProviderType> fetchProviderTypeResults () {
+		Vector<ProviderType> results = null;
+		ProviderType row = null;
+		
+		try {
+			while (rs.next()) {
+				if (results == null)
+					results = new Vector<ProviderType>(VECTOR_ALLOC_SIZE);
+				row = new ProviderType();
+				
+				//fills in Member row with values from RowSet rs
+				row.providertype_id = rs.getInt(1);
+				row.name = rs.getString(2);
+				row.desc = rs.getString(3);
+				
+				results.add(row);
+			}
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Error Fetching ProviderType Results: " + e.toString(), "Error Fetching ProviderType Results: ", JOptionPane.ERROR_MESSAGE);
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+				con=null;
+			} catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "Error closing result set, statement and connection: " + e.toString(), "Error Fetching ProviderType Results: ", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return results;
+	}
+	
+	public ProviderType retrieveProviderType(int providertype_id) {
+		String query = "SELECT * FROM providertype pt WHERE pt.providertype_id=" + providertype_id + ";";
+		this.execute(query);
+		return this.fetchProviderTypeResults().firstElement();
+	}
+	public Vector<ProviderType> retrieveProviderTypeTable() {
+		String query = "SELECT * FROM providertype;";
+		this.execute(query);
+		return this.fetchProviderTypeResults();
+	}
+	public Vector<ProviderType> retrieveProviderTypeTable(String searchKey) {
+		String query =	"SELECT * FROM providertype pt WHERE pt.name LIKE '%" + searchKey +
+						"%' OR pt.desc LIKE '%" + searchKey + "%';";
+		this.execute(query);
+		return this.fetchProviderTypeResults();
+	}
+	
+	public void addProviderType(ProviderType npt) {
+		String query =	"INSERT INTO providertype VALUES (null, '" +
+						npt.name + "', " +
+						npt.desc + "');";
+		this.update(query);
+	}
+	public void updateProviderType(ProviderType upt) {
+		String query =	"UPDATE providertype SET " +
+						"name='" + upt.name + "', " +
+						"desc='" + upt.desc +
+						"' WHERE providertype.providertype_id = " +
+						upt.providertype_id + ";";
+		this.update(query);
+	}
+	public void deleteProviderType(int providertype_id) {
+		String query = "DELETE FROM providertype pt WHERE pt.providertype_id=" + providertype_id + ";";
+		this.update(query);
+	}
+	
+	
+	//~~~~~~~~~~~~~~~~~~~~OPERATIONS OF SERVICE TABLE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	private Vector<Service> fetchServiceResults () {
+		Vector<Service> results = null;
+		Service row = null;
+		
+		try {
+			while (rs.next()) {
+				if (results == null)
+					results = new Vector<Service>(VECTOR_ALLOC_SIZE);
+				row = new Service();
+				
+				//fills in Member row with values from RowSet rs
+				row.service_id = rs.getInt(1);
+				row.name = rs.getString(2);
+				row.fee = rs.getString(3);
+				
+				results.add(row);
+			}
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Error Fetching Service Results: " + e.toString(), "Error Fetching Service Results: ", JOptionPane.ERROR_MESSAGE);
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+				con=null;
+			} catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "Error closing result set, statement and connection: " + e.toString(), "Error Fetching Service Results: ", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return results;
+	}
+	
+	public Service retrieveService(int service_id) {
+		String query = "SELECT * FROM service s WHERE s.service_id=" + service_id +";";
+		this.execute(query);
+		return this.fetchServiceResults().firstElement();
+	}
+	public Vector<Service> retrieveServiceTable() {
+		String query = "SELECT * FROM service;";
+		this.execute(query);
+		return this.fetchServiceResults();
+	}
+	public Vector<Service> retrieveServiceTable(String searchKey) {
+		String query = "SELECT * FROM service s WHERE s.name LIKE '%" + searchKey + 
+						"%' OR s.fee LIKE '%" + searchKey + "%';";
+		this.execute(query);
+		return fetchServiceResults();
+	}
+	
+	public void addService(Service s) {
+		String query = "INSERT INTO service VALUE (null, '" +
+						s.name + "', " +
+						s.fee + "');";
+		this.update(query);
+	}
+	public void updateService(Service s) {
+		String query = "UPDATE service SET " +
+						"name='" + s.name + "', " +
+						"fee='" + s.fee +
+						"' WHERE service.service_id = " +
+						s.service_id + ";";
+		this.update(query);
+	}
+	public void deleteService(int service_id) {
+		String query = "DELETE FROM service s WHERE s.service_id = " + service_id + ";";
+		this.update(query);
+	}
+	
+	
+	//~~~~~~~~~~~~~~~~~~~~OPERATIONS OF SERVICE TABLE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	private Vector<ServiceInstance> fetchServiceInstanceResults () {
+		Vector<ServiceInstance> results = null;
+		ServiceInstance row = null;
+		
+		try {
+			while (rs.next()) {
+				if (results == null)
+					results = new Vector<ServiceInstance>(VECTOR_ALLOC_SIZE);
+				row = new ServiceInstance();
+				
+				//fills in Member row with values from RowSet rs
+				row.instance_id = rs.getInt(1);
+				row.member_id = rs.getInt(2);
+				row.service_id = rs.getInt(3);
+				row.provider_id = rs.getInt(4);
+				row.date_provided = rs.getString(5);
+				row.time_stamp = rs.getString(6);
+				row.comments = rs.getString(7);
+				
+				results.add(row);
+			}
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Error Fetching ServiceInstance Results: " + e.toString(), "Error Fetching ServiceInstance Results: ", JOptionPane.ERROR_MESSAGE);
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+				con=null;
+			} catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "Error closing result set, statement and connection: " + e.toString(), "Error Fetching ServiceInstance Results: ", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return results;
+	}
+	
+	public ServiceInstance retrieveServiceInstance(int instance_id) {
+		String query = "SELECT * FROM serviceinstance si WHERE si.instance_id=" + instance_id + ";";
+		this.execute(query);
+		return this.fetchServiceInstanceResults().firstElement();
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTable() {
+		String query = "SELECT * FROM serviceinstance;";
+		this.execute(query);
+		return this.fetchServiceInstanceResults();
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForMember(int member_id) {
+		String query = "SELECT * FROM serviceinstance si WHERE si.member_id=" +
+						member_id + ";";
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForService(int service_id) {
+		String query = "SELECT * FROM serviceinstance si WHERE si.service_id=" +
+						service_id + ";";
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForProvider(int provider_id) {
+		String query = "SELECT * FROM serviceinstance si WHERE si.provider_id=" +
+						provider_id + ";";
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForDateProvided(String dateProvided) {
+		String query = "SELECT * FROM serviceinstance si WHERE si.date_provided='" +
+						dateProvided + "';";
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForTimeStamp(String timeStamp) {
+		String query = "SELECT * FROM serviceinstance si WHERE si.time_stamp='" +
+						timeStamp + "';";
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
+	public void addServiceInstance(ServiceInstance s) {
+		String query = "INSERT INTO serviceinstance VALUE (null, " +
+						s.member_id + ", " +
+						s.service_id + ", " +
+						s.provider_id + ", '" +
+						s.date_provided + "', '" +
+						s.time_stamp + "', '" +
+						s.comments + "');";
+		this.update(query);
+	}
+	public void updateServiceInstance(ServiceInstance s) {
+		String query = "UPDATE serviceinstance SET " +
+						"member_id=" + s.member_id + ", " +
+						"service_id=" + s.service_id + ", " +
+						"provider_id=" +s.provider_id + ", " +
+						"date_provided='" + s.date_provided + "', " +
+						"time_stamp='" +s.time_stamp + "', " +
+						"comments='" +s.comments +
+						"' WHERE serviceinstance.instance_id = " +
+						s.instance_id + ";";
+		this.update(query);
+	}
+	public void deleteServiceInstance(int instance_id) {
+		String query = "DELETE FROM serviceinstance si WHERE si.instance_id = " + instance_id + ";";
+		this.update(query);
+	}
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// TEST GARBAGE
 	
 	private void testFetchResults() {
 	       try
