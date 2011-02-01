@@ -1,4 +1,10 @@
-SQLiteInterface db = new SQLiteInterface();
-Vector<Member> all;
-all = db.retrieveMemberTable();
-allSQLiteInterface db = new SQLiteInterface();Vector<Member> search;search = db.retrieveMemberTable("Lars");searchSQLiteInterface db = new SQLiteInterface();Member nm = new Member();nm.active_status = 0;nm.first = "Gordon";nm.last = "Frey";nm.address = "PO Box 533";nm.city = "Portland";nm.state = "OR";nm.zip = "97201";db.addMember(nm);Vector<Member> all = db.retrieveMemberTable();allSQLiteInterface db = new SQLiteInterface();Vector<Member> search;search = db.retrieveMemberTable("rey");searchSQLiteInterface db = new SQLiteInterface();Member search;search = db.retrieveMember(5);searchSQLiteInterface db = new SQLiteInterface();db.retrieveProviderTable();SQLiteInterface db = new SQLiteInterface();Provider p = new Provider();p.name = "Drastic Dermatology";p.address = "2 State St.";p.city = "Chicago";p.state = "IL";p.zip = "60006";db.addProvider(p);SQLiteInterface db = new SQLiteInterface();Provider p = new Provider();p.name = "JR Kenny Dental";p.address = "2432 Northwest Highway";p.city = "Chicago";p.state = "IL";p.zip = "60016";db.addProvider(p);SQLiteInterface db = new SQLiteInterface();Provider p = new Provider();p.name = "Butcher Plastic Surgery";p.address = "332 E. Burnside";p.city = "Portland";p.state = "OR";p.zip = "97272";db.addProvider(p);
+//Member Tests...
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveMemberTable();
+SQLiteInterface db = new SQLiteInterface();db.retrieveMemberTable("Lars");SQLiteInterface db = new SQLiteInterface();Member nm = new Member();nm.active_status = 0;nm.first = "Jeffrey";nm.last = "Wright";nm.address = "PO Box 533";nm.city = "Portland";nm.state = "OR";nm.zip = "97201";db.addMember(nm);SQLiteInterface db = new SQLiteInterface();db.retrieveMemberTable("rey");SQLiteInterface db = new SQLiteInterface();db.retrieveMember(5);
+
+//Provider Tests...
+SQLiteInterface db = new SQLiteInterface();db.retrieveProviderTable();SQLiteInterface db = new SQLiteInterface();Provider p = new Provider();p.name = "Butcher Plastic Surgery";p.address = "332 E. Burnside";p.city = "Portland";p.state = "OR";p.zip = "97272";db.addProvider(p);
+
+

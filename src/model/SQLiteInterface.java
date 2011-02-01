@@ -332,9 +332,10 @@ public class SQLiteInterface {
 		String query =	"UPDATE provider SET " + 
 						"name='" + up.name + "', " +
 						"providertype_id=" + up.providertype_id + ", " +
-						"address=" + up.address + ", " +
-						"city=" + up.city + ", " +
-						"zip=" + up.zip +
+						"address='" + up.address + "', " +
+						"city='" + up.city + "', " +
+						"state='" + up.state + "', " +
+						"zip='" + up.zip +
 						"' WHERE provider.provider_id =" +
 						up.provider_id + ";";
 		this.update(query);
