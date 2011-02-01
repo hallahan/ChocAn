@@ -5,7 +5,7 @@ import java.util.Vector;
 
 
 public class SQLiteInterface {
-	static final int VECTOR_ALLOC_SIZE = 100;
+	static final int VECTOR_ALLOC_SIZE = 50;
 	
 	private String driverName;
 	private String dbName;
@@ -140,7 +140,7 @@ public class SQLiteInterface {
 						"%' OR m.address LIKE '%" + searchKey +
 						"%' OR m.city LIKE '%" + searchKey +
 						"%' OR m.state LIKE '%" + searchKey +
-						"%' OR m.zip LIKT '%" + searchKey +
+						"%' OR m.zip LIKE '%" + searchKey +
 						"%';";
 		this.execute(query);
 		return this.fetchMemberResults();
@@ -324,6 +324,7 @@ public class SQLiteInterface {
 						np.providertype_id + ", '" +
 						np.address + "', '" +
 						np.city + "', '" +
+						np.state + "', '" +
 						np.zip + "');";
 		this.update(query);			
 	}
