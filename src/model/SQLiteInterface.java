@@ -124,6 +124,15 @@ public class SQLiteInterface {
 		this.execute(query);
 		return this.fetchMemberResults();
 	}
+	public Vector<Member> retrieveMemberTableSorted(String field, boolean ascending) {
+		String query;
+		if (ascending == true)
+			query = "SELECT * FROM member ORDER BY " + field + ";";
+		else
+			query = "SELECT * FROM member ORDER BY " + field + " DESC;";
+		this.execute(query);
+		return this.fetchMemberResults();		
+	}
 	public Vector<Member> retrieveMemberTable(String searchKey) {
 		String query =	"SELECT * FROM member m WHERE m.last LIKE '%" + searchKey + 
 						"%' OR m.first LIKE '%" + searchKey +
@@ -136,7 +145,60 @@ public class SQLiteInterface {
 		this.execute(query);
 		return this.fetchMemberResults();
 	}
-
+	public Vector<Member> retrieveMemberTableSorted(String searchKey, String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query =	"SELECT * FROM member m WHERE m.last LIKE '%" + searchKey + 
+						"%' OR m.first LIKE '%" + searchKey +
+						"%' OR m.middle LIKE '%" + searchKey +
+						"%' OR m.address LIKE '%" + searchKey +
+						"%' OR m.city LIKE '%" + searchKey +
+						"%' OR m.state LIKE '%" + searchKey +
+						"%' OR m.zip LIKT '%" + searchKey +
+						"%' ORDER BY " + sortField + ";";
+		} else {
+			query =	"SELECT * FROM member m WHERE m.last LIKE '%" + searchKey + 
+						"%' OR m.first LIKE '%" + searchKey +
+						"%' OR m.middle LIKE '%" + searchKey +
+						"%' OR m.address LIKE '%" + searchKey +
+						"%' OR m.city LIKE '%" + searchKey +
+						"%' OR m.state LIKE '%" + searchKey +
+						"%' OR m.zip LIKT '%" + searchKey +
+						"%' ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return this.fetchMemberResults();
+	}
+	public Vector<Member> retrieveMemberTableActive() {
+		String query = "SELECT * FROM member m WHERE m.active_status=1;";
+		this.execute(query);
+		return this.fetchMemberResults();
+	}
+	public Vector<Member> retrieveMemberTableActiveSorted(String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM member m WHERE m.active_status=1 ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM member m WHERE m.active_status=1 ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return this.fetchMemberResults();
+	}
+	public Vector<Member> retrieveMemberTableInactive() {
+		String query = "SELECT * FROM member m WHERE m.active_status=0;";
+		this.execute(query);
+		return this.fetchMemberResults();
+	}
+	public Vector<Member> retrieveMemberTableInactiveSorted(String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM member m WHERE m.active_status=0 ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM member m WHERE m.active_status=0 ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return this.fetchMemberResults();
+	}
 	
 	//The member_id field of the Member instance provided is not read.
 	//A new member_id is automatically assigned by SQLite.
@@ -167,8 +229,7 @@ public class SQLiteInterface {
 		this.update(query);
 	}
 	public void deleteMember(int member_id) {
-		String query = 	"DELETE FROM member WHERE member.member_id=" + member_id +
-						";";
+		String query = 	"DELETE FROM member WHERE member.member_id=" + member_id + ";";
 		this.update(query);
 	}
 	
@@ -184,7 +245,7 @@ public class SQLiteInterface {
 					results = new Vector<Provider>(VECTOR_ALLOC_SIZE);
 				row = new Provider();
 				
-				//fills in Member row with values from RowSet rs
+				//fills in Provider row with values from RowSet rs
 				row.provider_id = rs.getInt(1);
 				row.name = rs.getString(2);
 				row.providertype_id = rs.getInt(3);
@@ -219,6 +280,16 @@ public class SQLiteInterface {
 		this.execute(query);
 		return this.fetchProviderResults();
 	}
+	public Vector<Provider> retrieveProviderTableSorted(String sortField, boolean ascending) {
+		String query;
+		if (ascending == true ) {
+			query = "SELECT * FROM provider ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM provider ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return this.fetchProviderResults();
+	}
 	public Vector<Provider> retrieveProviderTable(String searchKey) {
 		String query =	"SELECT * FROM provider p WHERE p.name LIKE '%" + searchKey +
 						"%'  OR p.address LIKE '%" + searchKey +
@@ -228,7 +299,24 @@ public class SQLiteInterface {
 		this.execute(query);
 		return this.fetchProviderResults();
 	}
-
+	public Vector<Provider> retrieveProviderTableSorted(String searchKey, String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query =	"SELECT * FROM provider p WHERE p.name LIKE '%" + searchKey +
+						"%'  OR p.address LIKE '%" + searchKey +
+						"%' OR p.city LIKE '%" + searchKey + 
+						"%' OR p.state LIKE '%" + searchKey +
+						"%' OR p.zip LIKE '%" + searchKey + "%' ORDER BY " + sortField + ";";
+		} else {
+			query =	"SELECT * FROM provider p WHERE p.name LIKE '%" + searchKey +
+						"%'  OR p.address LIKE '%" + searchKey +
+						"%' OR p.city LIKE '%" + searchKey + 
+						"%' OR p.state LIKE '%" + searchKey +
+						"%' OR p.zip LIKE '%" + searchKey + "%' ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return this.fetchProviderResults();
+	}
 	
 	public void addProvider(Provider np) {
 		String query =	"INSERT INTO provider VALUES (null, '" +
@@ -298,13 +386,34 @@ public class SQLiteInterface {
 		this.execute(query);
 		return this.fetchProviderTypeResults();
 	}
+	public Vector<ProviderType> retrieveProviderTypeTableSorted(String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM providertype ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM providertype ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return this.fetchProviderTypeResults();
+	}
 	public Vector<ProviderType> retrieveProviderTypeTable(String searchKey) {
 		String query =	"SELECT * FROM providertype pt WHERE pt.name LIKE '%" + searchKey +
 						"%' OR pt.desc LIKE '%" + searchKey + "%';";
 		this.execute(query);
 		return this.fetchProviderTypeResults();
 	}
-	
+	public Vector<ProviderType> retrieveProviderTypeTableSorted(String searchKey, String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM providertype pt WHERE pt.name LIKE '%" + searchKey +
+					"%' OR pt.desc LIKE '%" + searchKey + "%' ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM providertype pt WHERE pt.name LIKE '%" + searchKey +
+					"%' OR pt.desc LIKE '%" + searchKey + "%' ORDER BY " + sortField + " DESC;";			
+		}
+		this.execute(query);
+		return this.fetchProviderTypeResults();
+	}
 	public void addProviderType(ProviderType npt) {
 		String query =	"INSERT INTO providertype VALUES (null, '" +
 						npt.name + "', " +
@@ -367,9 +476,25 @@ public class SQLiteInterface {
 		this.execute(query);
 		return this.fetchServiceResults();
 	}
-	public Vector<Service> retrieveServiceTable(String searchKey) {
-		String query = "SELECT * FROM service s WHERE s.name LIKE '%" + searchKey + 
-						"%' OR s.fee LIKE '%" + searchKey + "%';";
+	public Vector<Service> retrieveServiceTableSorted(String searchField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM service ORDER BY " + searchField + ";";
+		} else {
+			query = "SELECT * FROM service ORDER BY " + searchField + " DESC;";
+		}
+		this.execute(query);
+		return this.fetchServiceResults();
+	}
+	public Vector<Service> retrieveServiceTableSorted(String searchKey, String searchField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM service s WHERE s.name LIKE '%" + searchKey + 
+					"%' OR s.fee LIKE '%" + searchKey + " ORDER BY " + searchField + ";";
+		} else {
+			query = "SELECT * FROM service s WHERE s.name LIKE '%" + searchKey + 
+					"%' OR s.fee LIKE '%" + searchKey + "%' ORDER BY " + searchField + " DESC;";
+		}
 		this.execute(query);
 		return fetchServiceResults();
 	}
@@ -440,9 +565,29 @@ public class SQLiteInterface {
 		this.execute(query);
 		return this.fetchServiceInstanceResults();
 	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableSorted(String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return this.fetchServiceInstanceResults();
+	}
 	public Vector<ServiceInstance> retrieveServiceInstanceTableForMember(int member_id) {
 		String query = "SELECT * FROM serviceinstance si WHERE si.member_id=" +
 						member_id + ";";
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForMemberSorted(int member_id, String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " ORDER BY " + sortField + " DESC;";
+		}
 		this.execute(query);
 		return fetchServiceInstanceResults();
 	}
@@ -452,9 +597,29 @@ public class SQLiteInterface {
 		this.execute(query);
 		return fetchServiceInstanceResults();
 	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForServiceSorted(int service_id, String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance si WHERE si.service_id=" + service_id + " ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.service_id=" + service_id + " ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
 	public Vector<ServiceInstance> retrieveServiceInstanceTableForProvider(int provider_id) {
 		String query = "SELECT * FROM serviceinstance si WHERE si.provider_id=" +
 						provider_id + ";";
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForProviderSorted(int provider_id, String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance si WHERE si.provider_id=" + provider_id + " ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.provider_id=" + provider_id + " ORDER BY " + sortField + " DESC;";
+		}
 		this.execute(query);
 		return fetchServiceInstanceResults();
 	}
@@ -464,9 +629,18 @@ public class SQLiteInterface {
 		this.execute(query);
 		return fetchServiceInstanceResults();
 	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForDateProvidedSorted(String dateProvided, String sortField, boolean ascending) {
+		String query;
+		if (ascending) {
+			query = "SELECT * FROM serviceinstance si WHERE si.date_provided='" + dateProvided + "' ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.date_provided='" + dateProvided + "' ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
 	public Vector<ServiceInstance> retrieveServiceInstanceTableForTimeStamp(String timeStamp) {
-		String query = "SELECT * FROM serviceinstance si WHERE si.time_stamp='" +
-						timeStamp + "';";
+		String query = "SELECT * FROM serviceinstance si WHERE si.time_stamp='" + timeStamp + "';";
 		this.execute(query);
 		return fetchServiceInstanceResults();
 	}
@@ -496,6 +670,10 @@ public class SQLiteInterface {
 		String query = "DELETE FROM serviceinstance si WHERE si.instance_id = " + instance_id + ";";
 		this.update(query);
 	}
+	
+	
+	
+	
 	
 	
 	
