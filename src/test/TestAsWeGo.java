@@ -9,13 +9,18 @@ public class TestAsWeGo {
 			each.print();
 	}
 	
+	public static void printProvider(Vector<Provider> input) {
+		for (Provider each : input)
+			each.print();
+	}
+	
 	public static void main(String[] args) {
-		SQLiteInterface db = new SQLiteInterface();
-		
-		Vector<Member> all;
-		all = db.retrieveMemberTable();
-		printVector(all);
-		
+//		SQLiteInterface db = new SQLiteInterface();
+//		
+//		Vector<Member> all;
+//		all = db.retrieveMemberTable();
+//		printVector(all);
+//		
 //		System.out.println("test adding a member...");
 //		Member nm = new Member();
 //		nm.first = "Derrick";
@@ -52,7 +57,21 @@ public class TestAsWeGo {
 //		db.deleteMember(8);
 //		all = db.retrieveMemberTable();
 //		printVector(all);
+//		
+//		
+//		SQLiteInterface db = new SQLiteInterface();
+//		Vector<Member> a = db.retrieveMemberTableSorted("rey", "last", true);
+//		printVector(a);
 		
+		SQLiteInterface db = new SQLiteInterface();
+		Provider p = new Provider();
+		p.name = "Jack Talisman Inner Peace";
+		p.address = "666 Satan's Pit";
+		p.city = "Hell";
+		p.state = "AR";
+		p.zip = "42313";
+		db.addProvider(p);
+		printProvider(db.retrieveProviderTable());
 	}
 
 }

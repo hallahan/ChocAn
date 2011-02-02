@@ -1,10 +1,30 @@
 //Member Tests...
 
-SQLiteInterface db = new SQLiteInterface();
+SQLiteInterface db = new SQLiteInterface();
 db.retrieveMemberTable();
-SQLiteInterface db = new SQLiteInterface();db.retrieveMemberTable("Lars");SQLiteInterface db = new SQLiteInterface();Member nm = new Member();nm.active_status = 0;nm.first = "Jeffrey";nm.last = "Wright";nm.address = "PO Box 533";nm.city = "Portland";nm.state = "OR";nm.zip = "97201";db.addMember(nm);SQLiteInterface db = new SQLiteInterface();db.retrieveMemberTable("rey");SQLiteInterface db = new SQLiteInterface();db.retrieveMember(5);
+SQLiteInterface db = new SQLiteInterface();db.retrieveMemberTable("Lars");SQLiteInterface db = new SQLiteInterface();Member nm = new Member();nm.active_status = 0;nm.first = "Jeffrey";nm.last = "Wright";nm.address = "PO Box 533";nm.city = "Portland";nm.state = "OR";nm.zip = "97201";db.addMember(nm);SQLiteInterface db = new SQLiteInterface();db.retrieveMemberTable("rey");SQLiteInterface db = new SQLiteInterface();db.retrieveMember(5);
 
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveMemberTableActive();
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveMemberTableInactive();
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveMemberTableSorted("state", true);
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveMemberTableSorted("state", false);
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveMemberTableSorted("rey", "last", true);
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveMemberTableActiveSorted("last", false);
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveMemberTableInactiveSorted("last", true);                                           
 //Provider Tests...
-SQLiteInterface db = new SQLiteInterface();db.retrieveProviderTable();SQLiteInterface db = new SQLiteInterface();Provider p = new Provider();p.name = "Butcher Plastic Surgery";p.address = "332 E. Burnside";p.city = "Portland";p.state = "OR";p.zip = "97272";db.addProvider(p);
+SQLiteInterface db = new SQLiteInterface();db.retrieveProviderTable();SQLiteInterface db = new SQLiteInterface();Provider p = new Provider();p.name = "Jack Talisman Inner Peace";p.address = "666 Satan's Pit";p.city = "Hell";p.state = "AR";p.zip = "42313";db.addProvider(p);
+
 
 

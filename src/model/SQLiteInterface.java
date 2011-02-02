@@ -154,7 +154,7 @@ public class SQLiteInterface {
 						"%' OR m.address LIKE '%" + searchKey +
 						"%' OR m.city LIKE '%" + searchKey +
 						"%' OR m.state LIKE '%" + searchKey +
-						"%' OR m.zip LIKT '%" + searchKey +
+						"%' OR m.zip LIKE '%" + searchKey +
 						"%' ORDER BY " + sortField + ";";
 		} else {
 			query =	"SELECT * FROM member m WHERE m.last LIKE '%" + searchKey + 
@@ -163,7 +163,7 @@ public class SQLiteInterface {
 						"%' OR m.address LIKE '%" + searchKey +
 						"%' OR m.city LIKE '%" + searchKey +
 						"%' OR m.state LIKE '%" + searchKey +
-						"%' OR m.zip LIKT '%" + searchKey +
+						"%' OR m.zip LIKE '%" + searchKey +
 						"%' ORDER BY " + sortField + " DESC;";
 		}
 		this.execute(query);
