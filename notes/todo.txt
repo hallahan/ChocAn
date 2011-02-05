@@ -1,2 +1,8 @@
-Jan. 28, 2011
-	For SQL searches, use LIKE instead of =
+February 2, 2011
+	Sanitize SQL queries. Prevent ' from screwing up queries.
+	Look into PreparedStatement
+		http://stackoverflow.com/questions/687787/how-should-i-sanitize-database-input-in-java
+		http://www.java2s.com/Code/Java/Database-SQL-JDBC/DemoPreparedStatementAddBatchMySQL.htm
+
+January 28, 2011
+	For SQL searches, use LIKE instead of =		--DONE

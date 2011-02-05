@@ -7,6 +7,14 @@ import java.util.Vector;
 public class SQLiteInterface {
 	static final int VECTOR_ALLOC_SIZE = 50;
 	
+	/* This is the one instance that exists throughout the entire lifecycle
+	 * of the program.  The can be retrieved at any time using the static
+	 * singleton method.  This is to be used to prevent many instances of
+	 * the same database hanging around.
+	 */
+	private static SQLiteInterface singletonInstance = null;
+	
+	
 	private String driverName;
 	private String dbName;
 	private String urlPrefix;
@@ -25,6 +33,15 @@ public class SQLiteInterface {
 		this.urlPrefix	= urlPrefix;
 		this.connect();
 	}
+	
+	//method that retrieves the singleton instance
+	public static SQLiteInterface singleton() {
+		if (singletonInstance == null) {
+			singletonInstance = new SQLiteInterface();
+		}
+		return singletonInstance;
+	}
+	
 	private void connect() {
 		try {
 			driver = (Driver)Class.forName(driverName).newInstance();
@@ -271,7 +288,7 @@ public class SQLiteInterface {
 	}
 
 	public Provider retrieveProvider(int provider_id) {
-		String query = "SELECT * FROM provider p WHERE m.provider_id=" + provider_id + ";";
+		String query = "SELECT * FROM provider p WHERE p.provider_id=" + provider_id + ";";
 		this.execute(query);
 		return this.fetchProviderResults().firstElement();
 	}
@@ -418,7 +435,7 @@ public class SQLiteInterface {
 	}
 	public void addProviderType(ProviderType npt) {
 		String query =	"INSERT INTO providertype VALUES (null, '" +
-						npt.name + "', " +
+						npt.name + "', '" +
 						npt.desc + "');";
 		this.update(query);
 	}
@@ -502,16 +519,16 @@ public class SQLiteInterface {
 	}
 	
 	public void addService(Service s) {
-		String query = "INSERT INTO service VALUE (null, '" +
-						s.name + "', " +
+		String query = "INSERT INTO service VALUES (null, '" +
+						s.name + "', '" +
 						s.fee + "');";
 		this.update(query);
 	}
 	public void updateService(Service s) {
 		String query = "UPDATE service SET " +
 						"name='" + s.name + "', " +
-						"fee='" + s.fee +
-						"' WHERE service.service_id = " +
+						"fee=" + s.fee +
+						" WHERE service.service_id = " +
 						s.service_id + ";";
 		this.update(query);
 	}
@@ -647,7 +664,7 @@ public class SQLiteInterface {
 		return fetchServiceInstanceResults();
 	}
 	public void addServiceInstance(ServiceInstance s) {
-		String query = "INSERT INTO serviceinstance VALUE (null, " +
+		String query = "INSERT INTO serviceinstance VALUES (null, " +
 						s.member_id + ", " +
 						s.service_id + ", " +
 						s.provider_id + ", '" +
@@ -673,8 +690,32 @@ public class SQLiteInterface {
 		this.update(query);
 	}
 	
-	
-	
+	//~~~~~~~~~~~~~~~~~~~~OPERATIONS OF STATE TABLE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//	public States retrieveStates() {
+//		int i=0;
+//		States s = new States();
+//		this.execute("SELECT * FROM state;");
+//		
+//		try {
+//			while (rs.next()) {
+//				s.abbrev[i] = rs.getString("abbrev");
+//				s.name[i] = rs.getString("name");
+//				++i;
+//			}
+//		} catch(Exception e) {
+//			System.out.println("Error fetching states: " + e.toString());
+//            try
+//            {
+//                rs.close();
+//                stmt.close();
+//                con.close();
+//            }
+//            catch(Exception ex)
+//            {
+//            }
+//		}
+//		return s;
+//	}
 	
 	
 	

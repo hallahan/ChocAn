@@ -63,15 +63,30 @@ public class TestAsWeGo {
 //		Vector<Member> a = db.retrieveMemberTableSorted("rey", "last", true);
 //		printVector(a);
 		
+//		SQLiteInterface db = new SQLiteInterface();
+//		Provider p = new Provider();
+//		p.name = "Jack Talisman Inner Peace";
+//		p.address = "666 Satan's Pit";
+//		p.city = "Hell";
+//		p.state = "AR";
+//		p.zip = "42313";
+//		db.addProvider(p);
+//		printProvider(db.retrieveProviderTable());
+		
+//		SQLiteInterface db = new SQLiteInterface();
+//		Provider mod = db.retrieveProvider(4);
+//		mod.state = "MS";
+//		mod.print();
+//		
+//		db.updateProvider(mod);
+//		printProvider(db.retrieveProviderTable());
+		
 		SQLiteInterface db = new SQLiteInterface();
-		Provider p = new Provider();
-		p.name = "Jack Talisman Inner Peace";
-		p.address = "666 Satan's Pit";
-		p.city = "Hell";
-		p.state = "AR";
-		p.zip = "42313";
-		db.addProvider(p);
-		printProvider(db.retrieveProviderTable());
+		ProviderType pt = new ProviderType();
+		pt.name = "Chiropractor";
+		pt.desc = "a system of complementary medicine";
+		db.addProviderType(pt);
+		
 	}
 
 }

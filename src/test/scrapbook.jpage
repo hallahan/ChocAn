@@ -24,7 +24,50 @@ db.retrieveMemberTableActiveSorted("last", false);
 SQLiteInterface db = new SQLiteInterface();
 db.retrieveMemberTableInactiveSorted("last", true);                                           
 //Provider Tests...
-SQLiteInterface db = new SQLiteInterface();db.retrieveProviderTable();SQLiteInterface db = new SQLiteInterface();Provider p = new Provider();p.name = "Jack Talisman Inner Peace";p.address = "666 Satan's Pit";p.city = "Hell";p.state = "AR";p.zip = "42313";db.addProvider(p);
+SQLiteInterface db = new SQLiteInterface();db.retrieveProviderTable();
 
+SQLiteInterface db = new SQLiteInterface();
+Provider p = new Provider();
+p.name = "Fannie May Chocolate Lobby";
+p.address = "6 Sugar Blvd.";
+p.city = "Lake Oswego";
+p.state = "OR";
+p.zip = "97330";
+db.addProvider(p);
 
-
+SQLiteInterface db = new SQLiteInterface();
+Provider mod = db.retrieveProvider(4);
+mod.state = "MS";
+db.updateProvider(mod);
+
+SQLiteInterface db = new SQLiteInterface();
+db.deleteProvider(6);
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveProviderTable("ort");
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveProviderTable("relapse");SQLiteInterface db = new SQLiteInterface();
+db.retrieveProviderTableSorted("address", false);
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveProviderTableSorted("land", "address", false);
+
+SQLiteInterface db = new SQLiteInterface();
+db.deleteProvider(2);
+
+//Providertype Tests
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveProviderTypeTable();
+SQLiteInterface db = new SQLiteInterface();
+ProviderType pt = new ProviderType();
+pt.name = "Catchy Phraise";
+pt.desc = "will solve all problems";
+db.addProviderType(pt);
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveProviderTypeTableSorted("name", true);
+
+SQLiteInterface db = new SQLiteInterface();
+db.retrieveProviderTypeTable("psy");
