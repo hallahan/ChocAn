@@ -2,6 +2,8 @@
 
 SQLiteInterface db = new SQLiteInterface();
 db.retrieveMemberTable();
+SQLiteInterface db = new SQLiteInterface();
+db.deleteMember(15);
 SQLiteInterface db = new SQLiteInterface();db.retrieveMemberTable("Lars");SQLiteInterface db = new SQLiteInterface();Member nm = new Member();nm.active_status = 0;nm.first = "Jeffrey";nm.last = "Wright";nm.address = "PO Box 533";nm.city = "Portland";nm.state = "OR";nm.zip = "97201";db.addMember(nm);SQLiteInterface db = new SQLiteInterface();db.retrieveMemberTable("rey");SQLiteInterface db = new SQLiteInterface();db.retrieveMember(5);
 
 SQLiteInterface db = new SQLiteInterface();

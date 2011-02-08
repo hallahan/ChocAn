@@ -1,5 +1,7 @@
 package controller;
 
+import model.MemberTableModel;
+
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -32,26 +34,29 @@ public class MemberSearch extends javax.swing.JFrame {
 
         memberSearchLabel.setText("Member Search:");
 
-        memberSearchTextField.setText("Enter Member ID, First, Middle, Last Name, or Address...");
+        String defaultText = "Search by the contents of any field in the member table...";
+        memberSearchTextField.setText(defaultText);
         memberSearchTextField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                memberSearchTextFieldActionPerformed(evt);
+                memberSearchActionPerformed(evt);
+            }
+        });
+        memberSearchTextField.setSelectionEnd(defaultText.length()-1);
+        memberSearchTextField.setSelectionStart(0);
+
+        memberSearchButton.setText("Search");
+        memberSearchButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                memberSearchActionPerformed(evt);
             }
         });
 
-        memberSearchButton.setText("Search");
-
-        memberSearchTable.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Status", "First", "Middle", "Last", "Address", "City", "State", "Zip"
-            }
-        ));
+        memberTableModel = new MemberTableModel();
+        memberSearchTable.setModel(memberTableModel);
+        memberSearchTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        memberSearchTable.setRowSelectionAllowed(true);
+        memberSearchTable.setColumnSelectionAllowed(false);
+        
         memberSearchTableScrollPane.setViewportView(memberSearchTable);
 
         cancelButton.setText("Cancel");
@@ -108,21 +113,22 @@ public class MemberSearch extends javax.swing.JFrame {
                     .add(cancelButton))
                 .addContainerGap())
         );
-
+        this.setTitle("Member Search");
         pack();
     }
 
-    private void memberSearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
+    private void memberSearchActionPerformed(java.awt.event.ActionEvent evt) {
         String searchKey = memberSearchTextField.getText();
-        
+        memberTableModel.search(searchKey);
+        memberTableModel.fireTableDataChanged();
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    	this.dispose();
     }
 
     private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        // needs to be implemented
     }
 
     /**
@@ -145,4 +151,5 @@ public class MemberSearch extends javax.swing.JFrame {
     private JTextField memberSearchTextField;
     private JButton selectButton;
 
+    private MemberTableModel memberTableModel;
 }
