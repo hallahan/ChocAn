@@ -99,7 +99,7 @@ public class AddService extends JFrame {
 		
 		//set properties of AddService window
 		setTitle("Add Service");
-		setSize(400,180);
+		setSize(405,180);
 		setVisible(true);
 		setResizable(false);
 	}
@@ -119,6 +119,7 @@ public class AddService extends JFrame {
 	}
 	
 	public static void main(String[] args) {
+		StartApplication.setNativeLookAndFeel();
 		AddService addService = new AddService();
 		addService.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

@@ -190,18 +190,11 @@ public class AddMember extends JFrame {
 		
 		);
 		getRootPane().setDefaultButton(okButton);
-		
-		//Set look and feel to native platform.
-		//"com.sun.java.swing.plaf.windows.WindowsLookAndFeel"
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch(Exception e) {
-			System.out.println("Error setting native look and feel: " + e);
-		}
+	
 		
 		//set properties of AddMember window
 		setTitle("Add Member");
-		setSize(400,480);
+		setSize(405,485);
 		setVisible(true);
 		setResizable(false);
 	}
@@ -241,6 +234,7 @@ public class AddMember extends JFrame {
 	}
 	
 	public static void main(String[] args) {
+		StartApplication.setNativeLookAndFeel();
 		AddMember addMember = new AddMember();
 		addMember.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
