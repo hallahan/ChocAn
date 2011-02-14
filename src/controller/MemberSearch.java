@@ -16,7 +16,7 @@ import org.jdesktop.layout.LayoutStyle;
 
 public class MemberSearch extends javax.swing.JFrame {
 
-    public MemberSearch() {
+	public MemberSearch() {
         initComponents();
     }
 
@@ -27,6 +27,7 @@ public class MemberSearch extends javax.swing.JFrame {
         memberSearchButton 			= new JButton();
         memberSearchTableScrollPane = new JScrollPane();
         memberSearchTable 			= new JTable();
+//      addMemberButton				= new JButton();
         cancelButton 				= new JButton();
         selectButton 				= new JButton();
 
@@ -59,6 +60,13 @@ public class MemberSearch extends javax.swing.JFrame {
         
         memberSearchTableScrollPane.setViewportView(memberSearchTable);
 
+//        addMemberButton.setText("Add Member");
+//        addMemberButton.addActionListener(new ActionListener() {
+//        	public void actionPerformed(ActionEvent evt) {
+//        		addMemberButtonActionPerformed(evt);
+//        	}
+//        });
+        
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -117,23 +125,25 @@ public class MemberSearch extends javax.swing.JFrame {
         pack();
     }
 
-    private void memberSearchActionPerformed(java.awt.event.ActionEvent evt) {
+    private void memberSearchActionPerformed(ActionEvent evt) {
         String searchKey = memberSearchTextField.getText();
         memberTableModel.search(searchKey);
         memberTableModel.fireTableDataChanged();
     }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+//    private void addMemberButtonActionPerformed(ActionEvent evt) {
+//    	AddMember addMember = new AddMember();
+//    	this.dispose();
+//    }
+    
+    private void cancelButtonActionPerformed(ActionEvent evt) {
     	this.dispose();
     }
 
-    private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void selectButtonActionPerformed(ActionEvent evt) {
         // needs to be implemented
     }
 
-    /**
-    * @param args the command line arguments
-    */
     public static void main(String args[]) {
     	StartApplication.setNativeLookAndFeel();
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -143,7 +153,7 @@ public class MemberSearch extends javax.swing.JFrame {
         });
     }
 
-
+//    private JButton addMemberButton;
     private JButton cancelButton;
     private JButton memberSearchButton;
     private JLabel memberSearchLabel;
