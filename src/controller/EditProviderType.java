@@ -8,7 +8,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class AddProviderType extends JFrame {
+public class EditProviderType extends JFrame {
 	//model
 	private SQLiteInterface db;
 	private ProviderType pt;
@@ -25,10 +25,10 @@ public class AddProviderType extends JFrame {
 	//Buttons
 	private JButton okButton, cancelButton;
 	
-	public AddProviderType() {
+	public EditProviderType(ProviderType pt) {
 		//initialize model
 		db = SQLiteInterface.singleton();
-		pt = new ProviderType();
+		this.pt = pt;
 		
 		//get content pane and set layout to null
 		Container contentPane = getContentPane();
@@ -53,10 +53,12 @@ public class AddProviderType extends JFrame {
 		
 		//setup text fields
 		nameTF = new JTextField();
+		nameTF.setText(pt.name);
 		nameTF.setBounds(5,30,375,25);
 		contentPane.add(nameTF);
 		
 		descriptionTF = new JTextField();
+		descriptionTF.setText(pt.desc);
 		descriptionTF.setBounds(5,80,375,25);
 		contentPane.add(descriptionTF);
 		
@@ -91,7 +93,7 @@ public class AddProviderType extends JFrame {
 		);
 		getRootPane().setDefaultButton(okButton);
 		
-		setTitle("Add Provider Type");
+		setTitle("Edit Provider Type");
 		setSize(400,180);
 		setVisible(true);
 		setResizable(false);
@@ -102,7 +104,7 @@ public class AddProviderType extends JFrame {
 		pt.desc = descriptionTF.getText();
 		
 		pt.print();
-		db.addProviderType(pt);
+		db.updateProviderType(pt);
 	
 		this.dispose();
 	}
@@ -114,7 +116,8 @@ public class AddProviderType extends JFrame {
 	public static void main(String[] args) {
 //		Application.setNativeLookAndFeel();
 		Application.setNimbusLookAndFeel();
-		AddProviderType providerType = new AddProviderType();
+		ProviderType pt = SQLiteInterface.singleton().retrieveProviderType(1);
+		EditProviderType providerType = new EditProviderType(pt);
 		providerType.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 

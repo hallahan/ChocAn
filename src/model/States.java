@@ -1,8 +1,9 @@
 package model;
 
+
 public class States {
 	public static final String abbrev[] = {
-		"AL","AK","AZ","AR","CA","CO","CT","DE","FL",
+		"AL","AK","AZ","AR","CA","CO","CT","DC","DE","FL",
 		"GA","HI","ID","IL","IN","IA","KS","KY","LA",
 		"ME","MD","MA","MI","MN","MS","MO","MT","NE",
 		"NV","NH","NJ","NM","NY","NC","ND","OH","OK",
@@ -17,6 +18,7 @@ public class States {
 		"CA - California",
 		"CO - Colorado",
 		"CT - Connecticut",
+		"DC - Washington D.C.",
 		"DE - Deleware",
 		"FL - Florida",
 		"GA - Georgia",
@@ -61,6 +63,14 @@ public class States {
 		"WI - Wisconsin",
 		"WY - Wyoming"
 	};
+	
+	public static int getIndex(String state) {
+		int i = java.util.Arrays.binarySearch(abbrev, state);
+		if (i < 0) {
+			i = java.util.Arrays.binarySearch(full, state);
+		}
+		return i;
+	}
 }
 //public class States {
 //	public String[] abbrev = new String[50];

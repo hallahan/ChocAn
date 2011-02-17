@@ -14,4 +14,8 @@ public class ProviderType {
 		System.out.println(name);
 		System.out.println(desc);
 	}
+	
+	public String toString() {
+		return name;
+	}
 }
