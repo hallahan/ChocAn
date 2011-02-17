@@ -158,7 +158,7 @@ public class SQLiteInterface {
 						"%' OR m.city LIKE '%" + searchKey +
 						"%' OR m.state LIKE '%" + searchKey +
 						"%' OR m.zip LIKE '%" + searchKey +
-						"%' OR m.member_id =" + searchKey + ";";
+						"%' OR m.member_id ='" + searchKey + "';";
 		this.execute(query);
 		return this.fetchMemberResults();
 	}

@@ -119,7 +119,7 @@ public class AddService extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		StartApplication.setNativeLookAndFeel();
+		Application.setNativeLookAndFeel();
 		AddService addService = new AddService();
 		addService.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

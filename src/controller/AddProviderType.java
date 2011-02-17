@@ -112,7 +112,7 @@ public class AddProviderType extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		StartApplication.setNativeLookAndFeel();
+		Application.setNativeLookAndFeel();
 		AddProviderType providerType = new AddProviderType();
 		providerType.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

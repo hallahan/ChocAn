@@ -1,3 +1,18 @@
+February 16, 2011
+	Medium Priority
+		- Make MemberSearch table update when AddMember is submitted
+	
+	Nonessential
+		- Customize default width of table columns
+		
+	Learn about Menus...
+		JMenuBar
+		JPopupMenu
+		JMenuItem
+		JMenu
+		etc...
+		see: http://download.oracle.com/javase/tutorial/uiswing/components/menu.html
+
 February 2, 2011
 	Sanitize SQL queries. Prevent ' from screwing up queries.
 	Look into PreparedStatement

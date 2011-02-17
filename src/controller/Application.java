@@ -2,10 +2,12 @@ package controller;
 import model.*;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UIManager.*;
 
-public class StartApplication {
+public class Application {
+	
 	public static void main(String[] args) {
-		setNativeLookAndFeel();
+		setNimbusLookAndFeel();
 		login();
 	}
 
@@ -19,6 +21,20 @@ public class StartApplication {
 		JOptionPane.showMessageDialog(null, "24343", "Error retrieving member table:", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	public static void setNimbusLookAndFeel() {
+		try {
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch(Exception e) {
+			System.out.println("Error setting Numbus Look and Feel: " + e);
+			setNativeLookAndFeel();
+		}
+	}
+	
 	public static void setNativeLookAndFeel() {
 		//Set look and feel to native platform.
 		//"com.sun.java.swing.plaf.windows.WindowsLookAndFeel"
@@ -28,4 +44,16 @@ public class StartApplication {
 			System.out.println("Error setting native look and feel: " + e);
 		}
 	}
+	
+	//singleton instance variable for the application windows
+	private static Application windows;
+	
+	public static Application windows() {
+		if (windows == null) {
+			windows = new Application();
+		}
+		return windows;
+	}
+	
+	public MemberSearch memberSearch = null;
 }

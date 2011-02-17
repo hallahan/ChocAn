@@ -226,6 +226,8 @@ public class AddMember extends JFrame {
 			nm.print();
 			db.addMember(nm);
 		}
+		if (Application.windows().memberSearch != null)
+			Application.windows().memberSearch.updateWindow();
 		this.dispose();
 	}
 	
@@ -234,7 +236,8 @@ public class AddMember extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		StartApplication.setNativeLookAndFeel();
+//		StartApplication.setNativeLookAndFeel();
+		Application.setNimbusLookAndFeel();
 		AddMember addMember = new AddMember();
 		addMember.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

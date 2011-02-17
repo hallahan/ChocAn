@@ -17,7 +17,8 @@ import org.jdesktop.layout.LayoutStyle;
 public class MemberSearch extends javax.swing.JFrame {
 
 	public MemberSearch() {
-        initComponents();
+        Application.windows().memberSearch = this;
+		initComponents();
     }
 
     private void initComponents() {
@@ -27,7 +28,7 @@ public class MemberSearch extends javax.swing.JFrame {
         memberSearchButton 			= new JButton();
         memberSearchTableScrollPane = new JScrollPane();
         memberSearchTable 			= new JTable();
-//      addMemberButton				= new JButton();
+        addMemberButton				= new JButton();
         cancelButton 				= new JButton();
         selectButton 				= new JButton();
 
@@ -60,12 +61,12 @@ public class MemberSearch extends javax.swing.JFrame {
         
         memberSearchTableScrollPane.setViewportView(memberSearchTable);
 
-//        addMemberButton.setText("Add Member");
-//        addMemberButton.addActionListener(new ActionListener() {
-//        	public void actionPerformed(ActionEvent evt) {
-//        		addMemberButtonActionPerformed(evt);
-//        	}
-//        });
+        addMemberButton.setText("Add Member");
+        addMemberButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		addMemberButtonActionPerformed(evt);
+        	}
+        });
         
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new ActionListener() {
@@ -97,8 +98,10 @@ public class MemberSearch extends javax.swing.JFrame {
                         .addPreferredGap(LayoutStyle.RELATED)
                         .add(memberSearchButton))
                     .add(layout.createSequentialGroup()
+                    	.add(addMemberButton, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+                    	.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 291, Short.MAX_VALUE)
                         .add(cancelButton, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.UNRELATED)
+                        .addPreferredGap(LayoutStyle.RELATED)
                         .add(selectButton)))
                 .addContainerGap())
         );
@@ -118,7 +121,8 @@ public class MemberSearch extends javax.swing.JFrame {
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(GroupLayout.BASELINE)
                     .add(selectButton)
-                    .add(cancelButton))
+                    .add(cancelButton)
+                    .add(addMemberButton))
                 .addContainerGap())
         );
         this.setTitle("Member Search");
@@ -128,13 +132,12 @@ public class MemberSearch extends javax.swing.JFrame {
     private void memberSearchActionPerformed(ActionEvent evt) {
         String searchKey = memberSearchTextField.getText();
         memberTableModel.search(searchKey);
-        memberTableModel.fireTableDataChanged();
+        updateWindow();
     }
 
-//    private void addMemberButtonActionPerformed(ActionEvent evt) {
-//    	AddMember addMember = new AddMember();
-//    	this.dispose();
-//    }
+    private void addMemberButtonActionPerformed(ActionEvent evt) {
+    	AddMember addMember = new AddMember();
+    }
     
     private void cancelButtonActionPerformed(ActionEvent evt) {
     	this.dispose();
@@ -145,15 +148,20 @@ public class MemberSearch extends javax.swing.JFrame {
     }
 
     public static void main(String args[]) {
-    	StartApplication.setNativeLookAndFeel();
+    	Application.setNimbusLookAndFeel();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MemberSearch().setVisible(true);
             }
         });
     }
+    
+    public void updateWindow() {
+    	memberTableModel.fireTableDataChanged();
+    }
 
 //    private JButton addMemberButton;
+    private JButton addMemberButton;
     private JButton cancelButton;
     private JButton memberSearchButton;
     private JLabel memberSearchLabel;
