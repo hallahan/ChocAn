@@ -1,20 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * ProviderInformation.java
- *
- * Created on Feb 9, 2011, 6:15:13 PM
- */
-
 package controller;
+import model.*;
 
-/**
- *
- * @author montanajack
- */
 public class ProviderInformation extends javax.swing.JFrame {
 
     /** Creates new form ProviderInformation */
