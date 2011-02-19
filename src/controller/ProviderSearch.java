@@ -1,6 +1,6 @@
 package controller;
 
-import model.*;
+import model.ProviderTableModel;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -14,58 +14,56 @@ import java.awt.*;
 import org.jdesktop.layout.GroupLayout;
 import org.jdesktop.layout.LayoutStyle;
 
-public class MemberSearch extends javax.swing.JFrame {
+public class ProviderSearch extends JFrame {
 
-	public MemberSearch() {
-        Application.windows().memberSearch = this;
+	public ProviderSearch() {
 		initComponents();
-		setVisible(true);
     }
 
     private void initComponents() {
 
-        memberSearchLabel 			= new JLabel();
-        memberSearchTextField 		= new JTextField();
-        memberSearchButton 			= new JButton();
-        memberSearchTableScrollPane = new JScrollPane();
-        memberSearchTable 			= new JTable();
-        addMemberButton				= new JButton();
+        providerSearchLabel 			= new JLabel();
+        providerSearchTextField 		= new JTextField();
+        providerSearchButton 			= new JButton();
+        providerSearchTableScrollPane = new JScrollPane();
+        providerSearchTable 			= new JTable();
+        addProviderButton				= new JButton();
         cancelButton 				= new JButton();
         selectButton 				= new JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        memberSearchLabel.setText("Member Search:");
+        providerSearchLabel.setText("Provider Search:");
 
-        String defaultText = "Search by the contents of any field in the member table...";
-        memberSearchTextField.setText(defaultText);
-        memberSearchTextField.addActionListener(new ActionListener() {
+        String defaultText = "Search by the contents of any field in the provider table...";
+        providerSearchTextField.setText(defaultText);
+        providerSearchTextField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                memberSearchActionPerformed(evt);
+                providerSearchActionPerformed(evt);
             }
         });
-        memberSearchTextField.setSelectionEnd(defaultText.length()-1);
-        memberSearchTextField.setSelectionStart(0);
+        providerSearchTextField.setSelectionEnd(defaultText.length()-1);
+        providerSearchTextField.setSelectionStart(0);
 
-        memberSearchButton.setText("Search");
-        memberSearchButton.addActionListener(new ActionListener() {
+        providerSearchButton.setText("Search");
+        providerSearchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                memberSearchActionPerformed(evt);
+                providerSearchActionPerformed(evt);
             }
         });
 
-        memberTableModel = new MemberTableModel();
-        memberSearchTable.setModel(memberTableModel);
-        memberSearchTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        memberSearchTable.setRowSelectionAllowed(true);
-        memberSearchTable.setColumnSelectionAllowed(false);
+        providerTableModel = new ProviderTableModel();
+        providerSearchTable.setModel(providerTableModel);
+        providerSearchTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        providerSearchTable.setRowSelectionAllowed(true);
+        providerSearchTable.setColumnSelectionAllowed(false);
         
-        memberSearchTableScrollPane.setViewportView(memberSearchTable);
+        providerSearchTableScrollPane.setViewportView(providerSearchTable);
 
-        addMemberButton.setText("Add Member");
-        addMemberButton.addActionListener(new ActionListener() {
+        addProviderButton.setText("Add Provider");
+        addProviderButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent evt) {
-        		addMemberButtonActionPerformed(evt);
+        		addProviderButtonActionPerformed(evt);
         	}
         });
         
@@ -91,15 +89,15 @@ public class MemberSearch extends javax.swing.JFrame {
             .add(GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(GroupLayout.TRAILING)
-                    .add(GroupLayout.LEADING, memberSearchTableScrollPane, GroupLayout.DEFAULT_SIZE, 828, Short.MAX_VALUE)
+                    .add(GroupLayout.LEADING, providerSearchTableScrollPane, GroupLayout.DEFAULT_SIZE, 828, Short.MAX_VALUE)
                     .add(GroupLayout.LEADING, layout.createSequentialGroup()
-                        .add(memberSearchLabel)
+                        .add(providerSearchLabel)
                         .addPreferredGap(LayoutStyle.RELATED)
-                        .add(memberSearchTextField, GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
+                        .add(providerSearchTextField, GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
                         .addPreferredGap(LayoutStyle.RELATED)
-                        .add(memberSearchButton))
+                        .add(providerSearchButton))
                     .add(layout.createSequentialGroup()
-                    	.add(addMemberButton, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+                    	.add(addProviderButton, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
                     	.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 291, Short.MAX_VALUE)
                         .add(cancelButton, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.RELATED)
@@ -114,68 +112,62 @@ public class MemberSearch extends javax.swing.JFrame {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(GroupLayout.BASELINE)
-                    .add(memberSearchLabel)
-                    .add(memberSearchTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .add(memberSearchButton))
+                    .add(providerSearchLabel)
+                    .add(providerSearchTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .add(providerSearchButton))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(memberSearchTableScrollPane, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
+                .add(providerSearchTableScrollPane, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(GroupLayout.BASELINE)
                     .add(selectButton)
                     .add(cancelButton)
-                    .add(addMemberButton))
+                    .add(addProviderButton))
                 .addContainerGap())
         );
-        this.setTitle("Member Search");
+        this.setTitle("Provider Search");
         pack();
     }
 
-    private void memberSearchActionPerformed(ActionEvent evt) {
-        String searchKey = memberSearchTextField.getText();
-        memberTableModel.search(searchKey);
+    private void providerSearchActionPerformed(ActionEvent evt) {
+        String searchKey = providerSearchTextField.getText();
+        providerTableModel.search(searchKey);
         updateWindow();
     }
 
-    private void addMemberButtonActionPerformed(ActionEvent evt) {
-    	new AddMember();
+    private void addProviderButtonActionPerformed(ActionEvent evt) {
+    	new AddOrEditProvider();
     }
     
     private void cancelButtonActionPerformed(ActionEvent evt) {
-    	dispose();
+    	this.dispose();
     }
 
     private void selectButtonActionPerformed(ActionEvent evt) {
-    	int row = memberSearchTable.getSelectedRow();
-    	Member selMem = memberTableModel.getMember(row);
-    	
-  
-        Application.windows().memberInformation = new MemberInformation(selMem);
-      
-    	dispose();
+        // needs to be implemented
     }
 
     public static void main(String args[]) {
     	Application.setNimbusLookAndFeel();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MemberSearch();
+                new ProviderSearch().setVisible(true);
             }
         });
     }
     
     public void updateWindow() {
-    	memberTableModel.fireTableDataChanged();
+    	providerTableModel.fireTableDataChanged();
     }
 
 //    private JButton addMemberButton;
-    private JButton addMemberButton;
+    private JButton addProviderButton;
     private JButton cancelButton;
-    private JButton memberSearchButton;
-    private JLabel memberSearchLabel;
-    private JTable memberSearchTable;
-    private JScrollPane memberSearchTableScrollPane;
-    private JTextField memberSearchTextField;
+    private JButton providerSearchButton;
+    private JLabel providerSearchLabel;
+    private JTable providerSearchTable;
+    private JScrollPane providerSearchTableScrollPane;
+    private JTextField providerSearchTextField;
     private JButton selectButton;
 
-    private MemberTableModel memberTableModel;
+    private ProviderTableModel providerTableModel;
 }

@@ -54,6 +54,9 @@ public class MemberTableModel extends AbstractTableModel implements TableModel {
 		members = db.retrieveMemberTable(searchKey);
 	}
 	
+	public Member getMember(int row) {
+		return members.elementAt(row);
+	}
 	private Vector<Member> members;
 	public SQLiteInterface db;
 }

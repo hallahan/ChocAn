@@ -7,7 +7,7 @@ import java.util.Vector;
 public class SQLiteInterface {
 	static final int VECTOR_ALLOC_SIZE = 50;
 	
-	/* This is the one instance that exists throughout the entire lifecycle
+	/* This is the one instance that exists throughout the entire life-cycle
 	 * of the program.  The can be retrieved at any time using the static
 	 * singleton method.  This is to be used to prevent many instances of
 	 * the same database hanging around.
@@ -172,7 +172,8 @@ public class SQLiteInterface {
 						"%' OR m.city LIKE '%" + searchKey +
 						"%' OR m.state LIKE '%" + searchKey +
 						"%' OR m.zip LIKE '%" + searchKey +
-						"%' ORDER BY " + sortField + ";";
+						"%' OR m.member_id = '" + searchKey +
+						"' ORDER BY " + sortField + ";";
 		} else {
 			query =	"SELECT * FROM member m WHERE m.last LIKE '%" + searchKey + 
 						"%' OR m.first LIKE '%" + searchKey +
@@ -181,7 +182,8 @@ public class SQLiteInterface {
 						"%' OR m.city LIKE '%" + searchKey +
 						"%' OR m.state LIKE '%" + searchKey +
 						"%' OR m.zip LIKE '%" + searchKey +
-						"%' ORDER BY " + sortField + " DESC;";
+						"%' OR m.member_id = '" + searchKey +
+						"' ORDER BY " + sortField + " DESC;";
 		}
 		this.execute(query);
 		return this.fetchMemberResults();
@@ -290,7 +292,15 @@ public class SQLiteInterface {
 	public Provider retrieveProvider(int provider_id) {
 		String query = "SELECT * FROM provider p WHERE p.provider_id=" + provider_id + ";";
 		this.execute(query);
-		return this.fetchProviderResults().firstElement();
+//		return this.fetchProviderResults().firstElement();
+		
+		// Prevents null pointer exception when there is no corresponding provider
+		Vector<Provider> vp = fetchProviderResults();
+		if (vp != null) {
+			return vp.firstElement();
+		} else {
+			return new Provider();
+		}
 	}
 	public Vector<Provider> retrieveProviderTable() {
 		String query = "SELECT * FROM provider;";
@@ -312,7 +322,8 @@ public class SQLiteInterface {
 						"%'  OR p.address LIKE '%" + searchKey +
 						"%' OR p.city LIKE '%" + searchKey + 
 						"%' OR p.state LIKE '%" + searchKey +
-						"%' OR p.zip LIKE '%" + searchKey + "%';";
+						"%' OR p.zip LIKE '%" + searchKey + 
+						"%' OR p.provider_id = '" + searchKey + "';";
 		this.execute(query);
 		return this.fetchProviderResults();
 	}
@@ -323,13 +334,17 @@ public class SQLiteInterface {
 						"%'  OR p.address LIKE '%" + searchKey +
 						"%' OR p.city LIKE '%" + searchKey + 
 						"%' OR p.state LIKE '%" + searchKey +
-						"%' OR p.zip LIKE '%" + searchKey + "%' ORDER BY " + sortField + ";";
+						"%' OR p.zip LIKE '%" + searchKey + 
+						"%' OR p.provider_id = '" + searchKey +
+						"' ORDER BY " + sortField + ";";
 		} else {
 			query =	"SELECT * FROM provider p WHERE p.name LIKE '%" + searchKey +
 						"%'  OR p.address LIKE '%" + searchKey +
 						"%' OR p.city LIKE '%" + searchKey + 
 						"%' OR p.state LIKE '%" + searchKey +
-						"%' OR p.zip LIKE '%" + searchKey + "%' ORDER BY " + sortField + " DESC;";
+						"%' OR p.zip LIKE '%" + searchKey + 
+						"%' OR p.provider_id = '" + searchKey + 
+						"' ORDER BY " + sortField + " DESC;";
 		}
 		this.execute(query);
 		return this.fetchProviderResults();
@@ -398,7 +413,14 @@ public class SQLiteInterface {
 	public ProviderType retrieveProviderType(int providertype_id) {
 		String query = "SELECT * FROM providertype pt WHERE pt.providertype_id=" + providertype_id + ";";
 		this.execute(query);
-		return this.fetchProviderTypeResults().firstElement();
+		
+		//prevents null pointer exception when there is not a provider type set
+		Vector<ProviderType> vpt = fetchProviderTypeResults();
+		if (vpt != null) {
+			return vpt.firstElement();
+		} else {
+			return new ProviderType();
+		}
 	}
 	public Vector<ProviderType> retrieveProviderTypeTable() {
 		String query = "SELECT * FROM providertype;";
@@ -417,7 +439,7 @@ public class SQLiteInterface {
 	}
 	public Vector<ProviderType> retrieveProviderTypeTable(String searchKey) {
 		String query =	"SELECT * FROM providertype pt WHERE pt.name LIKE '%" + searchKey +
-						"%' OR pt.desc LIKE '%" + searchKey + "%';";
+						"%' OR pt.desc LIKE '%" + searchKey + "%' OR pt.providertype_id = '" + searchKey + "';";
 		this.execute(query);
 		return this.fetchProviderTypeResults();
 	}
@@ -425,10 +447,10 @@ public class SQLiteInterface {
 		String query;
 		if (ascending == true) {
 			query = "SELECT * FROM providertype pt WHERE pt.name LIKE '%" + searchKey +
-					"%' OR pt.desc LIKE '%" + searchKey + "%' ORDER BY " + sortField + ";";
+					"%' OR pt.desc LIKE '%" + searchKey + "%' OR pt.providertype_id = '" + searchKey + "' ORDER BY " + sortField + ";";
 		} else {
 			query = "SELECT * FROM providertype pt WHERE pt.name LIKE '%" + searchKey +
-					"%' OR pt.desc LIKE '%" + searchKey + "%' ORDER BY " + sortField + " DESC;";			
+					"%' OR pt.desc LIKE '%" + searchKey + "%' OR pt.providertype_id = '" + searchKey + "' ORDER BY " + sortField + " DESC;";			
 		}
 		this.execute(query);
 		return this.fetchProviderTypeResults();
@@ -488,7 +510,16 @@ public class SQLiteInterface {
 	public Service retrieveService(int service_id) {
 		String query = "SELECT * FROM service s WHERE s.service_id=" + service_id +";";
 		this.execute(query);
-		return this.fetchServiceResults().firstElement();
+//		return this.fetchServiceResults().firstElement();
+		
+		//prevents null pointer exception
+		Vector<Service> s = fetchServiceResults();
+		if (s != null) {
+			return s.firstElement();
+		} else {
+			return new Service();
+		}
+		
 	}
 	public Vector<Service> retrieveServiceTable() {
 		String query = "SELECT * FROM service;";
@@ -527,9 +558,10 @@ public class SQLiteInterface {
 	public void updateService(Service s) {
 		String query = "UPDATE service SET " +
 						"name='" + s.name + "', " +
-						"fee=" + s.fee +
-						" WHERE service.service_id = " +
+						"fee='" + s.fee +
+						"' WHERE service.service_id = " +
 						s.service_id + ";";
+//		System.out.println(query);
 		this.update(query);
 	}
 	public void deleteService(int service_id) {
@@ -577,7 +609,15 @@ public class SQLiteInterface {
 	public ServiceInstance retrieveServiceInstance(int instance_id) {
 		String query = "SELECT * FROM serviceinstance si WHERE si.instance_id=" + instance_id + ";";
 		this.execute(query);
-		return this.fetchServiceInstanceResults().firstElement();
+//		return this.fetchServiceInstanceResults().firstElement();
+		
+		//prevents null pointer exception
+		Vector<ServiceInstance> si = fetchServiceInstanceResults();
+		if (si != null) {
+			return si.firstElement();
+		} else {
+			return new ServiceInstance();
+		}
 	}
 	public Vector<ServiceInstance> retrieveServiceInstanceTable() {
 		String query = "SELECT * FROM serviceinstance;";
@@ -722,34 +762,34 @@ public class SQLiteInterface {
 	
 	// TEST GARBAGE
 	
-	private void testFetchResults() {
-	       try
-	        {
-	            String abbrev, name;
-	            while(rs.next())
-	            {
-	                abbrev = rs.getString("abbrev");
-	                name = rs.getString("name");
-	                System.out.println(abbrev + "  |  " + name);
-	            }
-	        }
-	        catch(Exception e)
-	        {
-	            System.out.println("Error processing results: " + e.toString());
-	            try
-	            {
-	                rs.close();
-	                stmt.close();
-	                con.close();
-	            }
-	            catch(Exception ex)
-	            {
-	            }
-	        }
-	}
-	public void testFetchStates() {
-		this.execute("SELECT * FROM state WHERE state.abbrev='AK';");
-		this.testFetchResults();
-	}
+//	private void testFetchResults() {
+//	       try
+//	        {
+//	            String abbrev, name;
+//	            while(rs.next())
+//	            {
+//	                abbrev = rs.getString("abbrev");
+//	                name = rs.getString("name");
+//	                System.out.println(abbrev + "  |  " + name);
+//	            }
+//	        }
+//	        catch(Exception e)
+//	        {
+//	            System.out.println("Error processing results: " + e.toString());
+//	            try
+//	            {
+//	                rs.close();
+//	                stmt.close();
+//	                con.close();
+//	            }
+//	            catch(Exception ex)
+//	            {
+//	            }
+//	        }
+//	}
+//	public void testFetchStates() {
+//		this.execute("SELECT * FROM state WHERE state.abbrev='AK';");
+//		this.testFetchResults();
+//	}
 
 }

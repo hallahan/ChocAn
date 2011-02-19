@@ -28,7 +28,11 @@ public class Service {
 		NumberFormat nf;
 		
 		try {
-			d = Double.parseDouble(inFee);
+			if (inFee.charAt(0) == '$') {
+				d = Double.parseDouble(inFee.substring(1));
+			} else {
+				d = Double.parseDouble(inFee);
+			}
 		} catch (NumberFormatException nfe) {
 			JOptionPane.showMessageDialog(null, "Your service fee must be formatted as a monetary amount (XXX.XX).", "Error setting service fee: ", JOptionPane.ERROR_MESSAGE);
 			return false;

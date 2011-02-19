@@ -5,6 +5,8 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.*;
 
 public class Application {
+	private static final String PASSWORD = "12steps";
+	private static final int MANAGER_PROVIDER_ID = 3;
 	
 	public static void main(String[] args) {
 		setNimbusLookAndFeel();
@@ -12,14 +14,9 @@ public class Application {
 	}
 
 	private static void login() {
-		String id = JOptionPane.showInputDialog(null, "Enter your Provider ID Number:", "Enter ID", JOptionPane.PLAIN_MESSAGE);
-		if (id != null)
-			System.out.println(id);
-		else
-			System.out.println("id is null");
-		
-		JOptionPane.showMessageDialog(null, "24343", "Error retrieving member table:", JOptionPane.ERROR_MESSAGE);
+		new Login();
 	}
+	
 	
 	public static void setNimbusLookAndFeel() {
 		try {
@@ -45,9 +42,8 @@ public class Application {
 		}
 	}
 	
-	//singleton instance variable for the application windows
-	private static Application windows;
-	
+	//The singleton instance of this class provides access to the master
+	//fields pointing to the application's windows.
 	public static Application windows() {
 		if (windows == null) {
 			windows = new Application();
@@ -55,5 +51,38 @@ public class Application {
 		return windows;
 	}
 	
+
+	public static boolean isManagerMode() {
+		return managerMode;
+	}
+
+	public static boolean setManagerMode(String pass) {
+		if (pass.equals(PASSWORD)) {
+			managerMode = true;
+			appOperatorProviderId = MANAGER_PROVIDER_ID;
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	//singleton instance variable for the application windows
+	private static Application windows;
+	
+	// class fields
+	private static boolean managerMode = false;
+	public static int appOperatorProviderId;
+	
+	
+	
+	public static int getAppOperatorProviderId() {
+		return appOperatorProviderId;
+	}
+
+	// application windows
 	public MemberSearch memberSearch = null;
+	public ProviderSearch providerSearch = null;
+	public MemberInformation memberInformation = null;
+	public ProviderInformation providerInformation = null;
+
 }

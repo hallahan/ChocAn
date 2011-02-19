@@ -1,14 +1,17 @@
 package controller;
+import model.*;
 
-/**
- *
- * @author montanajack
- */
+
 public class MemberInformation extends javax.swing.JFrame {
 
+	public MemberInformation(Member m) {
+		this();
+	}
+	
     /** Creates new form ProviderInformation */
     public MemberInformation() {
         initComponents();
+        setVisible(true);
     }
 
     /** This method is called from within the constructor to
@@ -460,10 +463,11 @@ public class MemberInformation extends javax.swing.JFrame {
     * @param args the command line arguments
     */
     public static void main(String args[]) {
-    	Application.setNimbusLookAndFeel();
+//    	Application.setNimbusLookAndFeel();
+    	Application.setNativeLookAndFeel();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MemberInformation().setVisible(true);
+                new MemberInformation();
             }
         });
     }
