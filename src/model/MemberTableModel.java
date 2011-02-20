@@ -52,6 +52,7 @@ public class MemberTableModel extends AbstractTableModel implements TableModel {
 	
 	public void search(String searchKey) {
 		members = db.retrieveMemberTable(searchKey);
+		fireTableDataChanged();
 	}
 	
 	public Member getMember(int row) {

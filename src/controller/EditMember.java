@@ -32,6 +32,7 @@ public class EditMember extends JFrame {
 	
 	//Radio Buttons
 	private JRadioButton activeRB, inactiveRB;
+
 	
 	public EditMember(Member m) {
 		//initialize model
@@ -241,8 +242,14 @@ public class EditMember extends JFrame {
 			db.updateMember(m);
 			this.dispose();
 		}
+		// updates the views on other windows that may show this member
+		// that is being edited
 		if (Application.windows().memberSearch != null)
 			Application.windows().memberSearch.updateWindow();
+		
+		if (Application.windows().memberInformation != null) {
+			Application.windows().memberInformation.updateMemberInformation(m);
+		}
 	}
 	
 	private void cancelButtonActionPerformed(ActionEvent event) {

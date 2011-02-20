@@ -19,6 +19,14 @@ public class MemberSearch extends javax.swing.JFrame {
 	public MemberSearch() {
         Application.windows().memberSearch = this;
 		initComponents();
+		memberSearchTable.setAutoCreateRowSorter(true);
+		
+		//set width of some columns
+		javax.swing.table.TableColumn col = memberSearchTable.getColumnModel().getColumn(0);
+		col.setPreferredWidth(30);
+		col = memberSearchTable.getColumnModel().getColumn(5);
+		col.setPreferredWidth(150);
+		
 		setVisible(true);
     }
 
@@ -133,7 +141,6 @@ public class MemberSearch extends javax.swing.JFrame {
     private void memberSearchActionPerformed(ActionEvent evt) {
         String searchKey = memberSearchTextField.getText();
         memberTableModel.search(searchKey);
-        updateWindow();
     }
 
     private void addMemberButtonActionPerformed(ActionEvent evt) {
@@ -147,7 +154,6 @@ public class MemberSearch extends javax.swing.JFrame {
     private void selectButtonActionPerformed(ActionEvent evt) {
     	int row = memberSearchTable.getSelectedRow();
     	Member selMem = memberTableModel.getMember(row);
-    	
   
         Application.windows().memberInformation = new MemberInformation(selMem);
       
@@ -163,8 +169,11 @@ public class MemberSearch extends javax.swing.JFrame {
         });
     }
     
+
+    
     public void updateWindow() {
-    	memberTableModel.fireTableDataChanged();
+    	memberSearchTextField.setText("");
+    	memberTableModel.search("");
     }
 
 //    private JButton addMemberButton;

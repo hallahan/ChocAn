@@ -1,16 +1,17 @@
 package controller;
 import model.*;
 
-
 public class MemberInformation extends javax.swing.JFrame {
 
-	public MemberInformation(Member m) {
-		this();
-	}
-	
     /** Creates new form ProviderInformation */
-    public MemberInformation() {
-        initComponents();
+    public MemberInformation(Member m) {
+        this.m = m;
+    	initComponents();
+        
+        if (Application.isManagerMode() == false) {
+        	activateButton.setEnabled(false);
+        }
+        
         setVisible(true);
     }
 
@@ -32,8 +33,8 @@ public class MemberInformation extends javax.swing.JFrame {
         providerIDValueLabel = new javax.swing.JLabel();
         memberStatusLabel = new javax.swing.JLabel();
         memberStatusValue = new javax.swing.JLabel();
-        deleteProviderButton = new javax.swing.JButton();
-        editProviderButton = new javax.swing.JButton();
+        deleteMemberButton = new javax.swing.JButton();
+        editMemberButton = new javax.swing.JButton();
         activateButton = new javax.swing.JButton();
         serviceInformationPanel = new javax.swing.JPanel();
         instanceIDLabel = new javax.swing.JLabel();
@@ -76,25 +77,42 @@ public class MemberInformation extends javax.swing.JFrame {
         contactInformationTextArea.setColumns(20);
         contactInformationTextArea.setEditable(false);
         contactInformationTextArea.setRows(5);
-        contactInformationTextArea.setText("Ambria Taylor\n2323 Western Ave. Apt. 357\nChicago, IL 60615");
+//        contactInformationTextArea.setText(formatContactText());
+        setContactInformationText();
         contactInformationScrollPane.setViewportView(contactInformationTextArea);
 
         memberIDLabel.setText("Member ID:");
 
-        providerIDValueLabel.setText("45");
+        providerIDValueLabel.setText(String.valueOf(m.member_id));
 
         memberStatusLabel.setText("Member Status:");
 
-        memberStatusValue.setFont(memberStatusValue.getFont().deriveFont(memberStatusValue.getFont().getStyle() | java.awt.Font.BOLD));
-        memberStatusValue.setForeground(new java.awt.Color(204, 0, 0));
-        memberStatusValue.setText("Inactive");
+//        memberStatusValue.setFont(memberStatusValue.getFont().deriveFont(memberStatusValue.getFont().getStyle() | java.awt.Font.BOLD));
+//        memberStatusValue.setForeground(new java.awt.Color(204, 0, 0));
+//        memberStatusValue.setText("Inactive");
+        setMemberStatusValue();
+        
+        deleteMemberButton.setText("Delete");
+        deleteMemberButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMemberButtonActionPerformed(evt);
+            }
+        });
 
-        deleteProviderButton.setText("Delete");
-
-        editProviderButton.setText("Edit");
+        editMemberButton.setText("Edit");
+        editMemberButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editMemberButtonActionPerformed(evt);
+            }
+        });
 
         activateButton.setForeground(new java.awt.Color(0, 153, 0));
         activateButton.setText("Activate");
+        activateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activateButtonActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout memberInformationPanelLayout = new org.jdesktop.layout.GroupLayout(memberInformationPanel);
         memberInformationPanel.setLayout(memberInformationPanelLayout);
@@ -118,13 +136,13 @@ public class MemberInformation extends javax.swing.JFrame {
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, memberInformationPanelLayout.createSequentialGroup()
                         .add(activateButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(deleteProviderButton)
+                        .add(deleteMemberButton)
                         .add(5, 5, 5)
-                        .add(editProviderButton)))
+                        .add(editMemberButton)))
                 .addContainerGap())
         );
 
-        memberInformationPanelLayout.linkSize(new java.awt.Component[] {activateButton, deleteProviderButton, editProviderButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+        memberInformationPanelLayout.linkSize(new java.awt.Component[] {activateButton, deleteMemberButton, editMemberButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
 
         memberInformationPanelLayout.setVerticalGroup(
             memberInformationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -142,12 +160,12 @@ public class MemberInformation extends javax.swing.JFrame {
                     .add(memberStatusValue))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 74, Short.MAX_VALUE)
                 .add(memberInformationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(editProviderButton)
-                    .add(deleteProviderButton)
+                    .add(editMemberButton)
+                    .add(deleteMemberButton)
                     .add(activateButton)))
         );
 
-        memberInformationPanelLayout.linkSize(new java.awt.Component[] {activateButton, deleteProviderButton, editProviderButton}, org.jdesktop.layout.GroupLayout.VERTICAL);
+        memberInformationPanelLayout.linkSize(new java.awt.Component[] {activateButton, deleteMemberButton, editMemberButton}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
         serviceInformationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Service Information", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 2, 13))); // NOI18N
 
@@ -285,22 +303,17 @@ public class MemberInformation extends javax.swing.JFrame {
 
         reportTimespan.add(fromRadio);
         fromRadio.setText("From:");
-
-        fromTextField.setText("01-01-2001");
-        fromTextField.addActionListener(new java.awt.event.ActionListener() {
+        fromRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fromTextFieldActionPerformed(evt);
+                fromRadioActionPerformed(evt);
             }
         });
+
+        fromTextField.setText("01-01-2001");
 
         toLabel.setText("To:");
 
         toTextField.setText("02-09-2011");
-        toTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toTextFieldActionPerformed(evt);
-            }
-        });
 
         reportTimespan.add(pastWeekRadio);
         pastWeekRadio.setText("Past Week");
@@ -327,6 +340,11 @@ public class MemberInformation extends javax.swing.JFrame {
         });
 
         allProvidersCheckBox.setText("All Providers");
+        allProvidersCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                allProvidersCheckBoxActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout serviceHistoryPanelLayout = new org.jdesktop.layout.GroupLayout(serviceHistoryPanel);
         serviceHistoryPanel.setLayout(serviceHistoryPanelLayout);
@@ -377,6 +395,11 @@ public class MemberInformation extends javax.swing.JFrame {
         );
 
         generateMemberReportButton.setText("Generate Member Report");
+        generateMemberReportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateMemberReportButtonActionPerformed(evt);
+            }
+        });
 
         addServiceInstanceButton.setText("Add Service Instance");
         addServiceInstanceButton.addActionListener(new java.awt.event.ActionListener() {
@@ -396,7 +419,7 @@ public class MemberInformation extends javax.swing.JFrame {
                     .add(layout.createSequentialGroup()
                         .add(memberInformationPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(serviceInformationPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(serviceInformationPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(generateMemberReportButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
@@ -439,17 +462,9 @@ public class MemberInformation extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                                        
 
-    private void viewProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                 
+    private void viewProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
-    }                                                
-
-    private void fromTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
-    }                                             
-
-    private void toTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
-    }                                           
+    }                                                  
 
     private void pastWeekRadioActionPerformed(java.awt.event.ActionEvent evt) {                                              
         // TODO add your handling code here:
@@ -459,19 +474,69 @@ public class MemberInformation extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                                  
 
-    /**
-    * @param args the command line arguments
-    */
+    private void generateMemberReportButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void allProvidersCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void fromRadioActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void editMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        new EditMember(m);
+    }
+
+    private void deleteMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        SQLiteInterface.singleton().deleteMember(m.member_id);
+        dispose();
+    }
+
+    private void activateButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        
+    }
+
+    
+    private void setContactInformationText() {
+    	String f = m.first + " " + m.middle + " " + m.last + "\n"
+		+ m.address + "\n"
+		+ m.city + ", " + m.state + " " + m.zip;
+    	
+    	contactInformationTextArea.setText(f);
+    }
+    
+    private void setMemberStatusValue() {
+        memberStatusValue.setFont(memberStatusValue.getFont().deriveFont(memberStatusValue.getFont().getStyle() | java.awt.Font.BOLD));
+        if (m.active_status == 0) {
+	        memberStatusValue.setForeground(new java.awt.Color(204, 0, 0));
+	        memberStatusValue.setText("Inactive");
+        } else {
+        	memberStatusValue.setForeground(new java.awt.Color(0, 204, 0));
+	        memberStatusValue.setText("Active");
+        }
+    }
+    
+    public void updateMemberInformation(Member mem) {
+    	m = mem;
+    	setContactInformationText();
+    	setMemberStatusValue();
+    }
+    
     public static void main(String args[]) {
-//    	Application.setNimbusLookAndFeel();
-    	Application.setNativeLookAndFeel();
+    	Application.setNimbusLookAndFeel();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MemberInformation();
+                new MemberInformation(SQLiteInterface.singleton().retrieveMember(1));
             }
         });
     }
 
+  //The member this window is displaying information about
+    Member m;
+    
     // Variables declaration - do not modify
     private javax.swing.JButton activateButton;
     private javax.swing.JButton addServiceInstanceButton;
@@ -486,9 +551,9 @@ public class MemberInformation extends javax.swing.JFrame {
     private javax.swing.JTextArea contactInformationTextArea;
     private javax.swing.JLabel dateProvidedLabel;
     private javax.swing.JLabel dateProvidedValueLabel;
-    private javax.swing.JButton deleteProviderButton;
+    private javax.swing.JButton deleteMemberButton;
     private javax.swing.JButton deleteServiceButton;
-    private javax.swing.JButton editProviderButton;
+    private javax.swing.JButton editMemberButton;
     private javax.swing.JButton editServiceButton;
     private javax.swing.JRadioButton entireHistoryRadio;
     private javax.swing.JLabel feeLabel;
@@ -517,5 +582,8 @@ public class MemberInformation extends javax.swing.JFrame {
     private javax.swing.JTextField toTextField;
     private javax.swing.JButton viewProviderButton;
     // End of variables declaration
+    
+    
+
 
 }

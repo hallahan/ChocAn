@@ -157,7 +157,7 @@ public class Login extends javax.swing.JFrame {
 				invalidID();
 			} else {
 				Application.appOperatorProviderId = p.provider_id;
-				new MemberSearch();
+				Application.windows().memberSearch = new MemberSearch();
 				dispose();
 			}
         } catch (NumberFormatException nfe) {
