@@ -112,6 +112,11 @@ public class AddService extends JFrame {
 		db.addService(ns);
 	
 		this.dispose();
+		
+		if (Application.windows().addOrEditServiceInstance != null) {
+			Application.windows().addOrEditServiceInstance.loadListWithServices("");
+		}
+		
 	}
 	
 	private void cancelButtonActionPerformed(ActionEvent event) {

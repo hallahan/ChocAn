@@ -47,4 +47,8 @@ public class Service {
 		}
 		return true;
 	}
+	
+	public String toString() {
+		return (name + " - " + fee) ;
+	}
 }

@@ -540,7 +540,7 @@ public class SQLiteInterface {
 		String query;
 		if (ascending == true) {
 			query = "SELECT * FROM service s WHERE s.name LIKE '%" + searchKey + 
-					"%' OR s.fee LIKE '%" + searchKey + " ORDER BY " + searchField + ";";
+					"%' OR s.fee LIKE '%" + searchKey + "%' ORDER BY " + searchField + ";";
 		} else {
 			query = "SELECT * FROM service s WHERE s.name LIKE '%" + searchKey + 
 					"%' OR s.fee LIKE '%" + searchKey + "%' ORDER BY " + searchField + " DESC;";
@@ -565,12 +565,13 @@ public class SQLiteInterface {
 		this.update(query);
 	}
 	public void deleteService(int service_id) {
-		String query = "DELETE FROM service s WHERE s.service_id = " + service_id + ";";
+		String query = "DELETE FROM service WHERE service_id = " + service_id + ";";
+		System.out.println("delete service query: " + query);
 		this.update(query);
 	}
 	
 	
-	//~~~~~~~~~~~~~~~~~~~~OPERATIONS OF SERVICE TABLE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~~~~~~~~~~~~~OPERATIONS OF SERVICE INSTANCE TABLE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	private Vector<ServiceInstance> fetchServiceInstanceResults () {
 		Vector<ServiceInstance> results = null;
 		ServiceInstance row = null;
@@ -650,6 +651,16 @@ public class SQLiteInterface {
 		this.execute(query);
 		return fetchServiceInstanceResults();
 	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForMemberAndProviderSorted(int member_id, int provider_id, String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND si.provider_id=" + provider_id + " ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND si.provider_id=" + provider_id + " ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
 	public Vector<ServiceInstance> retrieveServiceInstanceTableForService(int service_id) {
 		String query = "SELECT * FROM serviceinstance si WHERE si.service_id=" +
 						service_id + ";";
@@ -703,6 +714,7 @@ public class SQLiteInterface {
 		this.execute(query);
 		return fetchServiceInstanceResults();
 	}
+
 	public void addServiceInstance(ServiceInstance s) {
 		String query = "INSERT INTO serviceinstance VALUES (null, " +
 						s.member_id + ", " +

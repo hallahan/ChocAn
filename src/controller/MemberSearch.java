@@ -154,7 +154,7 @@ public class MemberSearch extends javax.swing.JFrame {
     private void selectButtonActionPerformed(ActionEvent evt) {
     	int row = memberSearchTable.getSelectedRow();
     	Member selMem = memberTableModel.getMember(row);
-  
+    	Application.selectedMemberId = selMem.member_id;
         Application.windows().memberInformation = new MemberInformation(selMem);
       
     	dispose();

@@ -24,7 +24,7 @@ public class EditService extends JFrame {
 	private JTextField nameTF, feeTF;
 	
 	//Buttons
-	private JButton okButton, cancelButton;
+	private JButton okButton, cancelButton, deleteButton;
 	
 	public EditService(Service s) {
 		//initialize model
@@ -70,7 +70,21 @@ public class EditService extends JFrame {
 		contentPane.add(feeTF);
 		
 		
-		//setup buttons		
+		//setup buttons
+		cancelButton = new JButton();
+		cancelButton.setText("Delete Service");
+		cancelButton.setBounds(10,120,130,30);
+		contentPane.add(cancelButton);
+		cancelButton.addActionListener(
+				//anonymous inner class
+				new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						deleteButtonActionPerformed(event);
+					}
+				}
+		
+		);
+		
 		cancelButton = new JButton();
 		cancelButton.setText("Cancel");
 		cancelButton.setBounds(190,120,100,30);
@@ -114,6 +128,10 @@ public class EditService extends JFrame {
 		s.print();
 		db.updateService(s);
 	
+		if (Application.windows().addOrEditServiceInstance != null) {
+			Application.windows().addOrEditServiceInstance.updateList();
+		}
+		
 		this.dispose();
 	}
 	
@@ -121,6 +139,15 @@ public class EditService extends JFrame {
 		this.dispose();
 	}
 	
+	private void deleteButtonActionPerformed(ActionEvent event) {
+		db.deleteService(s.service_id);
+		
+		if (Application.windows().addOrEditServiceInstance != null) {
+			Application.windows().addOrEditServiceInstance.updateList();
+		}
+		
+		dispose();
+	}
 	public static void main(String[] args) {
 		Application.setNativeLookAndFeel();
 		Service ser = SQLiteInterface.singleton().retrieveService(2);

@@ -71,7 +71,8 @@ public class Application {
 	
 	// class fields
 	private static boolean managerMode = false;
-	public static int appOperatorProviderId;
+	public static int appOperatorProviderId=0;
+	public static int selectedMemberId=0;
 	
 	
 	
@@ -84,5 +85,5 @@ public class Application {
 	public ProviderSearch providerSearch = null;
 	public MemberInformation memberInformation = null;
 	public ProviderInformation providerInformation = null;
-
+	public AddOrEditServiceInstance addOrEditServiceInstance = null;
 }
