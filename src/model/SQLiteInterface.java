@@ -738,7 +738,7 @@ public class SQLiteInterface {
 		this.update(query);
 	}
 	public void deleteServiceInstance(int instance_id) {
-		String query = "DELETE FROM serviceinstance si WHERE si.instance_id = " + instance_id + ";";
+		String query = "DELETE FROM serviceinstance WHERE instance_id = " + instance_id + ";";
 		this.update(query);
 	}
 	

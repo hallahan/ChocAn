@@ -1,7 +1,7 @@
 package model;
 
 public class ServiceInstance {
-	private static String EMPTY = "";
+	private static String EMPTY = " ";
 	
 	public int	instance_id		= 0;
 	public int	member_id		= 0;

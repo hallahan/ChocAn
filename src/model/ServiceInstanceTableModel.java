@@ -27,6 +27,7 @@ public class ServiceInstanceTableModel extends AbstractTableModel implements Tab
 	//only call this method in MemberInformation
 	//DO NOT CALL IN PROVIDER INFORMATION!!!!
 	public void allProvidersSelected(boolean selected) {
+		
 		if (selected == false) {
 			serviceInstances = db.retrieveServiceInstanceTableForMemberAndProviderSorted(Application.selectedMemberId, Application.appOperatorProviderId, "date_provided", true);
 		} else {
@@ -81,11 +82,13 @@ public class ServiceInstanceTableModel extends AbstractTableModel implements Tab
 	}
 
 	public ServiceInstance getRow(int row) {
-		if (serviceInstances.size() <= row){
+		
+		if (serviceInstances.size() <= row || row < 0){
 			return new ServiceInstance();
 		} else {
 			return serviceInstances.elementAt(row);
 		}
+		
 	}
 	
 	public String getColumnName(int col) {

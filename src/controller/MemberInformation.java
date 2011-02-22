@@ -448,7 +448,7 @@ public class MemberInformation extends JFrame {
     private void checkBoxActionPerformed(ActionEvent evt) {
     	boolean checkBoxSelected = allProvidersCheckBox.isSelected();
     	tableModel.allProvidersSelected(checkBoxSelected);
-    	
+    	selectFirstRow();
     }
 
     private void editServiceButtonActionPerformed(ActionEvent evt) {                                                  
@@ -456,7 +456,8 @@ public class MemberInformation extends JFrame {
     }                                                 
 
     private void deleteServiceButtonActionPerformed(ActionEvent evt) {                                                    
-        // TODO add your handling code here:
+        db.deleteServiceInstance(selectedServiceInstance.instance_id);
+        updateWindow();
     }                                                   
 
     private void addServiceInstanceButtonActionPerformed(ActionEvent evt) {                                                         
@@ -464,7 +465,10 @@ public class MemberInformation extends JFrame {
     }                                                        
 
     private void viewProviderButtonActionPerformed(ActionEvent evt) {                                                   
-        // TODO add your handling code here:
+        dispose();
+        int pid = selectedServiceInstance.provider_id;
+        Provider p = db.retrieveProvider(pid);
+        new ProviderInformation(p);
     }                                                  
 
     private void pastWeekRadioActionPerformed(ActionEvent evt) {                                              
@@ -577,14 +581,17 @@ public class MemberInformation extends JFrame {
         
         tableScrollPane.setViewportView(table);
         
-        //selects the first row
-        if (tableModel.getRowCount() > 0) {
+        selectFirstRow();
+        
+        table.getSelectionModel().addListSelectionListener(new RowListener());
+    }
+    
+    private void selectFirstRow() {
+    	if (tableModel.getRowCount() > 0) {
         	table.setRowSelectionInterval(0, 0);
         	selectedServiceInstance = tableModel.getRow(0);
         	refreshServiceInfoPane();
         }
-        
-        table.getSelectionModel().addListSelectionListener(new RowListener());
     }
     
     private void rowSelected() {
@@ -616,8 +623,10 @@ public class MemberInformation extends JFrame {
     	
     }
     
+    //is there a better way than setting up the table all over agian?
     public void updateWindow() {
-    	tableModel.fireTableDataChanged();
+//    	tableModel.fireTableDataChanged();
+    	setupTable();
     	refreshServiceInfoPane();
     }
     
