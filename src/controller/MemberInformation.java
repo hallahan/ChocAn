@@ -496,7 +496,7 @@ public class MemberInformation extends JFrame {
     }
 
     private void deleteMemberButtonActionPerformed(ActionEvent evt) {
-        SQLiteInterface.singleton().deleteMember(m.member_id);
+        db.deleteMember(m.member_id);
         dispose();
     }
 
@@ -595,8 +595,6 @@ public class MemberInformation extends JFrame {
     }
     
     private void rowSelected() {
-    	System.out.println("ROW SELECTION EVENT.");
-    	
     	int selRow = table.getSelectedRow();
     	selectedServiceInstance = tableModel.getRow(selRow);
     	refreshServiceInfoPane();
@@ -678,7 +676,6 @@ public class MemberInformation extends JFrame {
     private JLabel toLabel;
     private JTextField toTextField;
     private JButton viewProviderButton;
-    // End of variables declaration
     
     //action listener for selecting a row in the service history table
     private class RowListener implements ListSelectionListener {

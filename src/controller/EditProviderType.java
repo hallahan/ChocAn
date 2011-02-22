@@ -107,6 +107,8 @@ public class EditProviderType extends JFrame {
 		db.updateProviderType(pt);
 	
 		this.dispose();
+		if (Application.windows().addOrEditProvider != null)
+			Application.windows().addOrEditProvider.updateProviderTypesBox();
 	}
 	
 	private void cancelButtonActionPerformed(ActionEvent event) {

@@ -22,7 +22,7 @@ public class MemberSearch extends javax.swing.JFrame {
 		memberSearchTable.setAutoCreateRowSorter(true);
 		
 		//set width of some columns
-		javax.swing.table.TableColumn col = memberSearchTable.getColumnModel().getColumn(0);
+		TableColumn col = memberSearchTable.getColumnModel().getColumn(0);
 		col.setPreferredWidth(30);
 		col = memberSearchTable.getColumnModel().getColumn(5);
 		col.setPreferredWidth(150);

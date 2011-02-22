@@ -86,4 +86,5 @@ public class Application {
 	public MemberInformation memberInformation = null;
 	public ProviderInformation providerInformation = null;
 	public AddOrEditServiceInstance addOrEditServiceInstance = null;
+	public AddOrEditProvider addOrEditProvider = null;
 }

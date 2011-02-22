@@ -1,12 +1,22 @@
 package controller;
 import model.*;
 
-public class ProviderInformation extends javax.swing.JFrame {
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.table.*;
+import javax.swing.event.*;
+import java.util.Vector;
+import java.awt.event.*;
+import java.awt.*;
+
+public class ProviderInformation extends JFrame {
 
    
     public ProviderInformation(Provider p) {
         Application.windows().providerInformation = this;
         provider = p;
+        db = SQLiteInterface.singleton();
+        pt = db.retrieveProviderType(p.providertype_id);
     	initComponents();
     	setVisible(true);
     }
@@ -14,82 +24,81 @@ public class ProviderInformation extends javax.swing.JFrame {
 
     private void initComponents() {
 
-        reportTimespan = new javax.swing.ButtonGroup();
-        providerInformationPanel = new javax.swing.JPanel();
-        contactInformationLabel = new javax.swing.JLabel();
-        contactInformationScrollPane = new javax.swing.JScrollPane();
-        contactInformationTextArea = new javax.swing.JTextArea();
-        providerIDLabel = new javax.swing.JLabel();
-        providerIDValueLabel = new javax.swing.JLabel();
-        providerTypeLabel = new javax.swing.JLabel();
-        providerTypeValue = new javax.swing.JLabel();
-        dashLabel = new javax.swing.JLabel();
-        providerTypeDescriptionLabel = new javax.swing.JLabel();
-        deleteProviderButton = new javax.swing.JButton();
-        editProviderButton = new javax.swing.JButton();
-        serviceInformationPanel = new javax.swing.JPanel();
-        instanceIDLabel = new javax.swing.JLabel();
-        instanceIDValueLabel = new javax.swing.JLabel();
-        serviceLabel = new javax.swing.JLabel();
-        serviceValueLabel = new javax.swing.JLabel();
-        feeLabel = new javax.swing.JLabel();
-        feeValueLabel = new javax.swing.JLabel();
-        dateProvidedLabel = new javax.swing.JLabel();
-        dateProvidedValueLabel = new javax.swing.JLabel();
-        billingTimestampLabel = new javax.swing.JLabel();
-        billingTimestampValueLabel = new javax.swing.JLabel();
-        commentsLabel = new javax.swing.JLabel();
-        commentsScrollPane = new javax.swing.JScrollPane();
-        commentsTextArea = new javax.swing.JTextArea();
-        deleteServiceButton = new javax.swing.JButton();
-        editServiceButton = new javax.swing.JButton();
-        serviceHistoryPanel = new javax.swing.JPanel();
-        tableScrollPane = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
-        fromRadio = new javax.swing.JRadioButton();
-        fromTextField = new javax.swing.JTextField();
-        toLabel = new javax.swing.JLabel();
-        toTextField = new javax.swing.JTextField();
-        pastWeekRadio = new javax.swing.JRadioButton();
-        entireHistoryRadio = new javax.swing.JRadioButton();
-        viewMemberButton = new javax.swing.JButton();
-        generateProviderReportButton = new javax.swing.JButton();
-        addServiceInstanceButton = new javax.swing.JButton();
+        reportTimespan = new ButtonGroup();
+        providerInformationPanel = new JPanel();
+        contactInformationLabel = new JLabel();
+        contactInformationScrollPane = new JScrollPane();
+        providerInformationTextArea = new JTextArea();
+        providerIDLabel = new JLabel();
+        providerIDValueLabel = new JLabel();
+        providerTypeLabel = new JLabel();
+        providerTypeValue = new JLabel();
+        dashLabel = new JLabel();
+        providerTypeDescriptionLabel = new JLabel();
+        deleteProviderButton = new JButton();
+        editProviderButton = new JButton();
+        serviceInformationPanel = new JPanel();
+        instanceIDLabel = new JLabel();
+        instanceIDValueLabel = new JLabel();
+        serviceLabel = new JLabel();
+        serviceValueLabel = new JLabel();
+        feeLabel = new JLabel();
+        feeValueLabel = new JLabel();
+        dateProvidedLabel = new JLabel();
+        dateProvidedValueLabel = new JLabel();
+        billingTimestampLabel = new JLabel();
+        billingTimestampValueLabel = new JLabel();
+        commentsLabel = new JLabel();
+        commentsScrollPane = new JScrollPane();
+        commentsTextArea = new JTextArea();
+        deleteServiceButton = new JButton();
+        editServiceButton = new JButton();
+        serviceHistoryPanel = new JPanel();
+        tableScrollPane = new JScrollPane();
+        table = new JTable();
+        fromRadio = new JRadioButton();
+        fromTextField = new JTextField();
+        toLabel = new JLabel();
+        toTextField = new JTextField();
+        pastWeekRadio = new JRadioButton();
+        entireHistoryRadio = new JRadioButton();
+        viewMemberButton = new JButton();
+        generateProviderReportButton = new JButton();
+        addServiceInstanceButton = new JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        providerInformationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Provider Information", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 2, 13))); // NOI18N
+        providerInformationPanel.setBorder(BorderFactory.createTitledBorder(null, "Provider Information", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Lucida Grande", 2, 13))); 
 
         contactInformationLabel.setText("Contact Information:");
 
-        contactInformationTextArea.setColumns(20);
-        contactInformationTextArea.setEditable(false);
-        contactInformationTextArea.setRows(5);
-        contactInformationTextArea.setText("Crystal Meth Distributer\n1700 SW 10th Ave.\nPortland, Oregon 97201");
-        contactInformationScrollPane.setViewportView(contactInformationTextArea);
-
-        providerIDLabel.setText("Provider ID:");
-
-        providerIDValueLabel.setText("45");
-
+        providerInformationTextArea.setColumns(20);
+        providerInformationTextArea.setEditable(false);
+        providerInformationTextArea.setRows(5);
+        contactInformationScrollPane.setViewportView(providerInformationTextArea);
+    
+        
         providerTypeLabel.setText("Provider Type:");
-
-        providerTypeValue.setText("Drug Dealer");
-
         dashLabel.setText("- ");
-
-        providerTypeDescriptionLabel.setText("Provides Alternative Drugs to Chocolate Addict");
-
+        
+        setProviderInformationText();
+        
         deleteProviderButton.setText("Delete");
-        deleteProviderButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        if (Application.isManagerMode() == false) {
+        	deleteProviderButton.setEnabled(false);
+        }
+        deleteProviderButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 deleteProviderButtonActionPerformed(evt);
             }
         });
 
         editProviderButton.setText("Edit");
-        editProviderButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        if (Application.isManagerMode() == false) {
+        	editProviderButton.setEnabled(false);
+        }
+        editProviderButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 editProviderButtonActionPerformed(evt);
             }
         });
@@ -122,7 +131,7 @@ public class ProviderInformation extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        providerInformationPanelLayout.linkSize(new java.awt.Component[] {deleteProviderButton, editProviderButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+        providerInformationPanelLayout.linkSize(new Component[] {deleteProviderButton, editProviderButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
 
         providerInformationPanelLayout.setVerticalGroup(
             providerInformationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -148,29 +157,29 @@ public class ProviderInformation extends javax.swing.JFrame {
                     .add(deleteProviderButton)))
         );
 
-        providerInformationPanelLayout.linkSize(new java.awt.Component[] {deleteProviderButton, editProviderButton}, org.jdesktop.layout.GroupLayout.VERTICAL);
+        providerInformationPanelLayout.linkSize(new Component[] {deleteProviderButton, editProviderButton}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
-        serviceInformationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Service Information", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 2, 13))); // NOI18N
+        serviceInformationPanel.setBorder(BorderFactory.createTitledBorder(null, "Service Information", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Lucida Grande", 2, 13)));
 
         instanceIDLabel.setText("Instance ID:");
 
-        instanceIDValueLabel.setText("34");
+        instanceIDValueLabel.setText(" ");
 
         serviceLabel.setText("Service:");
 
-        serviceValueLabel.setText("Foot Massage");
+        serviceValueLabel.setText(" ");
 
         feeLabel.setText("Fee:");
 
-        feeValueLabel.setText("$32.56");
+        feeValueLabel.setText(" ");
 
         dateProvidedLabel.setText("Date Provided:");
 
-        dateProvidedValueLabel.setText("10/10/2010");
+        dateProvidedValueLabel.setText(" ");
 
         billingTimestampLabel.setText("Billing Timestamp:");
 
-        billingTimestampValueLabel.setText("01/31/01 6:56:21 PM");
+        billingTimestampValueLabel.setText(" ");
 
         commentsLabel.setText("Comments:");
 
@@ -180,15 +189,15 @@ public class ProviderInformation extends javax.swing.JFrame {
         commentsScrollPane.setViewportView(commentsTextArea);
 
         deleteServiceButton.setText("Delete");
-        deleteServiceButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteServiceButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 deleteServiceButtonActionPerformed(evt);
             }
         });
 
         editServiceButton.setText("Edit");
-        editServiceButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        editServiceButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 editServiceButtonActionPerformed(evt);
             }
         });
@@ -258,49 +267,30 @@ public class ProviderInformation extends javax.swing.JFrame {
                     .add(deleteServiceButton)))
         );
 
-        serviceHistoryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Service History", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 2, 13))); // NOI18N
+        serviceHistoryPanel.setBorder(BorderFactory.createTitledBorder(null, "Service History", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Lucida Grande", 2, 13))); // NOI18N
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Instance ID", "Billing Timestamp", "Date Provided", "First Name", "Last Name", "Service Name", "Fee"
-            }
-        ));
-        tableScrollPane.setViewportView(table);
+        setupTable();
 
         reportTimespan.add(fromRadio);
         fromRadio.setText("From:");
-        fromRadio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        fromRadio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 fromRadioActionPerformed(evt);
             }
         });
 
         fromTextField.setText("01-01-2001");
-        fromTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fromTextFieldActionPerformed(evt);
-            }
-        });
+        
 
         toLabel.setText("To:");
 
         toTextField.setText("02-09-2011");
-        toTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toTextFieldActionPerformed(evt);
-            }
-        });
+        
 
         reportTimespan.add(pastWeekRadio);
         pastWeekRadio.setText("Past Week");
-        pastWeekRadio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        pastWeekRadio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 pastWeekRadioActionPerformed(evt);
             }
         });
@@ -308,15 +298,15 @@ public class ProviderInformation extends javax.swing.JFrame {
         reportTimespan.add(entireHistoryRadio);
         entireHistoryRadio.setSelected(true);
         entireHistoryRadio.setText("Entire History");
-        entireHistoryRadio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        entireHistoryRadio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 entireHistoryRadioActionPerformed(evt);
             }
         });
 
         viewMemberButton.setText("View Member Information");
-        viewMemberButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        viewMemberButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 viewMemberButtonActionPerformed(evt);
             }
         });
@@ -347,7 +337,7 @@ public class ProviderInformation extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        serviceHistoryPanelLayout.linkSize(new java.awt.Component[] {fromTextField, toTextField}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+        serviceHistoryPanelLayout.linkSize(new Component[] {fromTextField, toTextField}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
 
         serviceHistoryPanelLayout.setVerticalGroup(
             serviceHistoryPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -366,15 +356,15 @@ public class ProviderInformation extends javax.swing.JFrame {
         );
 
         generateProviderReportButton.setText("Generate Provider Report");
-        generateProviderReportButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        generateProviderReportButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 generateProviderReportButtonActionPerformed(evt);
             }
         });
 
         addServiceInstanceButton.setText("Add Service Instance");
-        addServiceInstanceButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        addServiceInstanceButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 addServiceInstanceButtonActionPerformed(evt);
             }
         });
@@ -398,7 +388,7 @@ public class ProviderInformation extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        layout.linkSize(new java.awt.Component[] {addServiceInstanceButton, generateProviderReportButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+        layout.linkSize(new Component[] {addServiceInstanceButton, generateProviderReportButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
 
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -416,115 +406,210 @@ public class ProviderInformation extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        layout.linkSize(new java.awt.Component[] {providerInformationPanel, serviceInformationPanel}, org.jdesktop.layout.GroupLayout.VERTICAL);
+        layout.linkSize(new Component[] {providerInformationPanel, serviceInformationPanel}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
         pack();
-    }// </editor-fold>
+    }
 
-    private void editServiceButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                  
-        // TODO add your handling code here:
+    private void editServiceButtonActionPerformed(ActionEvent evt) {                                                  
+    	new AddOrEditServiceInstance(selectedServiceInstance);
     }                                                 
 
-    private void deleteServiceButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                    
-        // TODO add your handling code here:
+    private void deleteServiceButtonActionPerformed(ActionEvent evt) {                                                    
+    	db.deleteServiceInstance(selectedServiceInstance.instance_id);
+        updateWindow();
     }                                                   
 
-    private void addServiceInstanceButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                         
-        // TODO add your handling code here:
+    private void addServiceInstanceButtonActionPerformed(ActionEvent evt) {                                                         
+    	new AddOrEditServiceInstance();
     }                                                        
 
-    private void viewMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                 
-        // TODO add your handling code here:
+    private void viewMemberButtonActionPerformed(ActionEvent evt) {                                                 
+        dispose();
+        int mid = selectedServiceInstance.member_id;
+        Member m = db.retrieveMember(mid);
+        new MemberInformation(m);
     }                                                
 
-    private void fromTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                              
+    private void pastWeekRadioActionPerformed(ActionEvent evt) {                                              
         // TODO add your handling code here:
     }                                             
 
-    private void toTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
-    }                                           
-
-    private void pastWeekRadioActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
-    }                                             
-
-    private void entireHistoryRadioActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+    private void entireHistoryRadioActionPerformed(ActionEvent evt) {                                                   
         // TODO add your handling code here:
     }                                                  
 
-    private void deleteProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void deleteProviderButtonActionPerformed(ActionEvent evt) {
+        db.deleteProvider(provider.provider_id);
+        dispose();
+    }
+
+    private void editProviderButtonActionPerformed(ActionEvent evt) {
+        new AddOrEditProvider(provider);
+    }
+
+    private void generateProviderReportButtonActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
     }
 
-    private void editProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void fromRadioActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
     }
 
-    private void generateProviderReportButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    public void setupTable() {
+    	tableModel = new ServiceInstanceTableModel(provider.provider_id, false);
+    	table.setModel(tableModel);
+    	table.setAutoCreateRowSorter(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setRowSelectionAllowed(true);
+        table.setColumnSelectionAllowed(false);
+        
+        //customizing column widths
+        TableColumn tableColumn = table.getColumnModel().getColumn(0);
+        tableColumn.setPreferredWidth(10);
+        tableColumn = table.getColumnModel().getColumn(2);
+        tableColumn.setPreferredWidth(50);
+        
+        tableScrollPane.setViewportView(table);
+        
+        selectFirstRow();
+        
+        table.getSelectionModel().addListSelectionListener(new RowListener());
     }
-
-    private void fromRadioActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    
+    private void selectFirstRow() {
+    	if (tableModel.getRowCount() > 0) {
+        	table.setRowSelectionInterval(0, 0);
+        	selectedServiceInstance = tableModel.getRow(0);
+        	refreshServiceInfoPane();
+        }
     }
-
-    /**
-    * @param args the command line arguments
-    */
+    
+    private void rowSelected() {
+    	int selRow = table.getSelectedRow();
+    	selectedServiceInstance = tableModel.getRow(selRow);
+    	refreshServiceInfoPane();
+    }
+    
+    private void refreshServiceInfoPane() {
+    	if (selectedServiceInstance == null) return;
+    	
+    	instanceIDValueLabel.setText(String.valueOf(selectedServiceInstance.instance_id));
+    	
+    	int sid = selectedServiceInstance.service_id;
+    	Service ser = db.retrieveService(sid);
+    	String sname = ser.name;
+    	serviceValueLabel.setText(sname);
+    	
+    	String fee = ser.fee;
+    	feeValueLabel.setText(fee);
+    	
+    	dateProvidedValueLabel.setText(selectedServiceInstance.date_provided);
+    	billingTimestampValueLabel.setText(selectedServiceInstance.time_stamp);
+    	commentsTextArea.setText(selectedServiceInstance.comments);
+    
+    	
+    	
+    }
+    
+    //is there a better way than setting up the table all over agian?
+    public void updateWindow() {
+//    	tableModel.fireTableDataChanged();
+    	setupTable();
+    	refreshServiceInfoPane();
+    }
+    
+    public void updateProviderInformation(Provider p) {
+    	provider = p;
+    	setProviderInformationText();
+    }
+    
+    private void setProviderInformationText() {
+    	providerInformationTextArea.setText(provider.name + "\n" + provider.address + "\n" + provider.city + ", " + provider.state + " " + provider.zip);
+        if (Application.isManagerMode() == true) {
+	        providerIDLabel.setText("Provider ID:");
+	        providerIDValueLabel.setText(String.valueOf(provider.provider_id));
+        }
+        pt = db.retrieveProviderType(provider.providertype_id);
+        providerTypeValue.setText(pt.name);
+        providerTypeDescriptionLabel.setText(pt.desc);
+    }
+    
     public static void main(String args[]) {
     	Application.setNimbusLookAndFeel();
-        java.awt.EventQueue.invokeLater(new Runnable() {
+    	Application.setManagerMode("12steps");
+        EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProviderInformation(new Provider());
+            	Provider prov = new Provider();
+            	prov.provider_id = 111;
+            	prov.name = "test";
+            	prov.address = "test";
+            	prov.city = "test";
+            	prov.state = "AK";
+            	prov.zip = "60068";
+            	prov.providertype_id = 1;
+                new ProviderInformation(prov);
             }
         });
     }
 
     private Provider provider;
+    private ProviderType pt;
+    private SQLiteInterface db;
+    private ServiceInstanceTableModel tableModel;
+    private ServiceInstance selectedServiceInstance;
     
-    // Variables declaration - do not modify
-    private javax.swing.JButton addServiceInstanceButton;
-    private javax.swing.JLabel billingTimestampLabel;
-    private javax.swing.JLabel billingTimestampValueLabel;
-    private javax.swing.JLabel commentsLabel;
-    private javax.swing.JScrollPane commentsScrollPane;
-    private javax.swing.JTextArea commentsTextArea;
-    private javax.swing.JLabel contactInformationLabel;
-    private javax.swing.JScrollPane contactInformationScrollPane;
-    private javax.swing.JTextArea contactInformationTextArea;
-    private javax.swing.JLabel dashLabel;
-    private javax.swing.JLabel dateProvidedLabel;
-    private javax.swing.JLabel dateProvidedValueLabel;
-    private javax.swing.JButton deleteProviderButton;
-    private javax.swing.JButton deleteServiceButton;
-    private javax.swing.JButton editProviderButton;
-    private javax.swing.JButton editServiceButton;
-    private javax.swing.JRadioButton entireHistoryRadio;
-    private javax.swing.JLabel feeLabel;
-    private javax.swing.JLabel feeValueLabel;
-    private javax.swing.JRadioButton fromRadio;
-    private javax.swing.JTextField fromTextField;
-    private javax.swing.JButton generateProviderReportButton;
-    private javax.swing.JLabel instanceIDLabel;
-    private javax.swing.JLabel instanceIDValueLabel;
-    private javax.swing.JRadioButton pastWeekRadio;
-    private javax.swing.JLabel providerIDLabel;
-    private javax.swing.JLabel providerIDValueLabel;
-    private javax.swing.JPanel providerInformationPanel;
-    private javax.swing.JLabel providerTypeDescriptionLabel;
-    private javax.swing.JLabel providerTypeLabel;
-    private javax.swing.JLabel providerTypeValue;
-    private javax.swing.ButtonGroup reportTimespan;
-    private javax.swing.JPanel serviceHistoryPanel;
-    private javax.swing.JPanel serviceInformationPanel;
-    private javax.swing.JLabel serviceLabel;
-    private javax.swing.JLabel serviceValueLabel;
-    private javax.swing.JTable table;
-    private javax.swing.JScrollPane tableScrollPane;
-    private javax.swing.JLabel toLabel;
-    private javax.swing.JTextField toTextField;
-    private javax.swing.JButton viewMemberButton;
-    // End of variables declaration
+    
+    private JButton 		addServiceInstanceButton;
+    private JLabel 			billingTimestampLabel;
+    private JLabel 			billingTimestampValueLabel;
+    private JLabel 			commentsLabel;
+    private JScrollPane 	commentsScrollPane;
+    private JTextArea 		commentsTextArea;
+    private JLabel 			contactInformationLabel;
+    private JScrollPane 	contactInformationScrollPane;
+    private JTextArea 		providerInformationTextArea;
+    private JLabel 			dashLabel;
+    private JLabel 			dateProvidedLabel;
+    private JLabel 			dateProvidedValueLabel;
+    private JButton 		deleteProviderButton;
+    private JButton 		deleteServiceButton;
+    private JButton 		editProviderButton;
+    private JButton 		editServiceButton;
+    private JRadioButton 	entireHistoryRadio;
+    private JLabel 			feeLabel;
+    private JLabel 			feeValueLabel;
+    private JRadioButton 	fromRadio;
+    private JTextField 		fromTextField;
+    private JButton 		generateProviderReportButton;
+    private JLabel 			instanceIDLabel;
+    private JLabel 			instanceIDValueLabel;
+    private JRadioButton 	pastWeekRadio;
+    private JLabel 			providerIDLabel;
+    private JLabel 			providerIDValueLabel;
+    private JPanel 			providerInformationPanel;
+    private JLabel 			providerTypeDescriptionLabel;
+    private JLabel 			providerTypeLabel;
+    private JLabel 			providerTypeValue;
+    private ButtonGroup 	reportTimespan;
+    private JPanel 			serviceHistoryPanel;
+    private JPanel 			serviceInformationPanel;
+    private JLabel 			serviceLabel;
+    private JLabel 			serviceValueLabel;
+    private JTable 			table;
+    private JScrollPane 	tableScrollPane;
+    private JLabel 			toLabel;
+    private JTextField 		toTextField;
+    private JButton 		viewMemberButton;
+    
+  //action listener for selecting a row in the service history table
+    private class RowListener implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent event) {
+            if (event.getValueIsAdjusting()) {
+                return;
+            }
+            rowSelected();
+        }
+    }
 
 }
