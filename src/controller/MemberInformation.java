@@ -10,8 +10,10 @@ import java.awt.event.*;
 public class MemberInformation extends JFrame {
 
     public MemberInformation(Member m) {
-        this.db = SQLiteInterface.singleton();
+        Application.windows().memberInformation = this;
+    	this.db = SQLiteInterface.singleton();
     	this.m = m;
+    	setJMenuBar(Application.windows().menu);
     	initComponents();
         
         if (Application.isManagerMode() == false) {

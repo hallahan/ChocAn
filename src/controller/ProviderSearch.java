@@ -17,6 +17,8 @@ import org.jdesktop.layout.LayoutStyle;
 public class ProviderSearch extends JFrame {
 
 	public ProviderSearch() {
+		Application.windows().providerSearch = this;
+		setJMenuBar(Application.windows().menu);
 		initComponents();
     }
 

@@ -18,6 +18,9 @@ public class MemberSearch extends javax.swing.JFrame {
 
 	public MemberSearch() {
         Application.windows().memberSearch = this;
+        
+        setJMenuBar(new Menu());
+        
 		initComponents();
 		memberSearchTable.setAutoCreateRowSorter(true);
 		
@@ -155,13 +158,14 @@ public class MemberSearch extends javax.swing.JFrame {
     	int row = memberSearchTable.getSelectedRow();
     	Member selMem = memberTableModel.getMember(row);
     	Application.selectedMemberId = selMem.member_id;
-        Application.windows().memberInformation = new MemberInformation(selMem);
+        new MemberInformation(selMem);
       
     	dispose();
     }
 
     public static void main(String args[]) {
     	Application.setNimbusLookAndFeel();
+//    	Application.setNativeLookAndFeel();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MemberSearch();

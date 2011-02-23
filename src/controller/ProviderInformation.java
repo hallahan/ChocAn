@@ -17,6 +17,7 @@ public class ProviderInformation extends JFrame {
         provider = p;
         db = SQLiteInterface.singleton();
         pt = db.retrieveProviderType(p.providertype_id);
+        setJMenuBar(Application.windows().menu);
     	initComponents();
     	setVisible(true);
     }

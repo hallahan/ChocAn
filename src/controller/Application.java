@@ -35,6 +35,13 @@ public class Application {
 	public static void setNativeLookAndFeel() {
 		//Set look and feel to native platform.
 		//"com.sun.java.swing.plaf.windows.WindowsLookAndFeel"
+		
+		try {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+		} catch (Exception e) {
+			System.out.println("failed to use Apple's screen menu bar");
+		}
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch(Exception e) {
@@ -87,4 +94,14 @@ public class Application {
 	public ProviderInformation providerInformation = null;
 	public AddOrEditServiceInstance addOrEditServiceInstance = null;
 	public AddOrEditProvider addOrEditProvider = null;
+	public Menu menu = null;
+	
+	public void closeAllWindows() {
+		if (memberSearch != null) memberSearch.dispose();
+		if (providerSearch != null) providerSearch.dispose();
+		if (memberInformation != null) memberInformation.dispose();
+		if (providerInformation != null) providerInformation.dispose();
+		if (addOrEditServiceInstance != null) addOrEditServiceInstance.dispose();
+		if (addOrEditProvider != null) addOrEditProvider.dispose();
+	}
 }
