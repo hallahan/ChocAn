@@ -24,6 +24,8 @@ public class AddOrEditServiceInstance extends JFrame {
     	initComponents();
         loadListWithServices("");	//loads all of the services into the list
         
+        getRootPane().setDefaultButton(okButton);
+        
         setVisible(true);
     }
 
@@ -138,12 +140,12 @@ public class AddOrEditServiceInstance extends JFrame {
 		dateGroup.add(currentDateRadio);
 		dateGroup.add(specifiedDateRadio);
 		
-		specifiedDateRadio.setSelected(true);
-		currentDateRadio.setEnabled(false);
 
-		if (si.date_provided.equals("") == true) {
+		if (si.date_provided.equals(" ") == true) {
+			currentDateRadio.setSelected(true);
 			dateText.setText("XX-XX-XXXX");
 		} else {
+			specifiedDateRadio.setSelected(true);
 			dateText.setText(si.date_provided);
 		}
         
@@ -155,12 +157,13 @@ public class AddOrEditServiceInstance extends JFrame {
 		timeGroup.add(currentTimestampRadio);
 		timeGroup.add(specifiedTimestampRadio);
 		
-		specifiedTimestampRadio.setSelected(true);
-		currentTimestampRadio.setEnabled(false);
 		
-		if (si.time_stamp.equals("") == true) {
+		
+		if (si.time_stamp.equals(" ") == true) {
+			currentTimestampRadio.setSelected(true);
 			timestampTextField.setText("XX-XX-XXXX XX:XX:XX");
 		} else {
+			specifiedTimestampRadio.setSelected(true);
 			timestampTextField.setText(si.time_stamp);
 		}
         
@@ -308,8 +311,24 @@ public class AddOrEditServiceInstance extends JFrame {
     	Service selectedService = (Service)servicesList.getSelectedValue();
     	si.service_id = selectedService.service_id;
     	
-    	si.date_provided = dateText.getText();
-    	si.time_stamp = timestampTextField.getText();
+    	if (currentDateRadio.isSelected() == true) {
+    		si.date_provided = DateAndTime.getCurrentDate();
+    	} else {
+    		si.date_provided = DateAndTime.formatDate(dateText.getText());
+    	}
+    	
+    	if (currentTimestampRadio.isSelected() == true) {
+    		si.time_stamp = DateAndTime.getCurrentTimestamp();
+    	} else {
+    		si.time_stamp = DateAndTime.formatDate(timestampTextField.getText());
+    	}
+    	
+    	//this insures that an improperly formatted date or time doesnt cause null
+    	//to be written for this service instance record
+    	if (si.date_provided == null || si.time_stamp == null) {
+    		return;
+    	}
+    	
     	si.comments = commentsTextArea.getText();
     	
     	if (si.instance_id == 0) {

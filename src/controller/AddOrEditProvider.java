@@ -228,6 +228,9 @@ public class AddOrEditProvider extends JFrame {
 		if (Application.windows().providerInformation != null) {
 			Application.windows().providerInformation.updateProviderInformation(p);
 		}
+		if (Application.windows().providerSearch != null) {
+			Application.windows().providerSearch.updateWindow();
+		}
 
     }
     public void cancelButtonPressed(ActionEvent e) {

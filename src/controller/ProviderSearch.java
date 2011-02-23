@@ -20,6 +20,26 @@ public class ProviderSearch extends JFrame {
 		Application.windows().providerSearch = this;
 		setJMenuBar(Application.windows().menu);
 		initComponents();
+		
+		providerSearchTable.setAutoCreateRowSorter(true);
+		
+		//set width of some columns
+		if (providerTableModel.getColumnCount() == 7) {
+			TableColumn col = providerSearchTable.getColumnModel().getColumn(0);
+			col.setPreferredWidth(20);
+			col = providerSearchTable.getColumnModel().getColumn(5);
+			col.setPreferredWidth(20);
+		} else {
+			TableColumn col = providerSearchTable.getColumnModel().getColumn(0);
+			col.setPreferredWidth(150);
+			col = providerSearchTable.getColumnModel().getColumn(4);
+			col.setPreferredWidth(20);
+			col = providerSearchTable.getColumnModel().getColumn(5);
+			col.setPreferredWidth(20);
+		}
+		
+		
+		setVisible(true);
     }
 
     private void initComponents() {
@@ -63,6 +83,9 @@ public class ProviderSearch extends JFrame {
         providerSearchTableScrollPane.setViewportView(providerSearchTable);
 
         addProviderButton.setText("Add Provider");
+        if (Application.isManagerMode() == false) {
+        	addProviderButton.setEnabled(false);
+        }
         addProviderButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent evt) {
         		addProviderButtonActionPerformed(evt);
@@ -152,7 +175,7 @@ public class ProviderSearch extends JFrame {
     	Application.setNimbusLookAndFeel();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProviderSearch().setVisible(true);
+                new ProviderSearch();
             }
         });
     }

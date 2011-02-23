@@ -49,6 +49,7 @@ public class Menu extends JMenuBar implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		
 		JMenuItem source = (JMenuItem)e.getSource();
 		String itemName = source.getText();
 		
@@ -70,10 +71,12 @@ public class Menu extends JMenuBar implements ActionListener {
 	}
 	
 	private void memberSearch() {
+		Application.windows().closeAllWindows();
 		new MemberSearch();
 	}
 	
-	private void providerSearch() {
+	private void providerSearch() {	
+		Application.windows().closeAllWindows();
 		new ProviderSearch();
 	}
 	

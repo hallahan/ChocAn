@@ -51,4 +51,29 @@ public class Service {
 	public String toString() {
 		return (name + " - " + fee) ;
 	}
+
+	public double feeAsDouble() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(java.util.Locale.US);
+		Number num;
+		
+		try {
+			num = nf.parse(fee);
+		} catch (ParseException e) {
+			JOptionPane.showMessageDialog(null, "The service fee is improperly formatted in memory.", "Error getting decimal service fee: ", JOptionPane.ERROR_MESSAGE);
+			return 0;
+		}
+		
+		return num.doubleValue();
+		
+	}
+	
+	//testing things out...
+	public static void main(String [] args) {
+		Service ser = new Service();
+		ser.name = "Test Service";
+		ser.setFee("54.43");
+		System.out.println(ser.fee);
+		double d = ser.feeAsDouble();
+		System.out.println(d);
+	}
 }
