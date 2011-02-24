@@ -24,6 +24,10 @@ public class AddOrEditServiceInstance extends JFrame {
     	initComponents();
         loadListWithServices("");	//loads all of the services into the list
         
+        if (Application.isManagerMode() == false) {
+        	addButton.setEnabled(false);
+        	editButton.setEnabled(false);
+        }
         getRootPane().setDefaultButton(okButton);
         
         setVisible(true);
@@ -314,7 +318,9 @@ public class AddOrEditServiceInstance extends JFrame {
     	if (currentDateRadio.isSelected() == true) {
     		si.date_provided = DateAndTime.getCurrentDate();
     	} else {
-    		si.date_provided = DateAndTime.formatDate(dateText.getText());
+    		String inputDate = dateText.getText();
+    		String validatedInputDate = DateAndTime.formatDate(inputDate);
+    		si.date_provided = validatedInputDate;
     	}
     	
     	if (currentTimestampRadio.isSelected() == true) {

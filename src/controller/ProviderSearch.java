@@ -168,7 +168,8 @@ public class ProviderSearch extends JFrame {
     }
 
     private void selectButtonActionPerformed(ActionEvent evt) {
-        // needs to be implemented
+//        new ProviderInformation();
+        dispose();
     }
 
     public static void main(String args[]) {

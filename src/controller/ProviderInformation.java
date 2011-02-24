@@ -65,7 +65,7 @@ public class ProviderInformation extends JFrame {
         entireHistoryRadio = new JRadioButton();
         viewMemberButton = new JButton();
         generateProviderReportButton = new JButton();
-        addServiceInstanceButton = new JButton();
+//        addServiceInstanceButton = new JButton();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -363,12 +363,12 @@ public class ProviderInformation extends JFrame {
             }
         });
 
-        addServiceInstanceButton.setText("Add Service Instance");
-        addServiceInstanceButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                addServiceInstanceButtonActionPerformed(evt);
-            }
-        });
+//        addServiceInstanceButton.setText("Add Service Instance");
+//        addServiceInstanceButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent evt) {
+//                addServiceInstanceButtonActionPerformed(evt);
+//            }
+//        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -384,12 +384,13 @@ public class ProviderInformation extends JFrame {
                         .add(serviceInformationPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(generateProviderReportButton)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(addServiceInstanceButton)))
+//                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+//                        .add(addServiceInstanceButton)
+                    ))
                 .addContainerGap())
         );
 
-        layout.linkSize(new Component[] {addServiceInstanceButton, generateProviderReportButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+//        layout.linkSize(new Component[] {addServiceInstanceButton, generateProviderReportButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
 
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -402,7 +403,7 @@ public class ProviderInformation extends JFrame {
                 .add(serviceHistoryPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(addServiceInstanceButton)
+//                    .add(addServiceInstanceButton)
                     .add(generateProviderReportButton))
                 .addContainerGap())
         );
@@ -421,9 +422,9 @@ public class ProviderInformation extends JFrame {
         updateWindow();
     }                                                   
 
-    private void addServiceInstanceButtonActionPerformed(ActionEvent evt) {                                                         
-    	new AddOrEditServiceInstance();
-    }                                                        
+//    private void addServiceInstanceButtonActionPerformed(ActionEvent evt) {                                                         
+//    	new AddOrEditServiceInstance();
+//    }                                                        
 
     private void viewMemberButtonActionPerformed(ActionEvent evt) {                                                 
         dispose();
@@ -561,7 +562,7 @@ public class ProviderInformation extends JFrame {
     private ServiceInstance selectedServiceInstance;
     
     
-    private JButton 		addServiceInstanceButton;
+//    private JButton 		addServiceInstanceButton;
     private JLabel 			billingTimestampLabel;
     private JLabel 			billingTimestampValueLabel;
     private JLabel 			commentsLabel;
