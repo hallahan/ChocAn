@@ -80,6 +80,7 @@ public class Application {
 	private static boolean managerMode = false;
 	public static int appOperatorProviderId=0;
 	public static int selectedMemberId=0;
+	public static int selectedProviderId=0;
 	
 	
 	

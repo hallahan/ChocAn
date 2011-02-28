@@ -70,6 +70,10 @@ public class ProviderTableModel extends AbstractTableModel implements TableModel
 		providers = db.retrieveProviderTable(searchKey);
 	}
 	
+	public Provider getProvider(int row) {
+		return providers.elementAt(row);
+	}
+	
 	private Vector<Provider> providers;
 	public SQLiteInterface db;
 }

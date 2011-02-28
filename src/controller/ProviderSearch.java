@@ -1,6 +1,6 @@
 package controller;
 
-import model.ProviderTableModel;
+import model.*;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -79,6 +79,11 @@ public class ProviderSearch extends JFrame {
         providerSearchTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         providerSearchTable.setRowSelectionAllowed(true);
         providerSearchTable.setColumnSelectionAllowed(false);
+        providerSearchTable.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                tableKeyPressed(evt);
+            }
+        });
         
         providerSearchTableScrollPane.setViewportView(providerSearchTable);
 
@@ -168,8 +173,18 @@ public class ProviderSearch extends JFrame {
     }
 
     private void selectButtonActionPerformed(ActionEvent evt) {
-//        new ProviderInformation();
+        int row = providerSearchTable.getSelectedRow();
+        Provider selProv = providerTableModel.getProvider(row);
+        Application.selectedProviderId = selProv.provider_id;
+    	new ProviderInformation(selProv);
         dispose();
+    }
+    
+    private void tableKeyPressed(KeyEvent evt) {
+    	int keyCode = evt.getKeyCode();
+    	if (keyCode == 10) {  //10 is the key code for Return (Enter)
+    		selectButtonActionPerformed(null);
+    	}
     }
 
     public static void main(String args[]) {

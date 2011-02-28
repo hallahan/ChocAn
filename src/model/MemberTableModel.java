@@ -4,7 +4,6 @@ import javax.swing.table.*;
 import java.util.Vector;
 
 public class MemberTableModel extends AbstractTableModel implements TableModel {
-	private static final long serialVersionUID = 1L;
 
 	public MemberTableModel() {
 		db = SQLiteInterface.singleton();
@@ -58,6 +57,7 @@ public class MemberTableModel extends AbstractTableModel implements TableModel {
 	public Member getMember(int row) {
 		return members.elementAt(row);
 	}
+	
 	private Vector<Member> members;
 	public SQLiteInterface db;
 }

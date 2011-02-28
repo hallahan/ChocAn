@@ -3,6 +3,7 @@ package controller;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import reports.*;
 
 public class Menu extends JMenuBar implements ActionListener {
 	public Menu() {
@@ -12,17 +13,20 @@ public class Menu extends JMenuBar implements ActionListener {
 	}
 
 	private void setup() {
-		JMenu 		search, add, logout;
-		JMenuItem 	ms, ps, am, ap, apt, as, ll;
+		JMenu 		file, search, add, logout;
+		JMenuItem 	psd, ms, ps, am, ap, apt, as, ll;
 		
+		file	= new JMenu("File");
 		search	= new JMenu("Search");
 		add		= new JMenu("Add");
 		logout	= new JMenu("Logout");
 		
+		add(file);
 		add(search);
 		add(add);
 		add(logout);
 		
+		psd = new JMenuItem("Provider Services Directory");
 		ms 	= new JMenuItem("Member Search");
 		ps 	= new JMenuItem("Provider Search");
 		am 	= new JMenuItem("Add Member");
@@ -31,6 +35,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		as 	= new JMenuItem("Add Service");
 		ll 	= new JMenuItem("Logout / Login");
 		
+		psd.addActionListener(this);
 		ms.addActionListener(this);
 		ps.addActionListener(this);
 		am.addActionListener(this);
@@ -39,6 +44,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		as.addActionListener(this);
 		ll.addActionListener(this);
 		
+		file.add(psd);
 		search.add(ms);
 		search.add(ps);
 		add.add(am);
@@ -67,7 +73,13 @@ public class Menu extends JMenuBar implements ActionListener {
 			addService();
 		}  else if (itemName.equals("Logout / Login") == true) {
 			logoutLogin();
+		} else if (itemName.equals("Write Provider Service Directory") == true) {
+			providerServiceDirectory();
 		}
+	}
+	
+	private void providerServiceDirectory() {
+		new ProviderServiceDirectory();
 	}
 	
 	private void memberSearch() {

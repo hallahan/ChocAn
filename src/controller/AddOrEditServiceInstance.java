@@ -326,7 +326,7 @@ public class AddOrEditServiceInstance extends JFrame {
     	if (currentTimestampRadio.isSelected() == true) {
     		si.time_stamp = DateAndTime.getCurrentTimestamp();
     	} else {
-    		si.time_stamp = DateAndTime.formatDate(timestampTextField.getText());
+    		si.time_stamp = DateAndTime.formatTimestamp(timestampTextField.getText());
     	}
     	
     	//this insures that an improperly formatted date or time doesnt cause null

@@ -539,7 +539,7 @@ public class ProviderInformation extends JFrame {
     
     public static void main(String args[]) {
     	Application.setNimbusLookAndFeel();
-    	Application.setManagerMode("12steps");
+//    	Application.setManagerMode("12steps");
         EventQueue.invokeLater(new Runnable() {
             public void run() {
             	Provider prov = new Provider();

@@ -70,6 +70,11 @@ public class MemberSearch extends javax.swing.JFrame {
         memberSearchTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         memberSearchTable.setRowSelectionAllowed(true);
         memberSearchTable.setColumnSelectionAllowed(false);
+        memberSearchTable.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                tableKeyPressed(evt);
+            }
+        });
         
         memberSearchTableScrollPane.setViewportView(memberSearchTable);
 
@@ -163,6 +168,13 @@ public class MemberSearch extends javax.swing.JFrame {
     	dispose();
     }
 
+    private void tableKeyPressed(KeyEvent evt) {
+    	int keyCode = evt.getKeyCode();
+    	if (keyCode == 10) {  //10 is the key code for Return (Enter)
+    		selectButtonActionPerformed(null);
+    	}
+    }
+    
     public static void main(String args[]) {
     	Application.setNimbusLookAndFeel();
 //    	Application.setNativeLookAndFeel();
