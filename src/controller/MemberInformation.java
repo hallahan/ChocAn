@@ -299,12 +299,13 @@ public class MemberInformation extends JFrame {
             }
         });
 
-        fromTextField.setText("01-01-2001");
-
+        fromTextField.setText("XX-XX-XXXX");
+        fromTextField.setEnabled(false);
         toLabel.setText("To:");
 
-        toTextField.setText("02-09-2011");
-
+        toTextField.setText("XX-XX-XXXX");
+        toTextField.setEnabled(false);
+        
         reportTimespan.add(pastWeekRadio);
         pastWeekRadio.setText("Past Week");
         pastWeekRadio.addActionListener(new java.awt.event.ActionListener() {
@@ -474,11 +475,17 @@ public class MemberInformation extends JFrame {
     }                                                  
 
     private void pastWeekRadioActionPerformed(ActionEvent evt) {                                              
-        // TODO add your handling code here:
+    	fromTextField.setEnabled(false);
+        toTextField.setEnabled(false);
+    	tableModel.pastWeek();
+        selectFirstRow();
     }                                             
 
     private void entireHistoryRadioActionPerformed(ActionEvent evt) {                                                   
-        // TODO add your handling code here:
+    	fromTextField.setEnabled(false);
+        toTextField.setEnabled(false);
+    	tableModel.entireHistory();
+        selectFirstRow();
     }                                                  
 
     private void generateMemberReportButtonActionPerformed(ActionEvent evt) {
@@ -490,7 +497,8 @@ public class MemberInformation extends JFrame {
     }
 
     private void fromRadioActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+        fromTextField.setEnabled(true);
+        toTextField.setEnabled(true);
     }
 
     private void editMemberButtonActionPerformed(ActionEvent evt) {
@@ -570,7 +578,7 @@ public class MemberInformation extends JFrame {
     private void setupTable() {
     	tableModel = new ServiceInstanceTableModel(m.member_id, true);
         table.setModel(tableModel);
-        table.setAutoCreateRowSorter(true);
+//        table.setAutoCreateRowSorter(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
@@ -615,8 +623,8 @@ public class MemberInformation extends JFrame {
     	String fee = ser.fee;
     	feeValueLabel.setText(fee);
     	
-    	dateProvidedValueLabel.setText(selectedServiceInstance.date_provided);
-    	billingTimestampValueLabel.setText(selectedServiceInstance.time_stamp);
+    	dateProvidedValueLabel.setText(selectedServiceInstance.getDate_provided());
+    	billingTimestampValueLabel.setText(selectedServiceInstance.getTime_stamp());
     	commentsTextArea.setText(selectedServiceInstance.comments);
     	setProviderID(String.valueOf(selectedServiceInstance.provider_id));
     	
@@ -678,6 +686,8 @@ public class MemberInformation extends JFrame {
     private JLabel toLabel;
     private JTextField toTextField;
     private JButton viewProviderButton;
+    
+    private ServiceInstance fromDate, toDate;
     
     //action listener for selecting a row in the service history table
     private class RowListener implements ListSelectionListener {

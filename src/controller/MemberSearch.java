@@ -28,7 +28,9 @@ public class MemberSearch extends javax.swing.JFrame {
 		TableColumn col = memberSearchTable.getColumnModel().getColumn(0);
 		col.setPreferredWidth(30);
 		col = memberSearchTable.getColumnModel().getColumn(5);
-		col.setPreferredWidth(150);
+		col.setPreferredWidth(160);
+		col = memberSearchTable.getColumnModel().getColumn(7);
+		col.setPreferredWidth(30);
 		
 		setVisible(true);
     }

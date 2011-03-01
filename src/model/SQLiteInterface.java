@@ -587,8 +587,8 @@ public class SQLiteInterface {
 				row.member_id = rs.getInt(2);
 				row.service_id = rs.getInt(3);
 				row.provider_id = rs.getInt(4);
-				row.date_provided = rs.getString(5);
-				row.time_stamp = rs.getString(6);
+				row.setDate_providedDB(rs.getString(5));
+				row.setTime_stampDB(rs.getString(6));
 				row.comments = rs.getString(7);
 				
 				results.add(row);
@@ -651,6 +651,16 @@ public class SQLiteInterface {
 		this.execute(query);
 		return fetchServiceInstanceResults();
 	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForMemberSortedPastWeek(int member_id, String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND " + sortField + " BETWEEN date('now', '-7 day') AND date('now') ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND " + sortField + " BETWEEN date('now', '-7 day') AND date('now') ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
 	public Vector<ServiceInstance> retrieveServiceInstanceTableForMemberAndProviderSorted(int member_id, int provider_id, String sortField, boolean ascending) {
 		String query;
 		if (ascending == true) {
@@ -693,6 +703,16 @@ public class SQLiteInterface {
 		this.execute(query);
 		return fetchServiceInstanceResults();
 	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForProviderSortedPastWeek(int provider_id, String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance si WHERE si.provider_id=" + provider_id + " AND " + sortField + " BETWEEN date('now', '-7 day') AND date('now') ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.provider_id=" + provider_id + " AND " + sortField + " BETWEEN date('now', '-7 day') AND date('now') ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return fetchServiceInstanceResults();		
+	}
 	public Vector<ServiceInstance> retrieveServiceInstanceTableForDateProvided(String dateProvided) {
 		String query = "SELECT * FROM serviceinstance si WHERE si.date_provided='" +
 						dateProvided + "';";
@@ -720,8 +740,8 @@ public class SQLiteInterface {
 						s.member_id + ", " +
 						s.service_id + ", " +
 						s.provider_id + ", '" +
-						s.date_provided + "', '" +
-						s.time_stamp + "', '" +
+						s.getDate_providedDB() + "', '" +
+						s.getTime_stampDB() + "', '" +
 						s.comments + "');";
 		this.update(query);
 	}
@@ -730,8 +750,8 @@ public class SQLiteInterface {
 						"member_id=" + s.member_id + ", " +
 						"service_id=" + s.service_id + ", " +
 						"provider_id=" +s.provider_id + ", " +
-						"date_provided='" + s.date_provided + "', " +
-						"time_stamp='" +s.time_stamp + "', " +
+						"date_provided='" + s.getDate_providedDB() + "', " +
+						"time_stamp='" +s.getTime_stampDB() + "', " +
 						"comments='" +s.comments +
 						"' WHERE serviceinstance.instance_id = " +
 						s.instance_id + ";";

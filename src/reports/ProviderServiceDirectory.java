@@ -5,7 +5,7 @@ import java.io.*;
 import javax.swing.JOptionPane;
 
 public class ProviderServiceDirectory {
-	private static final String FILE_NAME_PREFIX = "ProviderServicesDirectory ";
+	private static final String FILE_NAME_PREFIX = "ProviderServicesDirectory";
 	private static final String FILE_NAME_SUFFIX = ".txt";
 	
 	private Vector<Service> allServices;
@@ -16,6 +16,7 @@ public class ProviderServiceDirectory {
 		allServices = db.retrieveServiceTableSorted("name", true);
 		String fileName = FILE_NAME_PREFIX + DateAndTime.getCurrentDate() + FILE_NAME_SUFFIX;
 		printFile(fileName);
+		JOptionPane.showMessageDialog(null, "The Provider Service Directory has been written \nto the main directory of the application as:\n\n" + fileName);
 	}
 	
 	public void printFile(String fileName) {
@@ -30,8 +31,8 @@ public class ProviderServiceDirectory {
     		out.println("Provider Services Directory");
     		out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     		out.println(" ");
-    		out.println("SERVICE ID  NAME                            FEE");
-    		out.println("----------  ------------------------------  ----------"); //10 30 10 chars for each field
+    		out.println("SERVICE ID  NAME                                       FEE");
+    		out.println("----------  ----------------------------------------  ----------"); //10 40 10 chars for each field
     		
     		String id, name, fee;
     		String space = " ";
@@ -40,14 +41,11 @@ public class ProviderServiceDirectory {
     		int pad = 0;
     		
     		for (Service each : allServices) {
-    			id = String.valueOf(each.service_id);
-    			name = each.name;
-    			fee = each.fee;
+    			id = stringPadded(String.valueOf(each.service_id), 10);
+    			name = stringPadded(each.name, 40);
+    			fee = stringPadded(each.fee, 10);
     			
-    			
-    			out.println(id + "    " + name + "    " + fee);
-    			
-    			
+    			out.println(id + " " + name + " " + fee); 
     		}
     		
     		out.flush();
@@ -59,6 +57,21 @@ public class ProviderServiceDirectory {
     			out.close();
     	}
     }
+	
+	private static String stringPadded(String str, int totalLength) {
+		int len = str.length();
+		if (len >= totalLength) {
+			return str;
+		}
+		
+		int padLen = totalLength - len;
+		String pad = "";
+		for (int i=0; i <= padLen; ++i) {
+			pad += " ";
+		}
+		
+		return str + pad;
+	}
 	
 	public static void main (String[] args) {
 		new ProviderServiceDirectory();

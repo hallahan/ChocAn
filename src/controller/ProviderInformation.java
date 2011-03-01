@@ -506,8 +506,8 @@ public class ProviderInformation extends JFrame {
     	String fee = ser.fee;
     	feeValueLabel.setText(fee);
     	
-    	dateProvidedValueLabel.setText(selectedServiceInstance.date_provided);
-    	billingTimestampValueLabel.setText(selectedServiceInstance.time_stamp);
+    	dateProvidedValueLabel.setText(selectedServiceInstance.getDate_provided());
+    	billingTimestampValueLabel.setText(selectedServiceInstance.getTime_stamp());
     	commentsTextArea.setText(selectedServiceInstance.comments);
     
     	

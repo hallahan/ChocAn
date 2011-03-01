@@ -15,6 +15,7 @@ public class ServiceInstanceTableModel extends AbstractTableModel implements Tab
 	public ServiceInstanceTableModel(int id, boolean forMember) {
 		this.forMember = forMember;
 		db = SQLiteInterface.singleton();
+		this.id = id;
 		
 		if (forMember == true) {
 			serviceInstances = db.retrieveServiceInstanceTableForMemberSorted(id, "date_provided", true);
@@ -57,8 +58,8 @@ public class ServiceInstanceTableModel extends AbstractTableModel implements Tab
 			Provider p = db.retrieveProvider(row.provider_id);
 			switch(columnIndex) {
 				case 0: return row.instance_id;
-				case 1: return row.time_stamp;
-				case 2: return row.date_provided;
+				case 1: return row.getTime_stamp();
+				case 2: return row.getDate_provided();
 				case 3: return p.name;
 				case 4: return ser.name;
 				case 5: return ser.fee;
@@ -69,8 +70,8 @@ public class ServiceInstanceTableModel extends AbstractTableModel implements Tab
 			Member m = db.retrieveMember(row.member_id);
 			switch(columnIndex) {
 				case 0: return row.instance_id;
-				case 1: return row.time_stamp;
-				case 2: return row.date_provided;
+				case 1: return row.getTime_stamp();
+				case 2: return row.getDate_provided();
 				case 3: return m.first;
 				case 4: return m.last;
 				case 5: return ser.name;
@@ -113,7 +114,26 @@ public class ServiceInstanceTableModel extends AbstractTableModel implements Tab
 		return false;
 	}
 	
+	public void pastWeek() {
+		if (forMember == true) {
+			serviceInstances = db.retrieveServiceInstanceTableForMemberSortedPastWeek(id, "date_provided", true);
+		} else {
+			serviceInstances = db.retrieveServiceInstanceTableForProviderSortedPastWeek(id, "time_stamp", true);
+		}
+		fireTableDataChanged();
+	}
+	
+	public void entireHistory() {
+		if (forMember == true) {
+			serviceInstances = db.retrieveServiceInstanceTableForMemberSorted(id, "date_provided", true);
+		} else {
+			serviceInstances = db.retrieveServiceInstanceTableForProviderSorted(id, "time_stamp", true);
+		}
+		fireTableDataChanged();
+	}
+	
 	private boolean forMember;  //true if it is Member Information, false if it is for Provider Information
 	private Vector<ServiceInstance> serviceInstances;
+	private int id;
 	public SQLiteInterface db;
 }

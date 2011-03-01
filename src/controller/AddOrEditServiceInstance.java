@@ -28,6 +28,7 @@ public class AddOrEditServiceInstance extends JFrame {
         	addButton.setEnabled(false);
         	editButton.setEnabled(false);
         }
+
         getRootPane().setDefaultButton(okButton);
         
         setVisible(true);
@@ -138,24 +139,48 @@ public class AddOrEditServiceInstance extends JFrame {
         detailsPanel.setBorder(BorderFactory.createTitledBorder(null, "Details", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Helvetica", 2, 14)));
 
         currentDateRadio.setText("Current Date");
+        currentDateRadio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                currentDateRadioActionPerformed(evt);
+            }
+        });
+        
         specifiedDateRadio.setText("Specified Date:");
+        specifiedDateRadio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                specifiedDateRadioActionPerformed(evt);
+            }
+        });
         
         ButtonGroup dateGroup = new ButtonGroup();
 		dateGroup.add(currentDateRadio);
 		dateGroup.add(specifiedDateRadio);
 		
 
-		if (si.date_provided.equals(" ") == true) {
+		if (si.getDate_provided().equals(" ") == true) {
 			currentDateRadio.setSelected(true);
 			dateText.setText("XX-XX-XXXX");
+			dateText.setEnabled(false);
 		} else {
 			specifiedDateRadio.setSelected(true);
-			dateText.setText(si.date_provided);
+			dateText.setText(si.getDate_provided());
+			dateText.setEnabled(true);
 		}
         
 
         currentTimestampRadio.setText("Current Timestamp");
+        currentTimestampRadio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+            	currentTimestampRadioActionPerformed(evt);
+            }
+        });
+        
         specifiedTimestampRadio.setText("Specified Timestamp:");
+        specifiedTimestampRadio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+            	specifiedTimestampRadioActionPerformed(evt);
+            }
+        });
 
         ButtonGroup timeGroup = new ButtonGroup();
 		timeGroup.add(currentTimestampRadio);
@@ -163,12 +188,14 @@ public class AddOrEditServiceInstance extends JFrame {
 		
 		
 		
-		if (si.time_stamp.equals(" ") == true) {
+		if (si.getTime_stamp().equals(" ") == true) {
 			currentTimestampRadio.setSelected(true);
 			timestampTextField.setText("XX-XX-XXXX XX:XX:XX");
+			timestampTextField.setEnabled(false);
 		} else {
 			specifiedTimestampRadio.setSelected(true);
-			timestampTextField.setText(si.time_stamp);
+			timestampTextField.setText(si.getTime_stamp());
+			timestampTextField.setEnabled(true);
 		}
         
 
@@ -304,7 +331,23 @@ public class AddOrEditServiceInstance extends JFrame {
     	System.out.println("cancel button");
     	dispose();
     }
-
+    
+    private void currentDateRadioActionPerformed(ActionEvent evt) {
+    	dateText.setEnabled(false);
+    }
+    
+    private void specifiedDateRadioActionPerformed(ActionEvent evt) {
+    	dateText.setEnabled(true);
+    }
+    
+    private void currentTimestampRadioActionPerformed(ActionEvent evt) {
+    	timestampTextField.setEnabled(false);
+    }
+    
+    private void specifiedTimestampRadioActionPerformed(ActionEvent evt) {
+    	timestampTextField.setEnabled(true);
+    }
+    
     private void okButtonActionPerformed(ActionEvent evt) {
     	System.out.println("ok button");
     	
@@ -316,22 +359,22 @@ public class AddOrEditServiceInstance extends JFrame {
     	si.service_id = selectedService.service_id;
     	
     	if (currentDateRadio.isSelected() == true) {
-    		si.date_provided = DateAndTime.getCurrentDate();
+    		si.setDate_provided(DateAndTime.getCurrentDate());
     	} else {
     		String inputDate = dateText.getText();
-    		String validatedInputDate = DateAndTime.formatDate(inputDate);
-    		si.date_provided = validatedInputDate;
+//    		String validatedInputDate = DateAndTime.formatDate(inputDate);
+    		si.setDate_provided(inputDate);
     	}
     	
     	if (currentTimestampRadio.isSelected() == true) {
-    		si.time_stamp = DateAndTime.getCurrentTimestamp();
+    		si.setTime_stamp(DateAndTime.getCurrentTimestamp());
     	} else {
-    		si.time_stamp = DateAndTime.formatTimestamp(timestampTextField.getText());
+    		si.setTime_stamp(timestampTextField.getText());
     	}
     	
-    	//this insures that an improperly formatted date or time doesnt cause null
+    	//this insures that an improperly formatted date or time doesn't cause null
     	//to be written for this service instance record
-    	if (si.date_provided == null || si.time_stamp == null) {
+    	if (si.getDate_provided() == null || si.getTime_stamp() == null) {
     		return;
     	}
     	

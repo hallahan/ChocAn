@@ -1,3 +1,8 @@
+February 28, 2011
+	EFT Data
+	Insure Proper Window Closing Behavior
+	Sanatize SQL
+
 February 21, 2011
 	look at public void updateWindow() in MemberInformation
 		- is there a better way to update the window?
