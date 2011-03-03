@@ -27,7 +27,28 @@ public class MemberReport extends Report {
 	}
 	
 	private void createHeader() {
+		lines.add("Member Service Report");
+		lines.add("~~~~~~~~~~~~~~~~~~~~~");
+		lines.add(" ");
 		
+		int colNum = t.getColumnCount();
+		String colLine = "";
+		for (int i=0; i < colNum; ++i) {
+			colLine += t.getColumnName(i) + " ";
+		}
+		
+		String colDash = "";
+		int nameLen = 0;
+		for (int j=0; j < colNum; ++j) {
+			nameLen = t.getColumnName(j).length();
+			for (int k=0; k < nameLen; ++k) {
+				colDash += "-";
+			}
+			colDash += " ";
+		}
+		
+		lines.add(colLine);
+		lines.add(colDash);
 	}
 	private void createTable() {
 		
