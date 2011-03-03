@@ -1,5 +1,6 @@
 package controller;
 import model.*;
+import reports.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -491,7 +492,7 @@ public class MemberInformation extends JFrame {
     }                                                  
 
     private void generateMemberReportButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+//        new MemberReport(m, );
     }
 
     private void fromRadioActionPerformed(ActionEvent evt) {
