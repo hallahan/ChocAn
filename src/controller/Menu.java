@@ -14,7 +14,7 @@ public class Menu extends JMenuBar implements ActionListener {
 
 	private void setup() {
 		JMenu 		file, search, add, logout;
-		JMenuItem 	psd, ms, ps, am, ap, apt, as, ll;
+		JMenuItem 	psd, q, ms, ps, am, ap, apt, as, ll;
 		
 		file	= new JMenu("File");
 		search	= new JMenu("Search");
@@ -27,6 +27,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		add(logout);
 		
 		psd = new JMenuItem("Provider Services Directory");
+		q   = new JMenuItem("Quit");
 		ms 	= new JMenuItem("Member Search");
 		ps 	= new JMenuItem("Provider Search");
 		am 	= new JMenuItem("Add Member");
@@ -36,6 +37,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		ll 	= new JMenuItem("Logout / Login");
 		
 		psd.addActionListener(this);
+		q.addActionListener(this);
 		ms.addActionListener(this);
 		ps.addActionListener(this);
 		am.addActionListener(this);
@@ -45,6 +47,7 @@ public class Menu extends JMenuBar implements ActionListener {
 		ll.addActionListener(this);
 		
 		file.add(psd);
+		file.add(q);
 		search.add(ms);
 		search.add(ps);
 		add.add(am);
@@ -75,6 +78,8 @@ public class Menu extends JMenuBar implements ActionListener {
 			logoutLogin();
 		} else if (itemName.equals("Write Provider Service Directory") == true) {
 			providerServiceDirectory();
+		} else if (itemName.equals("Quit") == true) {
+			Application.windows().closeAllWindows();
 		}
 	}
 	

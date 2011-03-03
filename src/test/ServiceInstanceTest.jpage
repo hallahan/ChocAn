@@ -1,3 +1,3 @@
-ServiceInstance si = new ServiceInstance();
+ServiceInstance si = new ServiceInstance();
 si.setDate_providedDB("2001-07-04");
 si.setTime_stampDB("2012-12-22 10:12:22");

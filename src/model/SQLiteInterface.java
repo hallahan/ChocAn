@@ -661,12 +661,42 @@ public class SQLiteInterface {
 		this.execute(query);
 		return fetchServiceInstanceResults();
 	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForMemberSortedTimespan(int member_id, String sortField, boolean ascending, String from, String to) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND " + sortField + " BETWEEN '" + from + "' AND '" + to + "' ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND " + sortField + " BETWEEN '" + from + "' AND '" + to + "' ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
 	public Vector<ServiceInstance> retrieveServiceInstanceTableForMemberAndProviderSorted(int member_id, int provider_id, String sortField, boolean ascending) {
 		String query;
 		if (ascending == true) {
 			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND si.provider_id=" + provider_id + " ORDER BY " + sortField + ";";
 		} else {
 			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND si.provider_id=" + provider_id + " ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForMemberAndProviderSortedPastWeek(int member_id, int provider_id, String sortField, boolean ascending) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND si.provider_id=" + provider_id + " AND " + sortField +  " BETWEEN date('now', '-7 day') AND date('now') ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND si.provider_id=" + provider_id + " AND " + sortField +  " BETWEEN date('now', '-7 day') AND date('now') ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return fetchServiceInstanceResults();
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForMemberAndProviderSortedTimespan(int member_id, int provider_id, String sortField, boolean ascending, String from, String to) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND si.provider_id=" + provider_id + " AND " + sortField + " BETWEEN '" + from + "' AND '" + to + "' ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.member_id=" + member_id + " AND si.provider_id=" + provider_id + " AND " + sortField + " BETWEEN '" + from + "' AND '" + to + "' ORDER BY " + sortField + " DESC;";
 		}
 		this.execute(query);
 		return fetchServiceInstanceResults();
@@ -712,6 +742,16 @@ public class SQLiteInterface {
 		}
 		this.execute(query);
 		return fetchServiceInstanceResults();		
+	}
+	public Vector<ServiceInstance> retrieveServiceInstanceTableForProviderSortedTimespan(int provider_id, String sortField, boolean ascending, String from, String to) {
+		String query;
+		if (ascending == true) {
+			query = "SELECT * FROM serviceinstance si WHERE si.provider_id=" + provider_id + " AND " + sortField + " BETWEEN '" + from + "' AND '" + to + "' ORDER BY " + sortField + ";";
+		} else {
+			query = "SELECT * FROM serviceinstance si WHERE si.provider_id=" + provider_id + " AND " + sortField + " BETWEEN '" + from + "' AND '" + to + "' ORDER BY " + sortField + " DESC;";
+		}
+		this.execute(query);
+		return fetchServiceInstanceResults();	
 	}
 	public Vector<ServiceInstance> retrieveServiceInstanceTableForDateProvided(String dateProvided) {
 		String query = "SELECT * FROM serviceinstance si WHERE si.date_provided='" +

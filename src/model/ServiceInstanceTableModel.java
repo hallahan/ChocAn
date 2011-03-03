@@ -1,5 +1,6 @@
 package model;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.*;
 
 import controller.Application;
@@ -18,23 +19,13 @@ public class ServiceInstanceTableModel extends AbstractTableModel implements Tab
 		this.id = id;
 		
 		if (forMember == true) {
+			mode = Mode.ENTIRE_HISTORY;
+			allProvidersChecked = true;
 			serviceInstances = db.retrieveServiceInstanceTableForMemberSorted(id, "date_provided", true);
 		} else {
 			serviceInstances = db.retrieveServiceInstanceTableForProviderSorted(id, "time_stamp", true);
 		}
 		
-	}
-	
-	//only call this method in MemberInformation
-	//DO NOT CALL IN PROVIDER INFORMATION!!!!
-	public void allProvidersSelected(boolean selected) {
-		
-		if (selected == false) {
-			serviceInstances = db.retrieveServiceInstanceTableForMemberAndProviderSorted(Application.selectedMemberId, Application.appOperatorProviderId, "date_provided", true);
-		} else {
-			serviceInstances = db.retrieveServiceInstanceTableForMemberSorted(Application.selectedMemberId, "date_provided", true);
-		}
-		fireTableDataChanged();
 	}
 	
 	public int getColumnCount() {
@@ -116,24 +107,84 @@ public class ServiceInstanceTableModel extends AbstractTableModel implements Tab
 	
 	public void pastWeek() {
 		if (forMember == true) {
-			serviceInstances = db.retrieveServiceInstanceTableForMemberSortedPastWeek(id, "date_provided", true);
+			if (allProvidersChecked) {
+				serviceInstances = db.retrieveServiceInstanceTableForMemberSortedPastWeek(id, "date_provided", true);
+			} else {
+				serviceInstances = db.retrieveServiceInstanceTableForMemberAndProviderSortedPastWeek(id, Application.appOperatorProviderId, "date_provided", true);
+			}
+			
 		} else {
 			serviceInstances = db.retrieveServiceInstanceTableForProviderSortedPastWeek(id, "time_stamp", true);
 		}
+		mode = Mode.PAST_WEEK;
 		fireTableDataChanged();
+	}
+	public void timespan(String f, String t) {
+		from = f;
+		to = t;
+		if (forMember == true) {
+			if (allProvidersChecked) {
+				serviceInstances = db.retrieveServiceInstanceTableForMemberSortedTimespan(id, "date_provided", true, from, to);
+			} else {
+				serviceInstances = db.retrieveServiceInstanceTableForMemberAndProviderSortedTimespan(id, Application.appOperatorProviderId, "date_provided", true, from, to);
+			}
+			
+		} else {
+			from += " 00:00:00";
+			to   += " 23:59:59";
+			serviceInstances = db.retrieveServiceInstanceTableForProviderSortedTimespan(id, "time_stamp", true, from, to);
+		}
+		if (serviceInstances == null) {
+			JOptionPane.showMessageDialog(null, "No matching Service Instances for the time frame:\n" + from + " - " + to);
+		} else {
+			mode = Mode.TIMESPAN;
+			fireTableDataChanged();
+		}
 	}
 	
 	public void entireHistory() {
 		if (forMember == true) {
-			serviceInstances = db.retrieveServiceInstanceTableForMemberSorted(id, "date_provided", true);
+			if (allProvidersChecked) {
+				serviceInstances = db.retrieveServiceInstanceTableForMemberSorted(id, "date_provided", true);
+			} else {
+				serviceInstances = db.retrieveServiceInstanceTableForMemberAndProviderSorted(id, Application.appOperatorProviderId, "date_provided", true);
+			}
+			
 		} else {
 			serviceInstances = db.retrieveServiceInstanceTableForProviderSorted(id, "time_stamp", true);
 		}
+		mode = Mode.ENTIRE_HISTORY;
 		fireTableDataChanged();
 	}
 	
+	
+
+	public boolean isAllProvidersChecked() {
+		return allProvidersChecked;
+	}
+
+	public void setAllProvidersChecked(boolean selected) {
+		allProvidersChecked = selected;
+
+		if (mode == Mode.TIMESPAN) {
+			timespan(from, to);
+		} else if (mode == Mode.PAST_WEEK) {
+			pastWeek();
+		} else {
+			entireHistory();
+		}
+		
+	}
+
+
+
 	private boolean forMember;  //true if it is Member Information, false if it is for Provider Information
 	private Vector<ServiceInstance> serviceInstances;
 	private int id;
+	private boolean allProvidersChecked;
+	String from, to;
 	public SQLiteInterface db;
+	
+	enum Mode {TIMESPAN, PAST_WEEK, ENTIRE_HISTORY};
+	Mode mode;
 }

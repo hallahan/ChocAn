@@ -11,7 +11,6 @@ import java.awt.*;
 
 public class ProviderInformation extends JFrame {
 
-   
     public ProviderInformation(Provider p) {
         Application.windows().providerInformation = this;
         provider = p;
@@ -21,7 +20,6 @@ public class ProviderInformation extends JFrame {
     	initComponents();
     	setVisible(true);
     }
-
 
     private void initComponents() {
 
@@ -280,13 +278,22 @@ public class ProviderInformation extends JFrame {
             }
         });
 
-        fromTextField.setText("01-01-2001");
-        
+        fromTextField.setText("XX-XX-XXXX");
+        fromTextField.setEnabled(false);
+        fromTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent evt) {
+            	dateRangeKeyTyped(evt);
+            }
+        });
 
         toLabel.setText("To:");
-
-        toTextField.setText("02-09-2011");
-        
+        toTextField.setText("XX-XX-XXXX");
+        toTextField.setEnabled(false);
+        toTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent evt) {
+            	dateRangeKeyTyped(evt);
+            }
+        });
 
         reportTimespan.add(pastWeekRadio);
         pastWeekRadio.setText("Past Week");
@@ -420,11 +427,7 @@ public class ProviderInformation extends JFrame {
     private void deleteServiceButtonActionPerformed(ActionEvent evt) {                                                    
     	db.deleteServiceInstance(selectedServiceInstance.instance_id);
         updateWindow();
-    }                                                   
-
-//    private void addServiceInstanceButtonActionPerformed(ActionEvent evt) {                                                         
-//    	new AddOrEditServiceInstance();
-//    }                                                        
+    }                                                                                                       
 
     private void viewMemberButtonActionPerformed(ActionEvent evt) {                                                 
         dispose();
@@ -434,11 +437,17 @@ public class ProviderInformation extends JFrame {
     }                                                
 
     private void pastWeekRadioActionPerformed(ActionEvent evt) {                                              
-        // TODO add your handling code here:
+    	fromTextField.setEnabled(false);
+        toTextField.setEnabled(false);
+    	tableModel.pastWeek();
+        selectFirstRow();
     }                                             
 
     private void entireHistoryRadioActionPerformed(ActionEvent evt) {                                                   
-        // TODO add your handling code here:
+    	fromTextField.setEnabled(false);
+        toTextField.setEnabled(false);
+    	tableModel.entireHistory();
+        selectFirstRow();
     }                                                  
 
     private void deleteProviderButtonActionPerformed(ActionEvent evt) {
@@ -455,9 +464,47 @@ public class ProviderInformation extends JFrame {
     }
 
     private void fromRadioActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+    	fromTextField.setEnabled(true);
+        toTextField.setEnabled(true);
     }
+    
+    private void dateRangeKeyTyped(KeyEvent evt) {
+    	Object source = evt.getSource();
+    	String from = fromTextField.getText();
+    	String to = toTextField.getText();
+    	
+    	//getText() does not actually get the text in the text box including the latest key typed...
+    	char key = evt.getKeyChar();
+    	if (key != '\b') {
+	    	if (source == fromTextField) {
+	    		from += key;
+	    	} else {
+	    		to += key;
+	    	}
+    	}
 
+    	
+    	System.out.println("before conditional");
+    	if (from.length() != 10 || to.length() != 10 || from.equals("XX-XX-XXXX") || to.equals("XX-XX-XXXX")) {
+    		System.out.println(from.length());
+    		System.out.println(to.length());
+    		System.out.println(from);
+    		System.out.println(to);
+    		return;
+    	}
+    	System.out.println("proper from and to conditions");
+    	
+    	ServiceInstance fromSI = new ServiceInstance();
+    	ServiceInstance toSI = new ServiceInstance();
+    	
+    	//not really a service instance, but the getters and setters do what I want...
+    	fromSI.setDate_provided(from);
+    	toSI.setDate_provided(to);
+    	
+    	tableModel.timespan(fromSI.getDate_providedDB(), toSI.getDate_providedDB());
+    	
+    }
+    
     public void setupTable() {
     	tableModel = new ServiceInstanceTableModel(provider.provider_id, false);
     	table.setModel(tableModel);

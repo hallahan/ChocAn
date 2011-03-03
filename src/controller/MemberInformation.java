@@ -19,9 +19,6 @@ public class MemberInformation extends JFrame {
         if (Application.isManagerMode() == false) {
         	activateButton.setEnabled(false);
         }
-        
-        
-        
         setVisible(true);
     }
 
@@ -171,7 +168,6 @@ public class MemberInformation extends JFrame {
 
         serviceInformationPanel.setBorder(BorderFactory.createTitledBorder(null, "Service Information", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 2, 13)));
 
-    
     	instanceIDLabel.setText("Instance ID:");
         instanceIDValueLabel.setText(" "); 
 
@@ -293,18 +289,28 @@ public class MemberInformation extends JFrame {
 
         reportTimespan.add(fromRadio);
         fromRadio.setText("From:");
-        fromRadio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        fromRadio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 fromRadioActionPerformed(evt);
             }
         });
 
         fromTextField.setText("XX-XX-XXXX");
         fromTextField.setEnabled(false);
+        fromTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent evt) {
+            	dateRangeKeyTyped(evt);
+            }
+        });
+        
         toLabel.setText("To:");
-
         toTextField.setText("XX-XX-XXXX");
         toTextField.setEnabled(false);
+        toTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent evt) {
+            	dateRangeKeyTyped(evt);
+            }
+        });
         
         reportTimespan.add(pastWeekRadio);
         pastWeekRadio.setText("Past Week");
@@ -323,6 +329,8 @@ public class MemberInformation extends JFrame {
             }
         });
 
+        allProvidersCheckBox.setText("All Providers");
+        
         allProvidersCheckBox.setSelected(true);
         allProvidersCheckBox.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent evt) {
@@ -337,12 +345,6 @@ public class MemberInformation extends JFrame {
             }
         });
 
-        allProvidersCheckBox.setText("All Providers");
-        allProvidersCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                allProvidersCheckBoxActionPerformed(evt);
-            }
-        });
 
         org.jdesktop.layout.GroupLayout serviceHistoryPanelLayout = new org.jdesktop.layout.GroupLayout(serviceHistoryPanel);
         serviceHistoryPanel.setLayout(serviceHistoryPanelLayout);
@@ -450,7 +452,7 @@ public class MemberInformation extends JFrame {
     
     private void checkBoxActionPerformed(ActionEvent evt) {
     	boolean checkBoxSelected = allProvidersCheckBox.isSelected();
-    	tableModel.allProvidersSelected(checkBoxSelected);
+    	tableModel.setAllProvidersChecked(checkBoxSelected);
     	selectFirstRow();
     }
 
@@ -492,15 +494,50 @@ public class MemberInformation extends JFrame {
         // TODO add your handling code here:
     }
 
-    private void allProvidersCheckBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
     private void fromRadioActionPerformed(ActionEvent evt) {
         fromTextField.setEnabled(true);
         toTextField.setEnabled(true);
     }
+    
+    
+    private void dateRangeKeyTyped(KeyEvent evt) {
+    	Object source = evt.getSource();
+    	String from = fromTextField.getText();
+    	String to = toTextField.getText();
+    	
+    	//getText() does not actually get the text in the text box including the latest key typed...
+    	char key = evt.getKeyChar();
+    	if (key != '\b') {
+	    	if (source == fromTextField) {
+	    		from += key;
+	    	} else {
+	    		to += key;
+	    	}
+    	}
 
+    	
+    	System.out.println("before conditional");
+    	if (from.length() != 10 || to.length() != 10 || from.equals("XX-XX-XXXX") || to.equals("XX-XX-XXXX")) {
+    		System.out.println(from.length());
+    		System.out.println(to.length());
+    		System.out.println(from);
+    		System.out.println(to);
+    		return;
+    	}
+    	System.out.println("proper from and to conditions");
+    	
+    	ServiceInstance fromSI = new ServiceInstance();
+    	ServiceInstance toSI = new ServiceInstance();
+    	
+    	//not really a service instance, but the getters and setters do what I want...
+    	fromSI.setDate_provided(from);
+    	toSI.setDate_provided(to);
+    	
+    	tableModel.timespan(fromSI.getDate_providedDB(), toSI.getDate_providedDB());
+    	
+    }
+
+    
     private void editMemberButtonActionPerformed(ActionEvent evt) {
         new EditMember(m);
     }
@@ -508,6 +545,7 @@ public class MemberInformation extends JFrame {
     private void deleteMemberButtonActionPerformed(ActionEvent evt) {
         db.deleteMember(m.member_id);
         dispose();
+        new MemberSearch();
     }
 
     private void activateButtonActionPerformed(ActionEvent evt) {
@@ -687,7 +725,7 @@ public class MemberInformation extends JFrame {
     private JTextField toTextField;
     private JButton viewProviderButton;
     
-    private ServiceInstance fromDate, toDate;
+  
     
     //action listener for selecting a row in the service history table
     private class RowListener implements ListSelectionListener {

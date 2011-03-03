@@ -56,7 +56,7 @@ public class AddOrEditProvider extends JFrame {
     		jComboBox2.setSelectedItem(SQLiteInterface.singleton().retrieveProviderType(p.providertype_id));
     	}
     	getRootPane().setDefaultButton(jButton1);
-    	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//    	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 

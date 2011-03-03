@@ -58,7 +58,7 @@ public class AddOrEditServiceInstance extends JFrame {
         cancelButton 			= new JButton();
         okButton 				= new JButton();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         servicePanel.setBorder(BorderFactory.createTitledBorder(null, "Services", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Helvetica", 2, 14)));
 
@@ -385,7 +385,10 @@ public class AddOrEditServiceInstance extends JFrame {
     	} else {
     		db.updateServiceInstance(si);
     	}
-    	Application.windows().memberInformation.updateWindow();
+    	if (Application.windows() != null)
+    		Application.windows().memberInformation.updateWindow();
+    	if (Application.windows() != null)
+    		Application.windows().providerInformation.updateWindow();
     	dispose();
     }
 

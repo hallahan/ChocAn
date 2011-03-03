@@ -53,7 +53,7 @@ public class ProviderSearch extends JFrame {
         cancelButton 				= new JButton();
         selectButton 				= new JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         providerSearchLabel.setText("Provider Search:");
 
