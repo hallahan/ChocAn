@@ -1,5 +1,6 @@
 package controller;
 import model.*;
+import reports.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -429,11 +430,13 @@ public class ProviderInformation extends JFrame {
         updateWindow();
     }                                                                                                       
 
-    private void viewMemberButtonActionPerformed(ActionEvent evt) {                                                 
-        dispose();
-        int mid = selectedServiceInstance.member_id;
-        Member m = db.retrieveMember(mid);
-        new MemberInformation(m);
+    private void viewMemberButtonActionPerformed(ActionEvent evt) {   
+    	if (selectedServiceInstance != null) {
+    		dispose();
+            int mid = selectedServiceInstance.member_id;
+            Member m = db.retrieveMember(mid);
+            new MemberInformation(m);
+    	}
     }                                                
 
     private void pastWeekRadioActionPerformed(ActionEvent evt) {                                              
@@ -460,7 +463,7 @@ public class ProviderInformation extends JFrame {
     }
 
     private void generateProviderReportButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+        new ProviderReport(provider, tableModel);
     }
 
     private void fromRadioActionPerformed(ActionEvent evt) {

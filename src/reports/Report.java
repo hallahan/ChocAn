@@ -58,6 +58,13 @@ public abstract class Report {
 		fileName = fileNamePrefix + fileNameMiddle + fileNameSuffix;
 	}
 	
+	public Report(String name) {
+		String fileNamePrefix = name;
+		String fileNameMiddle = fileTimestamp();
+		String fileNameSuffix = ".txt";
+		fileName = fileNamePrefix + fileNameMiddle + fileNameSuffix;
+	}
+	
 	private String fileTimestamp() {
 		DateFormat df = new SimpleDateFormat("MM-dd-yyyy_HH.mm.ss");
 		Date date = new Date();

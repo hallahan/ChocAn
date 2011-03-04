@@ -776,30 +776,211 @@ public class SQLiteInterface {
 	}
 
 	public void addServiceInstance(ServiceInstance s) {
-		String query = "INSERT INTO serviceinstance VALUES (null, " +
-						s.member_id + ", " +
-						s.service_id + ", " +
-						s.provider_id + ", '" +
-						s.getDate_providedDB() + "', '" +
-						s.getTime_stampDB() + "', '" +
-						s.comments + "');";
-		this.update(query);
+//		String query = "INSERT INTO serviceinstance VALUES (null, " +
+//						s.member_id + ", " +
+//						s.service_id + ", " +
+//						s.provider_id + ", '" +
+//						s.getDate_providedDB() + "', '" +
+//						s.getTime_stampDB() + "', '" +
+//						s.comments + "');";
+//		this.update(query);
+		
+		PreparedStatement pstmt;
+		String query = "INSERT INTO serviceinstance VALUES (null, ?, ?, ?, ?, ?, ?);";
+		
+		try {
+			con.setAutoCommit(false);
+			if (con==null)
+				this.connect();
+			
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, s.member_id);
+			pstmt.setInt(2, s.service_id);
+			pstmt.setInt(3, s.provider_id);
+			pstmt.setString(4, s.getDate_providedDB());
+			pstmt.setString(5, s.getTime_stampDB());
+			pstmt.setString(6, s.comments);
+			
+			pstmt.executeUpdate();
+			con.commit();
+			con.setAutoCommit(true);
+		} catch (SQLException ex) {
+			JOptionPane.showMessageDialog(null, "Error executing SQL PREPARED STATEMENT update: " + ex.toString(), "Error creating or running update:", JOptionPane.ERROR_MESSAGE);
+			try {
+				con.close();
+				con=null;
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.toString(), "Could not close connection:", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
 	}
 	public void updateServiceInstance(ServiceInstance s) {
-		String query = "UPDATE serviceinstance SET " +
-						"member_id=" + s.member_id + ", " +
-						"service_id=" + s.service_id + ", " +
-						"provider_id=" +s.provider_id + ", " +
-						"date_provided='" + s.getDate_providedDB() + "', " +
-						"time_stamp='" +s.getTime_stampDB() + "', " +
-						"comments='" +s.comments +
-						"' WHERE serviceinstance.instance_id = " +
-						s.instance_id + ";";
-		this.update(query);
+//		String query = "UPDATE serviceinstance SET " +
+//						"member_id=" + s.member_id + ", " +
+//						"service_id=" + s.service_id + ", " +
+//						"provider_id=" +s.provider_id + ", " +
+//						"date_provided='" + s.getDate_providedDB() + "', " +
+//						"time_stamp='" +s.getTime_stampDB() + "', " +
+//						"comments='" +s.comments +
+//						"' WHERE serviceinstance.instance_id = " +
+//						s.instance_id + ";";
+//		this.update(query);
+		
+		PreparedStatement pstmt;
+		String query = "UPDATE serviceinstance SET member_id=?, " +
+												"service_id=?, " +
+												"provider_id=?, " +
+												"date_provided=?, " +
+												"time_stamp=?, " +
+												"comments=? " +
+												"WHERE serviceinstance.instance_id =?;";
+		
+		try {
+			con.setAutoCommit(false);
+			if (con==null)
+				this.connect();
+			
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, s.member_id);
+			pstmt.setInt(2, s.service_id);
+			pstmt.setInt(3, s.provider_id);
+			pstmt.setString(4, s.getDate_providedDB());
+			pstmt.setString(5, s.getTime_stampDB());
+			pstmt.setString(6, s.comments);
+			pstmt.setInt(7, s.instance_id);
+			
+			pstmt.executeUpdate();
+			con.commit();
+			con.setAutoCommit(true);
+		} catch (SQLException ex) {
+			JOptionPane.showMessageDialog(null, "Error executing SQL PREPARED STATEMENT update: " + ex.toString(), "Error creating or running update:", JOptionPane.ERROR_MESSAGE);
+			try {
+				con.close();
+				con=null;
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.toString(), "Could not close connection:", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 	public void deleteServiceInstance(int instance_id) {
 		String query = "DELETE FROM serviceinstance WHERE instance_id = " + instance_id + ";";
 		this.update(query);
+	}
+	
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~METHODS FOR SUMMARY REPORT~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	public Vector<Integer> retrieveProviderIDsForPastWeek() {
+		String query = "SELECT provider_id FROM serviceinstance WHERE time_stamp BETWEEN date('now', '-7 day') and date('now') GROUP BY provider_id;";
+		execute(query);
+		
+		
+		Vector<Integer> results = null;
+		Integer row = null;
+		
+		try {
+			while (rs.next()) {
+				if (results == null)
+					results = new Vector<Integer>(VECTOR_ALLOC_SIZE);
+				
+				//fills in Member row with values from RowSet rs
+				row = rs.getInt(1);
+				
+				results.add(row);
+			}
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Error public Vector<Integer> retrieveProviderIDsForPastWeek() Results: " + e.toString(), "Error Fetching ServiceInstance Results: ", JOptionPane.ERROR_MESSAGE);
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+				con=null;
+			} catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "Error closing result set, statement and connection: " + e.toString(), "Error Fetching ServiceInstance Results: ", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return results;
+		
+	}
+	public String weekAgo() {
+		String date;
+		String query = "SELECT date('now', '-7 day')";
+		execute(query);
+		
+		try {
+			date = rs.getString(1);
+			return date;
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Error: public String weekAgo(): " + e.toString(), "Error: ", JOptionPane.ERROR_MESSAGE);
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+				con=null;
+			} catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "Error closing result set, statement and connection: " + e.toString(), "Error Fetching public String weekAgo() Results: ", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return "";
+	}
+	public String now() {
+		String date;
+		String query = "SELECT date('now')";
+		execute(query);
+		
+		try {
+			date = rs.getString(1);
+			return date;
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Error: public String now(): " + e.toString(), "Error: ", JOptionPane.ERROR_MESSAGE);
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+				con=null;
+			} catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "Error closing result set, statement and connection: " + e.toString(), "Error Fetching public String now() Results: ", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return "";
+	}
+	
+	
+	//~~~~~~~~~~~~~~~~~~~~GENERATE EFT DATA~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	public Vector<String> generateEFTData() {
+		String query = 	"SELECT p.name, p.provider_id, s.fee, si.time_stamp " +
+						"FROM provider p, serviceinstance si, service s " +
+						"WHERE si.provider_id = p.provider_id AND s.service_id = si.service_id " +
+						"ORDER BY si.time_stamp;";
+		this.execute(query);
+		
+		Vector<String> results = null;
+		String row = null;
+		
+		try {
+			while (rs.next()) {
+				if (results == null)
+					results = new Vector<String>(VECTOR_ALLOC_SIZE);
+				row = "";
+				
+				row += rs.getString(1) + " ";
+				row += rs.getString(2) + " ";
+				row += rs.getString(3) + " ";
+				row += rs.getString(4);
+				
+				results.add(row);
+			}
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Error Fetching EFT Data Results: " + e.toString(), "SQLite Error: ", JOptionPane.ERROR_MESSAGE);
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+				con=null;
+			} catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "Error closing result set, statement and connection: " + e.toString(), "Error Fetching EFT Data Results: ", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		return results;
 	}
 	
 	//~~~~~~~~~~~~~~~~~~~~OPERATIONS OF STATE TABLE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -467,14 +467,20 @@ public class MemberInformation extends JFrame {
     }                                                   
 
     private void addServiceInstanceButtonActionPerformed(ActionEvent evt) {                                                         
-        new AddOrEditServiceInstance();
+        if (m.active_status == 0) {
+        	JOptionPane.showMessageDialog(null, "This member is suspended.\nYou must have managerial access to reinstate this member!");
+        	return;
+        }
+    	new AddOrEditServiceInstance();
     }                                                        
 
     private void viewProviderButtonActionPerformed(ActionEvent evt) {                                                   
-        dispose();
-        int pid = selectedServiceInstance.provider_id;
-        Provider p = db.retrieveProvider(pid);
-        new ProviderInformation(p);
+	     if (selectedServiceInstance != null) {
+    		dispose();
+	        int pid = selectedServiceInstance.provider_id;
+	        Provider p = db.retrieveProvider(pid);
+	        new ProviderInformation(p);
+	     }
     }                                                  
 
     private void pastWeekRadioActionPerformed(ActionEvent evt) {                                              
@@ -492,7 +498,7 @@ public class MemberInformation extends JFrame {
     }                                                  
 
     private void generateMemberReportButtonActionPerformed(ActionEvent evt) {
-//        new MemberReport(m, );
+        new MemberReport(m, tableModel);
     }
 
     private void fromRadioActionPerformed(ActionEvent evt) {

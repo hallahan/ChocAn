@@ -355,8 +355,13 @@ public class AddOrEditServiceInstance extends JFrame {
     		si.member_id = Application.selectedMemberId;
     		si.provider_id = Application.appOperatorProviderId;
     	}
-    	Service selectedService = (Service)servicesList.getSelectedValue();
-    	si.service_id = selectedService.service_id;
+    	if (servicesList.getSelectedValue() != null) {
+	    	Service selectedService = (Service)servicesList.getSelectedValue();
+	    	si.service_id = selectedService.service_id;
+    	} else {
+    		JOptionPane.showMessageDialog(null, "You must select a service!");
+    		return;
+    	}
     	
     	if (currentDateRadio.isSelected() == true) {
     		si.setDate_provided(DateAndTime.getCurrentDate());
@@ -385,9 +390,9 @@ public class AddOrEditServiceInstance extends JFrame {
     	} else {
     		db.updateServiceInstance(si);
     	}
-    	if (Application.windows() != null)
+    	if (Application.windows().memberInformation != null)
     		Application.windows().memberInformation.updateWindow();
-    	if (Application.windows() != null)
+    	if (Application.windows().providerInformation != null)
     		Application.windows().providerInformation.updateWindow();
     	dispose();
     }

@@ -158,7 +158,8 @@ public class MemberSearch extends javax.swing.JFrame {
     }
     
     private void cancelButtonActionPerformed(ActionEvent evt) {
-    	dispose();
+    	Application.windows().closeAllWindows();
+		new Login();
     }
 
     private void selectButtonActionPerformed(ActionEvent evt) {

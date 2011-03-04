@@ -1,7 +1,6 @@
 package controller;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import reports.*;
 
@@ -14,7 +13,7 @@ public class Menu extends JMenuBar implements ActionListener {
 
 	private void setup() {
 		JMenu 		file, search, add, logout;
-		JMenuItem 	psd, q, ms, ps, am, ap, apt, as, ll;
+		JMenuItem 	psd, sr, eft, q, ms, ps, am, ap, apt, as, ll;
 		
 		file	= new JMenu("File");
 		search	= new JMenu("Search");
@@ -27,6 +26,8 @@ public class Menu extends JMenuBar implements ActionListener {
 		add(logout);
 		
 		psd = new JMenuItem("Provider Services Directory");
+		sr  = new JMenuItem("Summary Report");
+		eft = new JMenuItem("Generate EFT Data");
 		q   = new JMenuItem("Quit");
 		ms 	= new JMenuItem("Member Search");
 		ps 	= new JMenuItem("Provider Search");
@@ -37,6 +38,8 @@ public class Menu extends JMenuBar implements ActionListener {
 		ll 	= new JMenuItem("Logout / Login");
 		
 		psd.addActionListener(this);
+		sr.addActionListener(this);
+		eft.addActionListener(this);
 		q.addActionListener(this);
 		ms.addActionListener(this);
 		ps.addActionListener(this);
@@ -47,13 +50,17 @@ public class Menu extends JMenuBar implements ActionListener {
 		ll.addActionListener(this);
 		
 		file.add(psd);
+		file.add(sr);
+		file.add(eft);
 		file.add(q);
 		search.add(ms);
 		search.add(ps);
 		add.add(am);
-		add.add(ap);
-		add.add(apt);
-		add.add(as);
+		if (Application.isManagerMode() == true) {
+			add.add(ap);
+			add.add(apt);
+			add.add(as);
+		}
 		logout.add(ll);
 	}
 	
@@ -80,6 +87,10 @@ public class Menu extends JMenuBar implements ActionListener {
 			providerServiceDirectory();
 		} else if (itemName.equals("Quit") == true) {
 			Application.windows().closeAllWindows();
+		} else if (itemName.equals("Summary Report")) {
+			new SummaryReport();
+		} else if (itemName.equals("Generate EFT Data")) {
+			new EFTData();
 		}
 	}
 	
