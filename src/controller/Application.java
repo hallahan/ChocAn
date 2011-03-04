@@ -73,6 +73,10 @@ public class Application {
 			return false;
 	}
 	
+	public static void turnOffManagerMode() {
+		managerMode = false;
+	}
+	
 	//singleton instance variable for the application windows
 	private static Application windows;
 	
@@ -98,11 +102,29 @@ public class Application {
 	public Menu menu = null;
 	
 	public void closeAllWindows() {
-		if (memberSearch != null) memberSearch.dispose();
-		if (providerSearch != null) providerSearch.dispose();
-		if (memberInformation != null) memberInformation.dispose();
-		if (providerInformation != null) providerInformation.dispose();
-		if (addOrEditServiceInstance != null) addOrEditServiceInstance.dispose();
-		if (addOrEditProvider != null) addOrEditProvider.dispose();
+		if (memberSearch != null) {
+			memberSearch.dispose();
+			memberSearch = null;
+		}
+		if (providerSearch != null) {
+			providerSearch.dispose();
+			providerSearch = null;
+		}
+		if (memberInformation != null) {
+			memberInformation.dispose();
+			memberInformation = null;
+		}
+		if (providerInformation != null) { 
+			providerInformation.dispose();
+			providerInformation = null;
+		}
+		if (addOrEditServiceInstance != null) {
+			addOrEditServiceInstance.dispose();
+			addOrEditServiceInstance = null;
+		}
+		if (addOrEditProvider != null) {
+			addOrEditProvider.dispose();
+			addOrEditProvider = null;
+		}
 	}
 }

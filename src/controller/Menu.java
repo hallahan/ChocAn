@@ -83,7 +83,7 @@ public class Menu extends JMenuBar implements ActionListener {
 			addService();
 		}  else if (itemName.equals("Logout / Login") == true) {
 			logoutLogin();
-		} else if (itemName.equals("Write Provider Service Directory") == true) {
+		} else if (itemName.equals("Provider Services Directory") == true) {
 			providerServiceDirectory();
 		} else if (itemName.equals("Quit") == true) {
 			Application.windows().closeAllWindows();

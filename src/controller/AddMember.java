@@ -232,8 +232,8 @@ public class AddMember extends JFrame {
 	}
 	
 	private void cancelButtonActionPerformed(ActionEvent event) {
-		
-		new Login();
+		dispose();
+//		new Login();
 	}
 	
 	public static void main(String[] args) {

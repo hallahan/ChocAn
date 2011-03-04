@@ -128,6 +128,8 @@ public class Login extends javax.swing.JFrame {
         	if (success == false) {
         		JOptionPane.showMessageDialog(null, "Incorrect Password. The application will function in Standard Provider Mode.", "Invalid Password:", JOptionPane.ERROR_MESSAGE);
         	}
+        } else {
+        	Application.turnOffManagerMode();
         }
     	
         SQLiteInterface db = SQLiteInterface.singleton();
