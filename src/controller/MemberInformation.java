@@ -19,6 +19,7 @@ public class MemberInformation extends JFrame {
         
         if (Application.isManagerMode() == false) {
         	activateButton.setEnabled(false);
+        	deleteMemberButton.setEnabled(false);
         }
         setVisible(true);
     }
@@ -296,7 +297,7 @@ public class MemberInformation extends JFrame {
             }
         });
 
-        fromTextField.setText("XX-XX-XXXX");
+        fromTextField.setText("MM-DD-YYYY");
         fromTextField.setEnabled(false);
         fromTextField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent evt) {
@@ -305,7 +306,7 @@ public class MemberInformation extends JFrame {
         });
         
         toLabel.setText("To:");
-        toTextField.setText("XX-XX-XXXX");
+        toTextField.setText("MM-DD-YYYY");
         toTextField.setEnabled(false);
         toTextField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent evt) {
@@ -508,40 +509,35 @@ public class MemberInformation extends JFrame {
     
     
     private void dateRangeKeyTyped(KeyEvent evt) {
+    	char key = evt.getKeyChar();
     	Object source = evt.getSource();
     	String from = fromTextField.getText();
     	String to = toTextField.getText();
-    	
-    	//getText() does not actually get the text in the text box including the latest key typed...
-    	char key = evt.getKeyChar();
-    	if (key != '\b') {
-	    	if (source == fromTextField) {
-	    		from += key;
-	    	} else {
-	    		to += key;
-	    	}
+    	if (source == fromTextField) {
+    		if (fromFieldTyped == false) {
+        		fromFieldTyped = true;
+        		fromTextField.setText("");
+        		return;
+        	}
+    		if (key != '\b') 
+    			from += key;
+    	} else {
+    		if (toFieldTyped == false) {
+        		toFieldTyped = true;
+        		toTextField.setText("");
+        		return;
+        	}
+    		if (key != '\b') {
+    			to += key;
+    		}
     	}
-
-    	
-    	System.out.println("before conditional");
-    	if (from.length() != 10 || to.length() != 10 || from.equals("XX-XX-XXXX") || to.equals("XX-XX-XXXX")) {
-    		System.out.println(from.length());
-    		System.out.println(to.length());
-    		System.out.println(from);
-    		System.out.println(to);
-    		return;
-    	}
-    	System.out.println("proper from and to conditions");
-    	
+    	if (from.length() != 10 || to.length() != 10 || to.equals("MM-DD-YYYY") || from.equals("MM-DD-YYYY")) 
+			return;
     	ServiceInstance fromSI = new ServiceInstance();
     	ServiceInstance toSI = new ServiceInstance();
-    	
-    	//not really a service instance, but the getters and setters do what I want...
     	fromSI.setDate_provided(from);
     	toSI.setDate_provided(to);
-    	
     	tableModel.timespan(fromSI.getDate_providedDB(), toSI.getDate_providedDB());
-    	
     }
 
     
@@ -687,6 +683,9 @@ public class MemberInformation extends JFrame {
     private ServiceInstanceTableModel tableModel;
     private SQLiteInterface db;
     private ServiceInstance selectedServiceInstance;
+    
+    private boolean fromFieldTyped = false;
+    private boolean toFieldTyped = false;
     
     private JButton activateButton;
     private JButton addServiceInstanceButton;

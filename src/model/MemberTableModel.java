@@ -15,10 +15,17 @@ public class MemberTableModel extends AbstractTableModel implements TableModel {
 	}
 
 	public int getRowCount() {
-		return members.size();
+		if (members != null) {
+			return members.size();
+		} else {
+			return 0;
+		}
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
+		if (members == null) {
+			return null;
+		}
 		Member row = members.elementAt(rowIndex);
 		switch (columnIndex) {
 			case 0: return row.member_id;

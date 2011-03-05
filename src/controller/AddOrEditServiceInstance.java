@@ -159,7 +159,7 @@ public class AddOrEditServiceInstance extends JFrame {
 
 		if (si.getDate_provided().equals(" ") == true) {
 			currentDateRadio.setSelected(true);
-			dateText.setText("XX-XX-XXXX");
+			dateText.setText("MM-DD-YYYY");
 			dateText.setEnabled(false);
 		} else {
 			specifiedDateRadio.setSelected(true);
@@ -190,7 +190,7 @@ public class AddOrEditServiceInstance extends JFrame {
 		
 		if (si.getTime_stamp().equals(" ") == true) {
 			currentTimestampRadio.setSelected(true);
-			timestampTextField.setText("XX-XX-XXXX XX:XX:XX");
+			timestampTextField.setText("MM-DD-YYYY HH:MM:SS");
 			timestampTextField.setEnabled(false);
 		} else {
 			specifiedTimestampRadio.setSelected(true);

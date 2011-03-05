@@ -169,7 +169,8 @@ public class ProviderSearch extends JFrame {
     }
     
     private void cancelButtonActionPerformed(ActionEvent evt) {
-    	this.dispose();
+    	Application.windows().closeAllWindows();
+		new Login();
     }
 
     private void selectButtonActionPerformed(ActionEvent evt) {

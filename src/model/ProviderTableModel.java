@@ -20,10 +20,16 @@ public class ProviderTableModel extends AbstractTableModel implements TableModel
 	}
 
 	public int getRowCount() {
-		return providers.size();
+		if (providers != null)
+			return providers.size();
+		else
+			return 0;
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
+		if (providers == null) {
+			return null;
+		}
 		Provider row = providers.elementAt(rowIndex);
 		if (Application.isManagerMode()==true) {
 			switch (columnIndex) {

@@ -65,11 +65,94 @@ public class States {
 	};
 	
 	public static int getIndex(String state) {
-		int i = java.util.Arrays.binarySearch(abbrev, state);
-		if (i < 0) {
-			i = java.util.Arrays.binarySearch(full, state);
+		for (int i=0; i < abbrev.length; ++ i) {
+			if (abbrev[i].equals(state))
+				return i;
 		}
-		return i;
+		for (int i=0; i < full.length; ++ i) {
+			if (full[i].equals(state))
+				return i;
+		}
+		return 0;
+	}
+	
+	public static void test() {
+		int res = -1;
+		
+		res = getIndex("AL");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res] + "\n");
+		
+		res = getIndex("Alaska");
+		res = 1;
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("AZ");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("AR");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("CA");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("CO");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("CT");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("DC");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("DE");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("FL");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("GA");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("NV");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("IL");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+		
+		res = getIndex("TN");
+		System.out.println(res);
+		System.out.println(full[res]);
+		System.out.println(abbrev[res]+ "\n");
+	}
+	
+	public static void main(String[] args) {
+		test();
 	}
 }
 //public class States {

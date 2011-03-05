@@ -133,8 +133,10 @@ public class SQLiteInterface {
 	
 	public Member retrieveMember(int member_id) {
 		String query = "SELECT * FROM member m WHERE m.member_id=" + member_id + ";";
-		this.execute(query);
-		return this.fetchMemberResults().firstElement();
+		execute(query);
+		Vector<Member> results = fetchMemberResults();
+		if (results == null) return null;
+		return results.firstElement();
 	}
 	public Vector<Member> retrieveMemberTable() {
 		String query = "SELECT * FROM member;";

@@ -176,6 +176,11 @@ public class EditMember extends JFrame {
 		group.add(activeRB);
 		group.add(inactiveRB);
 		
+		if (Application.isManagerMode() == false) {
+			activeRB.setEnabled(false);
+			inactiveRB.setEnabled(false);
+		}
+		
 		
 		//setup buttons		
 		cancelButton = new JButton();

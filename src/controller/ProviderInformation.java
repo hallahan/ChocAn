@@ -279,7 +279,7 @@ public class ProviderInformation extends JFrame {
             }
         });
 
-        fromTextField.setText("XX-XX-XXXX");
+        fromTextField.setText("MM-DD-YYYY");
         fromTextField.setEnabled(false);
         fromTextField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent evt) {
@@ -288,7 +288,7 @@ public class ProviderInformation extends JFrame {
         });
 
         toLabel.setText("To:");
-        toTextField.setText("XX-XX-XXXX");
+        toTextField.setText("MM-DD-YYYY");
         toTextField.setEnabled(false);
         toTextField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent evt) {
@@ -432,10 +432,12 @@ public class ProviderInformation extends JFrame {
 
     private void viewMemberButtonActionPerformed(ActionEvent evt) {   
     	if (selectedServiceInstance != null) {
-    		dispose();
             int mid = selectedServiceInstance.member_id;
             Member m = db.retrieveMember(mid);
-            new MemberInformation(m);
+            if (m != null) {
+                new MemberInformation(m);
+                dispose();
+            }
     	}
     }                                                
 
@@ -488,7 +490,7 @@ public class ProviderInformation extends JFrame {
 
     	
     	System.out.println("before conditional");
-    	if (from.length() != 10 || to.length() != 10 || from.equals("XX-XX-XXXX") || to.equals("XX-XX-XXXX")) {
+    	if (from.length() != 10 || to.length() != 10 || from.equals("MM-DD-YYYY") || to.equals("MM-DD-YYYY")) {
     		System.out.println(from.length());
     		System.out.println(to.length());
     		System.out.println(from);

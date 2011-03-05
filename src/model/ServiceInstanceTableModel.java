@@ -51,31 +51,34 @@ public class ServiceInstanceTableModel extends AbstractTableModel implements Tab
 				case 0: return row.instance_id;
 				case 1: return row.getTime_stamp();
 				case 2: return row.getDate_provided();
-				case 3: return p.name;
+				case 3: 
+					if (p == null) 	return "";
+					return p.name;
 				case 4: return ser.name;
 				case 5: return ser.fee;
 				default: return null;
 			}
-			
 		} else {
 			Member m = db.retrieveMember(row.member_id);
 			switch(columnIndex) {
 				case 0: return row.instance_id;
 				case 1: return row.getTime_stamp();
 				case 2: return row.getDate_provided();
-				case 3: return m.first;
-				case 4: return m.last;
+				case 3: 
+					if (m == null) return "";
+					return m.first;
+				case 4: 
+					if (m == null) return "";
+					return m.last;
 				case 5: return ser.name;
 				case 6: return ser.fee;
 				default: return null;
 			}
-			
 		}
 	}
 
 	public ServiceInstance getRow(int row) {
-		
-		if (serviceInstances.size() <= row || row < 0){
+		if (serviceInstances == null || serviceInstances.size() <= row || row < 0){
 			return new ServiceInstance();
 		} else {
 			return serviceInstances.elementAt(row);
