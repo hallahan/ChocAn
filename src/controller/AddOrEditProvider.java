@@ -80,7 +80,7 @@ public class AddOrEditProvider extends JFrame {
         jButton3 = new javax.swing.JButton();
         addProviderType = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Provider Name:");
 

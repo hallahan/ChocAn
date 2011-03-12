@@ -458,6 +458,7 @@ public class ProviderInformation extends JFrame {
     private void deleteProviderButtonActionPerformed(ActionEvent evt) {
         db.deleteProvider(provider.provider_id);
         dispose();
+        new ProviderSearch();
     }
 
     private void editProviderButtonActionPerformed(ActionEvent evt) {
