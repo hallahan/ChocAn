@@ -11,6 +11,7 @@ import java.awt.event.*;
 public class MemberInformation extends JFrame {
 
     public MemberInformation(Member m) {
+    	Application.selectedMemberId = m.member_id;
         Application.windows().memberInformation = this;
     	this.db = SQLiteInterface.singleton();
     	this.m = m;
@@ -448,7 +449,7 @@ public class MemberInformation extends JFrame {
         );
 
         layout.linkSize(new java.awt.Component[] {memberInformationPanel, serviceInformationPanel}, org.jdesktop.layout.GroupLayout.VERTICAL);
-
+        setTitle("Member Information");
         pack();
     }
     
@@ -672,10 +673,11 @@ public class MemberInformation extends JFrame {
     	
     }
     
-    //is there a better way than setting up the table all over agian?
     public void updateWindow() {
 //    	tableModel.fireTableDataChanged();
-    	setupTable();
+//    	setupTable();
+    	tableModel.refresh();
+    	selectFirstRow();
     	refreshServiceInfoPane();
     }
     

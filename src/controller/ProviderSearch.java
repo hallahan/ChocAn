@@ -176,7 +176,6 @@ public class ProviderSearch extends JFrame {
     private void selectButtonActionPerformed(ActionEvent evt) {
         int row = providerSearchTable.getSelectedRow();
         Provider selProv = providerTableModel.getProvider(row);
-        Application.selectedProviderId = selProv.provider_id;
     	new ProviderInformation(selProv);
         dispose();
     }

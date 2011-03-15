@@ -13,6 +13,7 @@ import java.awt.*;
 public class ProviderInformation extends JFrame {
 
     public ProviderInformation(Provider p) {
+    	Application.selectedProviderId = p.provider_id;
         Application.windows().providerInformation = this;
         provider = p;
         db = SQLiteInterface.singleton();
@@ -417,7 +418,7 @@ public class ProviderInformation extends JFrame {
         );
 
         layout.linkSize(new Component[] {providerInformationPanel, serviceInformationPanel}, org.jdesktop.layout.GroupLayout.VERTICAL);
-
+        setTitle("Provider Information");
         pack();
     }
 
@@ -567,10 +568,12 @@ public class ProviderInformation extends JFrame {
     	
     }
     
-    //is there a better way than setting up the table all over agian?
     public void updateWindow() {
 //    	tableModel.fireTableDataChanged();
-    	setupTable();
+//    	setupTable();
+    	
+    	tableModel.refresh();
+    	selectFirstRow();
     	refreshServiceInfoPane();
     }
     

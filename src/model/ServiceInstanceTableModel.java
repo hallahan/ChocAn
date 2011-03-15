@@ -178,6 +178,15 @@ public class ServiceInstanceTableModel extends AbstractTableModel implements Tab
 		}
 		
 	}
+	public void refresh() {
+		if (mode == Mode.TIMESPAN) {
+			timespan(from, to);
+		} else if (mode == Mode.PAST_WEEK) {
+			pastWeek();
+		} else {
+			entireHistory();
+		}
+	}
 
 
 
