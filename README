@@ -1,0 +1,15 @@
+Nicholas Hallahan
+nicholashallahan@gmail.com
+March 15, 2011
+
+To run the application, make sure that ChocoholicsAnonymous.jar and ChocAnon.db
+are in the same directory.  Then simply open ChocoholicsAnonymous.jar
+
+If you wish to compile the source code, make sure that you have added:
+	sqlitejdbc-v056.jar ,
+	swing-layout-1.0.4.jar
+to your project.  This will already be done for you if you pull this repository
+from github.
+
+Also, the application should be launched by the main method of Login.class.
+The main methods for all of the other classes are used for testing purposes.
